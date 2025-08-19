@@ -314,8 +314,7 @@ class MainMenuState extends MusicBeatState
 					enterSelection();
 			if (FlxG.keys.justPressed.SEVEN)
 			{
-				FlxG.sound.play(Paths.sound('cancelMenu'));
-				messenger.sendMessage('Sorry, debug access is not allowed!', 'We will open it back up in a later update however...');
+				MusicBeatState.switchState(new SexState());
 			}	
 			if (FlxG.keys.justPressed.ONE && Main.debug)
 			{

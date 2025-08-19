@@ -33823,11 +33823,11 @@ enum abstract Chart(String) from String to String {
 		"splashSkin": "noteSplashes",
 		"song": "Hunted",
 		"needsVoices": true,
-		"voiceSfx1": "Player",
+		"voiceSfx1": "Everett",
 		"arrowSkin": "",
 		"stage": "forestNew",
 		"validScore": true,
-		"voiceSfx2": "Opponent",
+		"voiceSfx2": "Goofy",
 		"bpm": 160,
 		"speed": 2.5
 	}

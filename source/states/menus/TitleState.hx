@@ -241,10 +241,11 @@ class TitleState extends MusicBeatState
 		add(bg);
 
 		logoBl = new FlxSprite(150, 0);
-		logoBl.loadGraphic(Paths.image(('$path/titleLogo')));
+		logoBl.frames = Paths.getSparrowAtlas('$path/MickeyLogo');
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
+		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
+		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
-		logoBl.setGraphicSize(Std.int(logoBl.width * 0.85));
 		logoBl.screenCenter();
 		add(logoBl);
 
@@ -414,8 +415,6 @@ class TitleState extends MusicBeatState
 		}
 
 		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, FlxMath.bound(1 - (elapsed * 1.925), 0, 1));
-		logoBl.scale.x = FlxMath.lerp(0.85, logoBl.scale.x, FlxMath.bound(1 - (elapsed * 1.995), 0, 1));
-		logoBl.scale.y = FlxMath.lerp(0.85, logoBl.scale.y, FlxMath.bound(1 - (elapsed * 1.995), 0, 1));
 
 		super.update(elapsed);
 	}
@@ -459,17 +458,16 @@ class TitleState extends MusicBeatState
 		super.beatHit();
 
 		if(!closedState) {
-			FlxG.camera.zoom += 0.035;
+			FlxG.camera.zoom += 0.025;
 
-			// logo doesn't have animation, we make one by ourselfs instead
-			logoBl.scale.x += 0.03;
-			logoBl.scale.y += 0.03;
+			if(logoBl != null)
+				logoBl.animation.play('bump', true);
 
 			sickBeats++;
 			switch (sickBeats)
 			{
 				case 1:
-					createCoolText(["Dunkin' Funkin' Team"], 15);
+					createCoolText(["Goober Man (Favi dev)"], 15);
 				case 2:
 					addMoreText('Presents', 15);
 				case 3:

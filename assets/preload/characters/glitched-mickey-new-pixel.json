@@ -1,0 +1,100 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-100,
+				-100
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "square idle"
+		},
+		{
+			"offsets": [
+				-100,
+				-100
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "square left"
+		},
+		{
+			"offsets": [
+				-100,
+				-100
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "square down"
+		},
+		{
+			"offsets": [
+				-100,
+				-100
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "square up"
+		},
+		{
+			"offsets": [
+				-100,
+				-100
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "square right"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				130,
+				130
+			],
+			"anim": "MODCHARTS RAHH",
+			"fps": 20,
+			"name": "square ohfucknotmynotes",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				130,
+				130
+			],
+			"anim": "laughing",
+			"fps": 20,
+			"name": "square laughing",
+			"indices": []
+		}
+	],
+	"no_antialiasing": true,
+	"image": "characters/glitched-mickey-new-pixel/glitchedMickeyNEWANIMS",
+	"position": [
+		0,
+		-60
+	],
+	"healthicon": "icon-mal-pixel",
+	"flip_x": false,
+	"healthbar_colors": [
+		0,
+		0,
+		0
+	],
+	"camera_position": [
+		-80,
+		-100
+	],
+	"sing_duration": 6.1,
+	"scale": 2.3
+}

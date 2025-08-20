@@ -2,62 +2,62 @@
 	"animations": [
 		{
 			"offsets": [
-				120,
-				-140
+				0,
+				0
 			],
-			"loop": true,
+			"indices": [],
 			"fps": 12,
 			"anim": "idle",
-			"indices": [],
+			"loop": true,
 			"name": "idle"
 		},
 		{
 			"offsets": [
-				120,
-				-140
+				0,
+				0
 			],
-			"loop": false,
+			"indices": [],
 			"fps": 12,
 			"anim": "singLEFT",
-			"indices": [],
+			"loop": false,
 			"name": "left"
 		},
 		{
 			"offsets": [
-				120,
-				-140
+				0,
+				0
 			],
-			"loop": false,
+			"indices": [],
 			"fps": 12,
 			"anim": "singDOWN",
-			"indices": [],
+			"loop": false,
 			"name": "down"
 		},
 		{
 			"offsets": [
-				120,
-				-140
+				0,
+				0
 			],
-			"loop": false,
+			"indices": [],
 			"fps": 12,
 			"anim": "singUP",
-			"indices": [],
+			"loop": false,
 			"name": "up"
 		},
 		{
 			"offsets": [
-				120,
-				-140
+				0,
+				0
 			],
-			"loop": false,
+			"indices": [],
 			"fps": 12,
 			"anim": "singRIGHT",
-			"indices": [],
+			"loop": false,
 			"name": "right"
 		}
 	],
 	"no_antialiasing": false,
-	"image": "characters/Muckney",
+	"image": "characters/muckney/muckney",
 	"position": [
 		0,
 		0
@@ -65,13 +65,13 @@
 	"healthicon": "muckney",
 	"flip_x": false,
 	"healthbar_colors": [
-		189,
-		189,
-		189
+		141,
+		141,
+		141
 	],
 	"camera_position": [
-		220,
-		360
+		380,
+		340
 	],
 	"sing_duration": 6.1,
 	"scale": 0.6

@@ -27,9 +27,9 @@ class FAVIPauseSubState extends MusicBeatSubstate
     #end
 
 	var bg:FlxSprite;
-	var daSelector:FlxSprite;
 	var levelInfo:FlxText;
 	var menuItems:Array<String>;
+	var funnyButton:FlxSprite;
 	var curSelected:Int = 0;
 	var buttonGroup:FlxTypedGroup<FlxSprite>;
 	var songText:FlxSprite;
@@ -59,7 +59,15 @@ class FAVIPauseSubState extends MusicBeatSubstate
 		super();
 
 		if (itemStack == null)
-			itemStack = ['continue', 'restart', 'settings', 'escape'];
+		{
+			switch (PlayState.SONG.song)
+			{
+				case 'War Dilemma': itemStack = ['wd-continue', 'wd-restart', 'wd-settings', 'wd-escape'];
+				case 'Malfunction': itemStack = ['mal-continue', 'mal-restart', 'mal-settings', 'rage'];
+				case 'Birthday': itemStack = ['continue', 'restart', 'settings', 'leave'];
+				default: itemStack = ['continue', 'restart', 'settings', 'escape'];
+			}
+		}
 
 		PlayState.windowTimer.active = false;
 
@@ -143,9 +151,8 @@ class FAVIPauseSubState extends MusicBeatSubstate
 		levelInfo = new FlxText(FlxG.width * 0.75 + array[2], 100, 0, "", 32);
 		songArt = new FlxSprite(780, 110);
 		songArtOutline = new FlxSprite(songArt.x - 20, songArt.y - 20 /*POV: you're lazy to do the math yourself*/).makeGraphic(890, 890, FlxColor.BLACK);
-		disc = new FlxSprite(songArt.x, songArt.y - 12).loadGraphic(Paths.image('Funkin_avi/pause/disc'));
+		disc = new FlxSprite(songArt.x + 75, songArt.y - 12).loadGraphic(Paths.image('Funkin_avi/pause/disc'));
 		songName = new FlxText(FlxG.width * 0.78 + array[1], 10, 0, (PlayState.SONG.song == "Dont Cross" ? "Don't Cross!" : (PlayState.useFakeDeluName ? "Regret" : PlayState.SONG.song)), 32);
-		daSelector = new FlxSprite().loadGraphic(Paths.image("Funkin_avi/pause/selectorSkin/select"));
 		countDown = new FlxText(0, 0, 1280, "", 0);
 		satanTxt = new FlxTypeText(0, 25, 1280, "");
 		pauseNameTxt = new FlxText(5, 700, 1280, "Now Playing: " + pauseSongStr + " - ForFurtherNotice");
@@ -163,9 +170,9 @@ class FAVIPauseSubState extends MusicBeatSubstate
 
 		// scales
 		bg.scale.set(FlxG.width * 4, FlxG.height * 4);
-		disc.scale.set(0.35, 0.35);
-		songArt.scale.set(0.36, 0.36);
-		songArtOutline.scale.set(0.36, 0.36); // this was easier for me to scale it off the ORIGINAL image size instead of just trying to get the exact graphic size of the song art being SCALED
+		disc.scale.set(0.28, 0.28);
+		songArt.scale.set(0.29, 0.29);
+		songArtOutline.scale.set(0.29, 0.29); // this was easier for me to scale it off the ORIGINAL image size instead of just trying to get the exact graphic size of the song art being SCALED
 
 		levelInfo.text = array[0];
 
@@ -177,13 +184,13 @@ class FAVIPauseSubState extends MusicBeatSubstate
 		satanTxt.screenCenter(X);
 
 		// alpha value setup
-		for (obj in [bg, levelInfo, songName, daSelector, pauseNameTxt])
+		for (obj in [bg, levelInfo, songName, pauseNameTxt])
 			obj.alpha = 0.0001;
 
 		countDown.visible = false;
 
 		// fuck it. add everything
-		for (obj in [bg, songName, levelInfo, pauseNameTxt, disc, songArtOutline, songArt, daSelector])
+		for (obj in [bg, songName, levelInfo, pauseNameTxt, disc, songArtOutline, songArt])
 			add(obj);
 
 		// menu buttons
@@ -192,12 +199,10 @@ class FAVIPauseSubState extends MusicBeatSubstate
 
 		for (i in 0...menuItems.length)
 		{
-			songText = new FlxSprite(0, 0).loadGraphic(Paths.image('Funkin_avi/pause/menuButtons/${menuItems[i]}'));
+			songText = new FlxSprite(0, (10 * i) + 30).loadGraphic(Paths.image('Funkin_avi/pause/menuButtons/${menuItems[i]}'));
 			songText.alpha = 0;
-			songText.ID = i;
-			songText.screenCenter();
-			FlxTween.tween(songText, {alpha: 1}, 0.45, {ease: FlxEase.quartInOut});
 			buttonGroup.add(songText);
+			FlxTween.tween(songText, {alpha: 1}, 0.8, {ease: FlxEase.quartInOut});
 		}
 
 		add(satanTxt);
@@ -210,7 +215,6 @@ class FAVIPauseSubState extends MusicBeatSubstate
 					hasFinishedAnim = true;
 				}
 			});
-		FlxTween.tween(daSelector, {alpha: 1}, 0.5, {ease: FlxEase.quartInOut, startDelay: 0.5});
 		FlxTween.tween(levelInfo, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(songName, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.2});
 		FlxTween.tween(disc, {x: disc.x - 300}, 0.8, {ease: FlxEase.quartOut});
@@ -219,6 +223,24 @@ class FAVIPauseSubState extends MusicBeatSubstate
 		FlxTween.tween(songArtOutline, {x: songArtOutline.x - 110}, 0.8, {ease: FlxEase.quartOut});
 		FlxTween.tween(pauseNameTxt, {alpha: 1}, 1, {ease:FlxEase.quartOut});
 
+		var skinDirectory:String = 'Funkin_avi/pause/selectorSkin/';
+
+		funnyButton = new FlxSprite(0, 0);
+		switch (PlayState.SONG.song)
+		{
+			case 'War Dilemma':
+				funnyButton.loadGraphic(Paths.image(skinDirectory + 'wd-selector'));
+			case 'Malfunction':
+				funnyButton.loadGraphic(Paths.image(skinDirectory + 'mal-selector'));
+			default:
+				funnyButton.loadGraphic(Paths.image(skinDirectory + 'select'));
+		}
+		add(funnyButton);
+
+		funnyButton.alpha = 0;
+
+		FlxTween.tween(funnyButton, {alpha: 1}, 0.8, {ease: FlxEase.quartInOut});
+
 		changeSelection();
 		lime.app.Application.current.window.title += " - {Paused}";
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
@@ -226,11 +248,52 @@ class FAVIPauseSubState extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
+		switch (menuItems[curSelected])
+		{
+			case 'continue':
+				funnyButton.x = songText.x + 300;
+				funnyButton.y = 120;
+			case 'restart':
+				funnyButton.x = songText.x + 310;
+				funnyButton.y = 265;
+			case 'settings':
+				funnyButton.x = songText.x + 540;
+				funnyButton.y = 420;
+			case 'escape':
+				funnyButton.x = songText.x + 300;
+				funnyButton.y = 580;
+			case 'leave':
+				funnyButton.x = songText.x + 530;
+				funnyButton.y = 580;
+			case 'wd-continue':
+				funnyButton.x = songText.x + 430;
+				funnyButton.y = 124;
+			case 'wd-restart':
+				funnyButton.x = songText.x + 370;
+				funnyButton.y = 280;
+			case 'wd-settings':
+				funnyButton.x = songText.x + 720;
+				funnyButton.y = 430;
+			case 'wd-escape':
+				funnyButton.x = songText.x + 570;
+				funnyButton.y = 585;
+			case 'mal-continue':
+				funnyButton.x = songText.x + 410;
+				funnyButton.y = 104;
+			case 'mal-restart':
+				funnyButton.x = songText.x + 420;
+				funnyButton.y = 250;
+			case 'mal-settings':
+				funnyButton.x = songText.x + 770;
+				funnyButton.y = 410;
+			case 'rage':
+				funnyButton.x = songText.x + 960;
+				funnyButton.y = 570;
+		}
+
 		updateSelection();
 
 		super.update(elapsed);
-
-		updateBitch = elapsed;
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
@@ -248,9 +311,9 @@ class FAVIPauseSubState extends MusicBeatSubstate
 
 				switch (daSelected)
 				{
-					case "continue":
+					case "continue" | 'wd-continue' | 'mal-continue':
 						resumeGame();
-					case "restart":
+					case "restart" | 'wd-restart' | 'mal-restart':
 						remove(disc);
 						restartSong();
 					case "Back to Charter":
@@ -260,7 +323,7 @@ class FAVIPauseSubState extends MusicBeatSubstate
 						remove(disc);
 						PlayState.chartingMode = false;
 						restartSong();
-					case "settings":
+					case "settings" | 'wd-settings' | 'mal-settings':
 						remove(disc);
 						if (PlayState.useFakeDeluName)
 							PlayState.useFakeDeluName = false;
@@ -270,7 +333,7 @@ class FAVIPauseSubState extends MusicBeatSubstate
 						FlxG.mouse.visible = true;
 						MusicBeatState.switchState(new states.options.OptionsState());
 						FlxG.sound.playMusic(Paths.music('aviOST/rottenPetals'));
-					case "escape":
+					case "escape" | 'wd-escape' | 'rage' | 'leave':
 						switch (PlayState.SONG.song.toLowerCase())
 						{
 							case 'delusional':
@@ -345,18 +408,6 @@ class FAVIPauseSubState extends MusicBeatSubstate
 		if (menuItems != null)
 			curSelected = FlxMath.wrap(curSelected + change, 0, menuItems.length - 1);
 
-		switch (curSelected)
-		{
-			case 0:
-				if (daSelector != null) daSelector.setPosition(340, 85);
-			case 1:
-				if (daSelector != null) daSelector.setPosition(320, 220);
-			case 2:
-				if (daSelector != null) daSelector.setPosition(520, 375);
-			case 3:
-				if (daSelector != null) daSelector.setPosition(290, 520);
-		}
-
 		var bullShit:Int = 0;
 	}
 
@@ -408,7 +459,6 @@ class FAVIPauseSubState extends MusicBeatSubstate
 		{
 			FlxG.sound.play(Paths.sound('clickText'), 0.6);
 			FlxTween.tween(disc, {x: disc.x + 800}, 0.8, {ease: FlxEase.quartOut});
-			FlxTween.tween(daSelector, {alpha: 0}, 0.3, {ease: FlxEase.quartOut});
 			FlxTween.tween(songArt, {x: songArt.x + 510}, 0.8, {ease: FlxEase.quartOut});
 			FlxTween.tween(songArtOutline, {x: songArtOutline.x + 510}, 0.8, {ease: FlxEase.quartOut});
 			FlxTween.tween(pauseNameTxt, {alpha: 0}, 0.75, {ease: FlxEase.quartOut});
@@ -451,7 +501,6 @@ class FAVIPauseSubState extends MusicBeatSubstate
 			FlxTween.tween(songArt, {x: songArt.x + 510}, 0.4, {ease: FlxEase.quartOut});
 			FlxTween.tween(songArtOutline, {x: songArtOutline.x + 510}, 0.4, {ease: FlxEase.quartOut});
 			FlxTween.tween(bg, {alpha: 0}, 0.4, {ease: FlxEase.quartOut});
-			FlxTween.tween(daSelector, {alpha: 0}, 0.4, {ease: FlxEase.quartOut});
 			FlxTween.tween(pauseNameTxt, {alpha: 0}, 0.04, {ease: FlxEase.quartOut});
 
 			new FlxTimer().start(0.5, function(tmr:FlxTimer)
@@ -462,19 +511,18 @@ class FAVIPauseSubState extends MusicBeatSubstate
 				PlayState.windowTimer.active = true;
 			});
 		}
-	}	
-
-	var updateBitch:Float = 0;
+	}
+	
 	function updateSelection()
 	{
 		if (hasFinishedAnim)
 		{
 			buttonGroup.forEach(function(spr:FlxSprite)
 			{
-				spr.alpha = hasResumed ? 0 : 1;
+				spr.alpha = hasResumed ? 0 : 0.45;
 			});
 		
-			if (buttonGroup.members[curSelected].alpha == 1)
+			if (buttonGroup.members[curSelected].alpha == 0.45)
 				buttonGroup.members[curSelected].alpha = hasResumed ? 0 : 1;
 		}
 	}

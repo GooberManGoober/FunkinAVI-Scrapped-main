@@ -2,18 +2,18 @@
 	"animations": [
 		{
 			"offsets": [
-				-60,
-				-550
+				0,
+				0
 			],
-			"loop": true,
+			"indices": [],
 			"fps": 12,
 			"anim": "idle",
-			"indices": [],
-			"name": "lilith"
+			"loop": true,
+			"name": "idle"
 		}
 	],
 	"no_antialiasing": false,
-	"image": "characters/Lil",
+	"image": "characters/lilith-birthday/lilith-birthday",
 	"position": [
 		0,
 		0
@@ -23,12 +23,12 @@
 	"healthbar_colors": [
 		161,
 		161,
-		-2147483648
+		161
 	],
 	"camera_position": [
 		0,
 		0
 	],
 	"sing_duration": 6.1,
-	"scale": 0.9
+	"scale": 0.6
 }

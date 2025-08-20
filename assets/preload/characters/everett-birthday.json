@@ -2,121 +2,121 @@
 	"animations": [
 		{
 			"offsets": [
-				-90,
-				-512
+				0,
+				-2
 			],
-			"loop": true,
+			"indices": [],
 			"fps": 12,
 			"anim": "idle",
-			"indices": [],
+			"loop": true,
 			"name": "idle"
 		},
 		{
 			"offsets": [
-				-60,
-				-510
+				0,
+				1
 			],
-			"loop": false,
-			"fps": 12,
-			"anim": "singUPmiss",
 			"indices": [],
-			"name": "miss-up"
-		},
-		{
-			"offsets": [
-				-60,
-				-505
-			],
-			"loop": false,
-			"fps": 12,
-			"anim": "singUP",
-			"indices": [],
-			"name": "up"
-		},
-		{
-			"offsets": [
-				-100,
-				-500
-			],
-			"loop": false,
-			"fps": 12,
-			"anim": "singDOWN",
-			"indices": [],
-			"name": "down"
-		},
-		{
-			"offsets": [
-				-110,
-				-510
-			],
-			"loop": false,
-			"fps": 12,
-			"anim": "singLEFTmiss",
-			"indices": [],
-			"name": "miss-down"
-		},
-		{
-			"offsets": [
-				-110,
-				-509
-			],
-			"loop": false,
-			"fps": 12,
-			"anim": "singLEFT",
-			"indices": [],
-			"name": "left"
-		},
-		{
-			"offsets": [
-				-86,
-				-515
-			],
-			"loop": false,
 			"fps": 12,
 			"anim": "singRIGHT",
-			"indices": [],
+			"loop": false,
 			"name": "right"
 		},
 		{
 			"offsets": [
-				-90,
-				-510
+				0,
+				4
 			],
-			"loop": false,
-			"fps": 12,
-			"anim": "singRIGHTmiss",
 			"indices": [],
+			"fps": 12,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "left"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"indices": [],
+			"fps": 12,
+			"anim": "singLEFTmiss",
+			"loop": false,
+			"name": "miss-left"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"indices": [],
+			"fps": 12,
+			"anim": "singUPmiss",
+			"loop": false,
+			"name": "miss-up"
+		},
+		{
+			"offsets": [
+				0,
+				-5
+			],
+			"indices": [],
+			"fps": 12,
+			"anim": "singUP",
+			"loop": false,
+			"name": "up"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"indices": [],
+			"fps": 12,
+			"anim": "singDOWNmiss",
+			"loop": false,
 			"name": "miss-down"
 		},
 		{
 			"offsets": [
-				-90,
-				-510
+				0,
+				0
 			],
-			"loop": false,
-			"fps": 12,
-			"anim": "singDOWNmiss",
 			"indices": [],
-			"name": "miss-right"
+			"fps": 12,
+			"anim": "singDOWN",
+			"loop": false,
+			"name": "down"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"indices": [],
+			"fps": 12,
+			"anim": "singLEFTmiss",
+			"loop": false,
+			"name": "miss-left"
 		}
 	],
-	"no_antialiasing": true,
-	"image": "characters/Birthevere",
+	"no_antialiasing": false,
+	"image": "characters/everett-birthday/everett-birthday",
 	"position": [
 		0,
 		0
 	],
 	"healthicon": "everettb",
-	"flip_x": true,
+	"flip_x": false,
 	"healthbar_colors": [
-		212,
-		212,
-		212
+		221,
+		221,
+		221
 	],
 	"camera_position": [
-		-10,
-		520
+		60,
+		350
 	],
 	"sing_duration": 6.1,
-	"scale": 0.9
+	"scale": 0.6
 }

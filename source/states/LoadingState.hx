@@ -22,32 +22,6 @@ class LoadingState extends MusicBeatState
 	
 	// TO DO: Make this easier
 
-	var funi:Array<String> = [
-		"Loading...",
-		"Getting the stuff...",
-		"Please wait...",
-		"Wait please...",
-		"Please hold...",
-		"Loading content...",
-		"Load...",
-		"Please load...",
-		"Can you wait...?",
-		"Getting the shits...",
-		"Grabbing da shits...",
-		"Generating world...",
-		"Hold your horses...",
-		"For fuck sakes, wait damnit...",
-		"Hold on, the game ain't going anywhere...",
-		"Bitch, please wait...",
-		"Just wait, please...",
-		"Please wait on the line...",
-		"Preparing some cool stuff...",
-		"So cool...",
-		"Loading some cool shit...",
-		"Human, i remeber your loading...",
-		"I am loading..."
-	];
-	
 	var target:FlxState;
 	var stopMusic = false;
 	var directory:String;
@@ -65,31 +39,8 @@ class LoadingState extends MusicBeatState
 	var funkay:FlxSprite;
 	var loadBar:FlxSprite;
 
-	var loadingImage:FlxSprite;
-	var iconAnimated:FlxSprite;
-
 	override function create()
 	{
-
-		lime.app.Application.current.window.title = 'Funkin.avi - ${funi[FlxG.random.int(0, funi.length-1)]}';
-		
-		loadingImage = new FlxSprite(0,0);
-		loadingImage.loadGraphic(Paths.image("Funkin_avi/loadingScreen/loadingScreen"));
-		loadingImage.screenCenter();
-		loadingImage.antialiasing = ClientPrefs.globalAntialiasing;
-		add(loadingImage);
-
-		iconAnimated = new FlxSprite(0,0);
-		iconAnimated.antialiasing = ClientPrefs.globalAntialiasing;
-		iconAnimated.scrollFactor.set(0, 0);
-		iconAnimated.scale.set(0.2, 0.2);
-		iconAnimated.x += 880;
-		iconAnimated.y += 330;
-		iconAnimated.frames = Paths.getSparrowAtlas('Funkin_avi/loadingScreen/loadingicon');
-		iconAnimated.animation.addByPrefix('loadBitch', "loadingicon", 16, true);
-		iconAnimated.animation.play('loadBitch');
-		add(iconAnimated);
-		
 		initSongsManifest().onComplete
 		(
 			function (lib)

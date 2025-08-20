@@ -25,6 +25,8 @@ import openfl.display.BitmapData;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 
+import states.warnings.AutoSaveWarningState;
+
 import sys.FileSystem;
 import sys.io.File;
 //import flixel.graphics.FlxGraphic as FlixelGraphic;

@@ -3,7 +3,7 @@ package backend.menu;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
 
-class MusicBeatState extends FlxUIState
+class MusicBeatState extends modcharting.ModchartMusicBeatState
 {
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;

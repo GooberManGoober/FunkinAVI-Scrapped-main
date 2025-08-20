@@ -7,7 +7,7 @@ import flixel.FlxSprite;
 
 class AutoSaveLogo extends FlxSprite 
 {
-    @:noCompletion private var __path:String = "autoSave";
+    @:noCompletion private var __path:String = "Funkin_avi/autoSave";
 
     public function new(path:String, xPos:Float = 0, yPos:Float = 0)
     {

@@ -22,6 +22,10 @@ import lime.app.Application;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.math.FlxMatrix;
 
+import modcharting.ModchartFuncs;
+import modcharting.NoteMovement;
+import modcharting.PlayfieldRenderer;
+
 #if !flash 
 import openfl.filters.ShaderFilter;
 #end
@@ -471,11 +475,6 @@ class PlayState extends MusicBeatState
 	public var dodged:Bool;
 	public var shootin:Bool;
 
-	var staticSpr:FlxSprite;
-	var fuckedBG:FlxSprite;
-	var noSignalBG:FlxSprite;
-	var noSignalLogo:FlxSprite;
-
 	/**
 	 * FUNKIN.AVI STAGE ASSETS
 	 */
@@ -589,6 +588,10 @@ class PlayState extends MusicBeatState
 
 	//DELUTRANCE SHADER LMFAO
 	var totallyAwsomeShader:FlxRuntimeShader;
+
+	//BIRTHDAY
+	var delusionalStreet:FlxSprite;
+	var clubhouse:FlxSprite;
 
 	//OLD CYCLED SINS
 	var bg1:FlxSprite;
@@ -1238,75 +1241,36 @@ class PlayState extends MusicBeatState
 				case 'war':
 					defaultCamZoom = .6;
 					cameraSpeed = .67;
-				
+
 					var sky = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'sky'));
 					sky.scrollFactor.set(.07, .05);
 					add(sky);
 				
-					if (!lowQuality)
-					{
-						var sun = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'sun'));
-						sun.scrollFactor.set(.22, .12);
-						sun.y += 200;
-						add(sun);
-					
-						var bg = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'bg'));
-						bg.scrollFactor.set(.32, .27);
-						bg.x += 150;
-						bg.y += 250;
-						add(bg);
-					
-						var semibg = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'semibackground'));
-						semibg.scrollFactor.set(.52, .48);
-						semibg.scale.set(1.23, 1.23);
-						semibg.updateHitbox();
-						add(semibg);
-					}
+					var sun = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'sun'));
+					sun.scrollFactor.set(.13, .09);
+					add(sun);
 				
-					var things = new FlxSprite(-1280 * defaultCamZoom, (-720 * defaultCamZoom) + 150, Paths.image(defaultPath + 'things'));
+					var bg = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'bg'));
+					bg.scrollFactor.set(.32, .27);
+					add(bg);
+				
+					var semibg = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'semibackground'));
+					semibg.scrollFactor.set(.52, .48);
+					semibg.scale.set(1.23, 1.23);
+					semibg.updateHitbox();
+					add(semibg);
+				
+					var things = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'things'));
 					things.scrollFactor.set(.73, .64);
 					things.scale.set(1.25, 1.25);
 					things.updateHitbox();
 					add(things);
-
-					if (!lowQuality)
-					{
-						var grassBack = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + "groundBack"));
-						grassBack.scrollFactor.set(.86, .76);
-						grassBack.scale.set(1.3, 1.3);
-						grassBack.y += 70;
-						grassBack.updateHitbox();
-						add(grassBack);
-					}
 				
 					var ground = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + 'ground'));
 					ground.scrollFactor.set(1, 1);
 					ground.scale.set(1.35, 1.35);
 					ground.updateHitbox();
 					add(ground);
-
-					if (!lowQuality)
-					{
-						var goofy = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + "goofySpot"));
-						goofy.scrollFactor.set(1, 1);
-						goofy.scale.set(1.35, 1.35);
-						goofy.updateHitbox();
-						add(goofy);
-
-						var mickey = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + "mickeySpot"));
-						mickey.scrollFactor.set(1, 1);
-						mickey.scale.set(1.35, 1.35);
-						mickey.updateHitbox();
-						add(mickey);
-						
-						var fore = new FlxSprite(-1280 * defaultCamZoom, -720 * defaultCamZoom, Paths.image(defaultPath + "grassFore"));
-						fore.scale.set(1.4, 1.4);
-						fore.scrollFactor.set(1.15, 1.15);
-						fore.y -= 180;
-						fore.x -= 80;
-						fore.updateHitbox();
-						foreground.add(fore);
-					}
 
 				case 'circus' | 'my name is caine and welcome to the amazing digital circus':
 					defaultCamZoom = 2.1;
@@ -1341,40 +1305,23 @@ class PlayState extends MusicBeatState
 					add(mascotRoomPOV);
 				case 'clubhouse':
 					defaultCamZoom = 0.85;
-					cameraSpeed = 1;
-	
-					var clubhouse:FlxSprite = new FlxSprite(-470, -150).loadGraphic(Paths.image(pathway + 'clubhouse'));
+					cameraSpeed = 1.35;
+
+					delusionalStreet = new FlxSprite(-500, -700);
+					delusionalStreet.loadGraphic(Paths.image('favi/stages/theLoop/images/Mickeybg'));
+					delusionalStreet.alpha = 0.0001;
+					add(delusionalStreet);
+
+					clubhouse = new FlxSprite(-410, -100);
+					clubhouse.frames = Paths.getSparrowAtlas(pathway + 'daHouse');
+					clubhouse.animation.addByPrefix('balloons bounce', 'daHouse idle', 12, true);
+					clubhouse.animation.play('balloons bounce');
+					clubhouse.scale.set(1.15, 1.15);
+					clubhouse.updateHitbox();
+					clubhouse.antialiasing = true;
+					clubhouse.scrollFactor.set(1, 1);
 					add(clubhouse);
 
-					if (!ClientPrefs.lowQuality)
-					{
-						var ballon1 = new FlxSprite(-250, -310);
-						ballon1.frames = Paths.getSparrowAtlas(pathway + "Balloon_assets");
-						ballon1.animation.addByPrefix("bop", "idle", 24, true);
-						ballon1.animation.play("bop");
-						add(ballon1);
-
-						var ballon2 = new FlxSprite(350, -310);
-						ballon2.frames = Paths.getSparrowAtlas(pathway + "Balloon_assets");
-						ballon2.animation.addByPrefix("bop", "idle", 24, true);
-						ballon2.animation.play("bop");
-						add(ballon2);
-
-						for (i in [ballon1, ballon2])
-						{
-							i.scale.set(0.45, 0.45);
-							i.y -= 280; // i got lazy
-						}
-
-						var banners = new FlxSprite(-480, -110).loadGraphic(Paths.image(pathway + "birthdayBanners"));
-						banners.scrollFactor.set(1.2, 1.2);
-						foreground.add(banners);
-
-						var foreObj = new FlxSprite(-470, -400).loadGraphic(Paths.image(pathway + 'foreBG'));
-						foreObj.scrollFactor.set(1.4, 1.4);
-						foreground.add(foreObj);
-					}
-	
 					var vignette:FlxSprite = new FlxSprite(-250, -140).loadGraphic(Paths.image(pathway + 'vignetteOverlay'));
 					vignette.cameras = [camOther];
 					vignette.scale.set(0.75, 0.75);
@@ -1382,177 +1329,13 @@ class PlayState extends MusicBeatState
 					vignette.scrollFactor.set();
 					vignette.active = false;
 					add(vignette);
+
 				case 'desktop':
 					defaultCamZoom = 0.9;
 	
 					var desktopThing:FlxSprite = new FlxSprite(-500, -100).loadGraphic(Paths.image(pathway + 'desktop'));
 					desktopThing.scale.set(1.3, 1);
 					add(desktopThing);
-				case 'grassNation':
-					isPixelStage = true;
-					defaultCamZoom = 0.8;
-					
-					if (!lowQuality)
-					{
-						var white:FlxSprite = new FlxSprite().makeGraphic(FlxG.width*5, FlxG.height*5, FlxColor.WHITE);
-						white.scrollFactor.set(0, 0);
-						white.antialiasing = ClientPrefs.globalAntialiasing;
-						white.screenCenter();
-						add(white);
-
-						var grass1:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image(pathway + 'grass4'));
-						grass1.scrollFactor.set(0.45, 0.45);
-						grass1.antialiasing = false;
-						if (ClientPrefs.shaders && !lowQuality)
-							grass1.shader = malBG;
-						add(grass1);
-
-						var grass2:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image(pathway + 'grass3'));
-						grass2.scrollFactor.set(0.57, 0.57);
-						grass2.antialiasing = false;
-						if (ClientPrefs.shaders && !lowQuality)
-							grass2.shader = malBG;
-						add(grass2);
-
-						var grass3:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image(pathway + 'grass2'));
-						grass3.scrollFactor.set(0.65, 0.65);
-						grass3.antialiasing = false;
-						if (ClientPrefs.shaders && !lowQuality)
-							grass3.shader = malBG;
-						add(grass3);
-
-						var grass4:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image(pathway + 'grass1'));
-						grass4.scrollFactor.set(0.75, 0.75);
-						grass4.antialiasing = false;
-						if (ClientPrefs.shaders && !lowQuality)
-							grass4.shader = malBG;
-						add(grass4);
-
-						var ground:FlxBackdrop = new FlxBackdrop(Paths.image(pathway + 'ground'), X, 0, 0);
-						ground.antialiasing = false;
-						add(ground);
-
-						var cloudClutters:FlxBackdrop = new FlxBackdrop(Paths.image(pathway + 'cloudClutters'), X, 0, 0);
-						cloudClutters.antialiasing = false;
-						cloudClutters.scrollFactor.set(0.92, 0.92);
-						cloudClutters.velocity.set(100, 0);
-						add(cloudClutters);
-
-						whiteBG = new FlxSprite().makeGraphic(1, 1, 0xFFFFFFFF);
-						whiteBG.scale.set(FlxG.width*5, FlxG.height*5);
-						whiteBG.scrollFactor.set(0, 0);
-						whiteBG.screenCenter();
-						whiteBG.alpha = 0.001;
-						whiteBG.active = false;
-						add(whiteBG);
-
-						if (ClientPrefs.epilepsy)
-						{
-							fuckedBG = new FlxSprite();
-							fuckedBG.frames = Paths.getSparrowAtlas(pathway + 'screenFucker/fuckedUpBG');
-							fuckedBG.animation.addByPrefix('bg1', 'bg1', 24, true);
-							fuckedBG.animation.addByPrefix('bg2', 'bg2', 24, true);
-							fuckedBG.animation.addByPrefix('bg3', 'bg3', 24, true);
-							fuckedBG.animation.addByPrefix('bg4', 'bg4', 24, true);
-							fuckedBG.animation.play('bg1');
-							fuckedBG.antialiasing = false;
-							fuckedBG.alpha = 0.0001;
-							fuckedBG.scale.set(1.75, 1.75);
-							fuckedBG.x -= 250;
-							fuckedBG.y += 50;
-							add(fuckedBG);
-						}
-
-						var fog1:FlxBackdrop = new FlxBackdrop(Paths.image(pathway + 'fogBack'), X, 0, 0);
-						fog1.antialiasing = false;
-						fog1.scrollFactor.set(1.1, 1.1);
-						fog1.velocity.set(87, 0);
-						add(fog1);
-
-						var fog2:FlxBackdrop = new FlxBackdrop(Paths.image(pathway + 'fogFore'), X, 0, 0);
-						fog2.antialiasing = false;
-						fog2.scrollFactor.set(1.32, 1.32);
-						fog2.velocity.set(-173, 0);
-						foreground.add(fog2);
-
-						for (shit in [grass1, grass2, grass3, grass4, ground, cloudClutters, fog1, fog2])
-						{
-							shit.scale.set(1.75, 1.75);
-							shit.x -= 250;
-							shit.y += 50;
-						}
-
-						if (ClientPrefs.epilepsy)
-						{
-							noSignalBG = new FlxSprite();
-							noSignalBG.frames = Paths.getSparrowAtlas(pathway + 'screenFucker/noSignalBG');
-							noSignalBG.animation.addByPrefix('signal1', 'signal1', 24, true);
-							noSignalBG.animation.addByPrefix('signal2', 'signal2', 24, true);
-							noSignalBG.animation.addByPrefix('signal3', 'signal3', 24, true);
-							noSignalBG.animation.addByPrefix('signal4', 'signal4', 24, true);
-							noSignalBG.animation.play('signal1');
-
-							staticSpr = new FlxSprite();
-							staticSpr.frames = Paths.getSparrowAtlas(pathway + 'screenFucker/TVstatic');
-							staticSpr.animation.addByPrefix('TVstatic idle', 'TVstatic idle', 20, true);
-							staticSpr.animation.play('TVstatic idle');
-
-							noSignalLogo = new FlxSprite().loadGraphic(Paths.image(pathway + 'screenFucker/noSignalLogo'));
-
-							for (screenShit in [noSignalBG, staticSpr, noSignalLogo])
-							{
-								screenShit.cameras = [camHUD];
-								screenShit.screenCenter();
-								screenShit.alpha = 0.001;
-								screenShit.antialiasing = false;
-							}
-						}
-					}
-					else
-					{
-						var white:FlxSprite = new FlxSprite().makeGraphic(FlxG.width*5, FlxG.height*5, FlxColor.WHITE);
-						white.scrollFactor.set(0, 0);
-						white.antialiasing = ClientPrefs.globalAntialiasing;
-						white.screenCenter();
-						add(white);
-						
-						var lowQualityBG:FlxSprite = new FlxSprite(-250, 50).loadGraphic(Paths.image('favi/stages/grassNation/bgLowQuality'));
-						lowQualityBG.antialiasing = false;
-						lowQualityBG.scale.set(1.75, 1.75);
-						add(lowQualityBG);
-
-						if (ClientPrefs.epilepsy)
-						{
-							fuckedBG = new FlxSprite(-250, 50).loadGraphic(Paths.image(pathway + 'fuckedBGLow'));
-							fuckedBG.antialiasing = false;
-							fuckedBG.scale.set(1.75, 1.75);
-							fuckedBG.alpha = 0.001;
-							add(fuckedBG);
-						}
-
-						whiteBG = new FlxSprite(-800, -200).makeGraphic(1, 1, 0xFFFFFFFF);
-						whiteBG.scale.set(FlxG.width*5, FlxG.height*5);
-						whiteBG.scrollFactor.set(0, 0);
-						whiteBG.screenCenter();
-						whiteBG.alpha = 0.001;
-						whiteBG.active = false;
-						add(whiteBG);
-
-						if (ClientPrefs.epilepsy)
-						{
-							noSignalBG = new FlxSprite().loadGraphic(Paths.image(pathway + 'screenFucker/noSignalLow'));
-							staticSpr = new FlxSprite().loadGraphic(Paths.image(pathway + 'screenFucker/staticLow'));
-							noSignalLogo = new FlxSprite().loadGraphic(Paths.image(pathway + 'screenFucker/noSignalLogo'));
-
-							for (screenShit in [noSignalBG, staticSpr, noSignalLogo])
-							{
-								screenShit.cameras = [camHUD];
-								screenShit.screenCenter();
-								screenShit.alpha = 0.001;
-								screenShit.antialiasing = false;
-							}
-						}
-					}
 				case 'forbiddenRealm':
 					isPixelStage = true;
 					defaultCamZoom = 0.8;
@@ -2321,8 +2104,10 @@ class PlayState extends MusicBeatState
 		// After all characters being loaded, it makes then invisible 0.01s later so that the player won't freeze when you change characters
 		// add(strumLine);
 
+		playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
+		playfieldRenderer.cameras = [camHUD];
+		add(playfieldRenderer);
 		add(grpNoteSplashes);
-
 
 		camFollow = new FlxPoint();
 		camFollowPos = new FlxObject(0, 0, 1, 1);
@@ -3450,11 +3235,6 @@ class PlayState extends MusicBeatState
 					minnieJumpscare.pause();
 				});
 
-			case "Twisted Grins":
-				for (hud in [camHUD])
-					hud.visible = false;
-				camBars.fade(FlxColor.BLACK, 0.0001);
-
 			case 'Isolated' | 'Lunacy' | 'Cycled Sins' | 'Delusion' | 'Laugh Track':
 				camBars.fade(FlxColor.BLACK, 0.0001);
 				camHUD.alpha = 0.001;
@@ -3486,13 +3266,7 @@ class PlayState extends MusicBeatState
 			case 'Malfunction':
 				add(crashLives);
 				add(crashLivesIcon);
-				if (ClientPrefs.epilepsy)
-				{
-					for (stuf in [noSignalBG, staticSpr, noSignalLogo])
-						add(stuf);
-				}
-				camBars.fade(FlxColor.BLACK, 0.0001);
-				camHUD.alpha = 0.001;
+				
 				crashLivesCounter += 45;
 				crashLives.text = 'Lives: ${crashLivesCounter}';
 			case "Bless":
@@ -3526,6 +3300,8 @@ class PlayState extends MusicBeatState
 		lyricsIcon.visible = false;
 		lyricsIcon.cameras = [camOther];
 		add(lyricsIcon);
+
+		ModchartFuncs.loadLuaFunctions();
 
 		callOnLuas('onCreatePost', []);
 
@@ -3676,8 +3452,8 @@ class PlayState extends MusicBeatState
 					boyfriend.setPosition(500, -320);
 				}
 			case 'war':
-				dad.setPosition(-140, 80);
-   	 			boyfriend.setPosition(1500, 650);
+				dad.setPosition(-140, 30);
+   	 			boyfriend.setPosition(1450, 650);
 			case 'circus' | 'my name is caine and welcome to the amazing digital circus':
 				dad.setPosition(-990, -100);
 				boyfriend.setPosition(0,-360);
@@ -3688,19 +3464,20 @@ class PlayState extends MusicBeatState
 			case 'clubhouse':
 				switch (dad.curCharacter)
 				{
-					case 'munpet':
-						dad.setPosition(-240, 0);
+					case 'mickey-lunacy-legacy':
+						dad.setPosition(0, 0);
 					default:
 						dad.setPosition(-240, -260);
 				}
 				switch (boyfriend.curCharacter)
 				{
-					case 'xyloboy':
-						boyfriend.setPosition(650, -100);
+					case 'bf-demon-old':
+						boyfriend.setPosition(500, -320);
 					default:
 						boyfriend.setPosition(650, -360);
 				}
 				gf.setPosition(280, -410);
+
 			case 'desktop':
 				boyfriend.setPosition(300, 400);
 				gf.setPosition(250, 600);
@@ -4414,6 +4191,8 @@ class PlayState extends MusicBeatState
 			generateStaticArrows(0);
 			generateStaticArrows(1);
 
+			NoteMovement.getDefaultStrumPos(this);
+
 			count3 = new FlxSound().loadEmbedded(Paths.sound('intro3' + introSoundsSuffix));
 			count2 = new FlxSound().loadEmbedded(Paths.sound('intro2' + introSoundsSuffix));
 			count1 = new FlxSound().loadEmbedded(Paths.sound('intro1' + introSoundsSuffix));
@@ -4463,7 +4242,7 @@ class PlayState extends MusicBeatState
 			}
 
 			startedCountdown = true;
-			Conductor.songPosition = SONG.song == "Cycled Sins" ? ((-.8 * 5) * 1000) : -Conductor.crochet * 5;
+			Conductor.songPosition = (SONG.song == "Cycled Sins" || SONG.song == "Twisted Grins") ? ((-.8 * 5) * 1000) : -Conductor.crochet * 5;
 			setOnLuas('startedCountdown', true);
 			callOnLuas('onCountdownStarted', []);
 
@@ -4482,7 +4261,7 @@ class PlayState extends MusicBeatState
 				return;
 			}
 
-			startTimer = new FlxTimer().start(SONG.song == "Cycled Sins" ? .8 : Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
+			startTimer = new FlxTimer().start((SONG.song == "Cycled Sins" || SONG.song == "Twisted Grins") ? .8 : Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
 			{
 				if (gf != null && tmr.loopsLeft % Math.round(gfSpeed * gf.danceEveryNumBeats) == 0 && gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
 				{
@@ -7156,54 +6935,6 @@ class PlayState extends MusicBeatState
 					});
 				}
 
-			case 'Static Event':
-				if (ClientPrefs.epilepsy)
-				{
-					switch(value1.toLowerCase().trim())
-					{
-						case 'togglevis':
-							staticSpr.visible = !staticSpr.visible;
-						case 'setalpha':
-							staticSpr.alpha = Std.parseFloat(value2);
-						case 'twnalpha':
-							if (staticTwn != null)
-								staticTwn.cancel();
-							staticTwn = FlxTween.tween(staticSpr, {alpha: Std.parseFloat(value2)}, staticTmr, {ease: FlxEase.circIn});
-						case 'settime':
-							staticTmr = Std.parseFloat(value2);
-					}
-				}
-		
-			case 'Change Mal BG':
-				if (ClientPrefs.epilepsy)
-				{
-					switch(value1.toLowerCase().trim())
-					{
-						case 'togglevis':
-							fuckedBG.visible = !fuckedBG.visible;
-						case 'setalpha':
-							fuckedBG.alpha = Std.parseFloat(value2);
-						case 'changebg':
-							if (!ClientPrefs.lowQuality) fuckedBG.animation.play('bg${Std.parseFloat(value2)}');
-					}
-				}
-
-			case 'No Signal Event':
-				if (ClientPrefs.epilepsy)
-				{
-					switch(value1.toLowerCase().trim())
-					{
-						case 'togglevis':
-							noSignalBG.visible = !noSignalBG.visible;
-							noSignalLogo.visible = !noSignalLogo.visible;
-						case 'setalpha':
-							noSignalLogo.alpha = Std.parseFloat(value2);
-							noSignalBG.alpha = Std.parseFloat(value2);
-						case 'changebg':
-							if (!ClientPrefs.lowQuality) noSignalBG.animation.play('signal${Std.parseFloat(value2)}');
-					}
-				}	
-
 			case "Mania BG Flash":
 				var triggerVars:Array<String> = value1.split(',');
 				if (ClientPrefs.flashing)
@@ -8235,7 +7966,8 @@ class PlayState extends MusicBeatState
                 {
                     if (healthThing > 0.05)
                         healthThing -= 0.01;
-                    if (ClientPrefs.shaking)
+
+					if (ClientPrefs.shaking)
                     {
                         camGame.shake(0.008, 0.07);
                         for (i in [camHUD])
@@ -8872,6 +8604,14 @@ class PlayState extends MusicBeatState
 
 		switch (SONG.song)
 		{
+			case "Birthday":
+				switch (curStep)
+				{
+					case 2125: 
+						camGame.alpha = 1;
+					case 2144:
+						camGame.alpha = 0;
+				}
 			case 'Isolated Old':
 				switch (curStep)
 				{
@@ -9545,8 +9285,7 @@ class PlayState extends MusicBeatState
 					});
 				}
 			case 'Isolated':
-				
-			switch (curBeat)
+				switch (curBeat)
 				{
 					case 12: camBars.fade(FlxColor.BLACK, 3, true);
 
@@ -10578,6 +10317,47 @@ class PlayState extends MusicBeatState
 				for (mridk in [camHUD]) mridk.zoom += .03;
 			}
 
+			case "Birthday":
+				// they start going on an acid trip lmao
+				if (curBeat == 256)
+				{
+					camGame.shake(0.015, 1.3);
+					defaultCamZoom = 1.1;
+				}
+				if (curBeat == 260)
+				{
+					defaultCamZoom = 0.76;
+				}
+				if (curBeat == 320)
+				{
+					camGame.shake(0.025, 1.3);
+					defaultCamZoom = 1;
+				}
+				if (curBeat == 324)
+				{
+					if (ClientPrefs.flashing)
+						camGame.flash(FlxColor.WHITE, 0.5);
+					defaultCamZoom = 2.8;
+				}
+
+				if (curBeat == 388)
+				{
+					defaultCamZoom = 0.85;
+					if (ClientPrefs.flashing)
+						camGame.flash(FlxColor.WHITE, 0.5);
+				}
+
+				if (curBeat == 520)
+				{
+					camGame.alpha = 0.000001;
+					camHUD.alpha = 0;
+					camBars.flash(FlxColor.WHITE, 1);
+					gfGroup.alpha = 0.0001;
+
+					delusionalStreet.alpha = 1;
+					clubhouse.alpha = 0.0001;
+				}
+
 			case "War Dilemma":
 				switch (curBeat)
 				{
@@ -10621,89 +10401,6 @@ class PlayState extends MusicBeatState
 			case "Twisted Grins":
 				switch (curBeat)
 				{
-					case 1:
-						defaultCamZoom += 0.25;
-						opponentCameraOffset[0] -= 80;
-						manageLyrics("smile", "Give me your smile!", 'disneyFreeplayFont.ttf', 30, 3.5, 'sineInOut', 0.08);
-						camBars.fade(FlxColor.BLACK, 2, true);
-					case 8:
-						defaultCamZoom -= 0.25;
-						opponentCameraOffset[0] += 80;
-						for (hud in [camHUD])
-						{
-							hud.zoom += 5;
-							hud.visible = true;
-						}
-					case 20 | 32 | 36 | 52 | 64 | 68 | 102 | 120 | 128 | 132 | 252 | 304 | 308 | 336 | 340 | 360 | 364 | 368 | 372 | 404 | 414 | 508 | 528 | 544: 
-						defaultCamZoom += 0.1;
-					case 24 | 56 | 104 | 373 | 374 | 375 | 532:
-						defaultCamZoom -= 0.1;
-					case 40 | 72 | 312 | 328:
-						defaultCamZoom -= 0.2;
-					case 136:
-						defaultCamZoom -= 0.3;
-						FlxTween.tween(camHUD, {alpha: 0}, 1.5, {ease: FlxEase.sineInOut});
-					case 143:
-						FlxTween.tween(camHUD, {alpha: 1}, 0.8, {ease: FlxEase.sineOut});
-					case 144 | 152:
-						defaultCamZoom += 0.06;
-					case 160:
-						defaultCamZoom -= 0.12;
-					case 172 | 248 | 268 | 396 | 412 | 512 | 540:
-						defaultCamZoom += 0.2;
-					case 176 | 256 | 500 | 516:
-						defaultCamZoom -= 0.3;
-					case 184:
-						tweenCamera(1.35, 5, "sineInOut");
-					case 208:
-						defaultCamZoom = 0.75;
-						cameraSpeed = 0.5;
-					case 272:
-						defaultCamZoom -= 0.2;
-						cameraSpeed = 100; //lmao
-						for (cams in [camHUD, camGame])
-							cams.visible = false;
-					case 280:
-						for (cams in [camHUD, camGame])
-							cams.visible = true;
-						opponentCameraOffset[0] -= 100;
-					case 282:
-						cameraSpeed = 2.5;
-					case 324:
-						opponentCameraOffset[0] += 100;
-						boyfriendCameraOffset[0] += 100;
-						defaultCamZoom += 0.3;
-					case 344:
-						boyfriendCameraOffset[0] -= 100;
-						defaultCamZoom -= 0.1;
-					case 408:
-						defaultCamZoom = 0.75;
-						cameraSpeed = 4;
-					case 411:
-						manageLyrics("smile", "Keep it DOWN you runt!", 'disneyFreeplayFont.ttf', 30, 2.5, 'sineInOut', 0.08);
-					case 416:
-						defaultCamZoom -= 0.3;
-						cameraSpeed = 1.65;
-					case 448:
-						tweenCamera(1.3, 10, "expoInOut");
-						camFlashSystem(BG_DARK, {alpha: 0.9, timer: 12.5, ease: FlxEase.expoInOut});
-					case 480:
-						defaultCamZoom = 0.75;
-						camFlashSystem(BG_DARK, {alpha: 0, timer: 1, ease: FlxEase.expoOut});
-					case 496:
-						defaultCamZoom += 0.3;
-					case 548:
-						defaultCamZoom -= 0.3;
-						for (hud in [camHUD])
-							FlxTween.tween(hud, {alpha: 0}, 3, {ease: FlxEase.expoInOut});
-					case 551:
-						manageLyrics("smile", "You might've think you've won...", 'disneyFreeplayFont.ttf', 30, 4, 'sineInOut', 0.1);
-					case 559:
-						manageLyrics("smile", "...But in reality...", 'disneyFreeplayFont.ttf', 30, 4, 'sineInOut', 0.07);
-					case 563:
-						manageLyrics("smile", "..YOU LOST.", 'disneyFreeplayFont.ttf', 30, 3, 'sineInOut', 0.12);
-					case 588:
-						camBars.fade(FlxColor.BLACK, 5);
 					
 				}
 
@@ -11290,115 +10987,6 @@ class PlayState extends MusicBeatState
 						FlxG.camera.zoom += 0.1;
 				}
 				
-			case 'Malfunction':
-				switch (curBeat)
-				{
-					// Intro Cam Stuff
-					case 1:
-						camBars.fade(FlxColor.BLACK, 5, true);
-					case 16: tweenCamera(1.2, 5, 'quartInOut');
-					case 32:
-						defaultCamZoom = 0.8;
-						FlxTween.tween(camHUD, {alpha: 1}, 0.5, {ease: FlxEase.sineOut});
-					case 39 | 48 | 64 | 72 | 88 | 96 | 103 | 113 | 128 | 192: defaultCamZoom = 0.8;
-					case 38 | 102: tweenCamera(1.5, 0.25, 'sineInOut');
-					case 45 | 61 | 110 | 126 | 187: defaultCamZoom = 0.9;
-					case 46 | 62 | 67 | 76 | 83 | 92 | 111 | 127 | 158 | 190: defaultCamZoom = 1;
-					case 47 | 63 | 68 | 84 | 112 | 159: defaultCamZoom = 1.3;
-					case 69 | 85: defaultCamZoom = 1.1;
-					case 160: 
-						defaultCamZoom = 0.75;
-						whiteBG.alpha = 1;
-						FlxTween.tween(whiteBG, {alpha: 0}, 2);
-						camFlashSystem(BG_DARK, {alpha: 1, timer: 5, ease: FlxEase.expoInOut});
-					case 164: tweenCamera(1.5, 6, 'sineInOut');
-					case 184:
-						defaultCamZoom = 0.8;
-						camFlashSystem(BG_DARK, {alpha: 0, timer: 1, ease: FlxEase.sineOut});
-					case 191:
-						if (canaddshaders)
-						{
-							if (!ClientPrefs.lowQuality && ClientPrefs.epilepsy)
-							{
-								camGame.setFilters(
-									[
-										new ShaderFilter(chromZoomShader), 
-										new ShaderFilter(blurShader)
-									]);
-								camHUD.setFilters([new ShaderFilter(chromNormalShader), new ShaderFilter(blurShader)]);
-							}
-						}
-						mickeyEmitter.emitting = true;
-					case 324:
-						var count:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/funkinAVI/intro/mal-prepare'));
-						count.scrollFactor.set();
-						count.updateHitbox();
-						count.setGraphicSize(Std.int(count.width * daPixelZoom));
-						count.antialiasing = false;
-						count.screenCenter();
-						add(count);
-						FlxTween.tween(count, {y: count.y += 50, alpha: 0}, Conductor.crochet / 1000, {
-							ease: FlxEase.cubeInOut,
-							onComplete: function(twn:FlxTween)
-							{
-								count.destroy();
-							}
-						});
-						FlxG.sound.play(Paths.sound('intro3-glitch'), 2);
-					case 325:
-						var count:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/funkinAVI/intro/mal-ready'));
-						count.scrollFactor.set();
-						count.updateHitbox();
-						count.setGraphicSize(Std.int(count.width * daPixelZoom));
-						count.screenCenter();
-						count.antialiasing = false;
-						add(count);
-						FlxTween.tween(count, {y: count.y += 50, alpha: 0}, Conductor.crochet / 1000, {
-							ease: FlxEase.cubeInOut,
-							onComplete: function(twn:FlxTween)
-							{
-								count.destroy();
-							}
-						});
-						FlxG.sound.play(Paths.sound('intro2-glitch'), 2);
-					case 326:
-						var count:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/funkinAVI/intro/mal-set'));
-						count.scrollFactor.set();
-						count.updateHitbox();
-						count.setGraphicSize(Std.int(count.width * daPixelZoom));
-						count.screenCenter();
-						count.antialiasing = false;
-						add(count);
-						FlxTween.tween(count, {y: count.y += 50, alpha: 0}, Conductor.crochet / 1000, {
-							ease: FlxEase.cubeInOut,
-							onComplete: function(twn:FlxTween)
-							{
-								count.destroy();
-							}
-						});
-						FlxG.sound.play(Paths.sound('intro1-glitch'), 2);
-					case 327:
-						var count:FlxSprite = new FlxSprite().loadGraphic(Paths.image('UI/funkinAVI/intro/mal-go'));
-						count.scrollFactor.set();
-						count.updateHitbox();
-						count.setGraphicSize(Std.int(count.width * daPixelZoom));
-						count.screenCenter();
-						count.antialiasing = false;
-						add(count);
-						FlxTween.tween(count, {y: count.y += 50, alpha: 0}, Conductor.crochet / 1000, {
-							ease: FlxEase.cubeInOut,
-							onComplete: function(twn:FlxTween)
-							{
-								count.destroy();
-							}
-						});
-						FlxG.sound.play(Paths.sound('introGo-glitch'), 2);
-                    case 584:
-						FlxTween.tween(camHUD, {alpha: 0}, 4.45, {ease: FlxEase.quartInOut});
-					case 616:
-						camGame.visible = false;
-				}
-
 			/*case 'Neglection':
 				switch (curBeat)
 				{
@@ -11907,19 +11495,6 @@ class PlayState extends MusicBeatState
 					mascotRoom.alpha = 1;
 					mascotRoomPOV.visible = false;
 				}
-			case 'forbiddenRealm':
-				if (SONG.song == 'Malfunction')
-					{
-						if (curBeat == 160)
-						{
-							FlxTween.tween(fuckingsquares, {alpha: 0}, 5, {ease: FlxEase.sineOut});
-						}
-				
-						if (curBeat == 184)
-						{
-							FlxTween.tween(fuckingsquares, {alpha: 1}, 1.5, {ease: FlxEase.sineOut});
-						}
-					}
 			case 'apartment':
 				if (SONG.song == "Cycled Sins Legacy")
 					{

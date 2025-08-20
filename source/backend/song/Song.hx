@@ -105,11 +105,7 @@ class Song
 			case "lunacy-legacy": chartFile = Chart.lunacyLegacy;
 			case "delusional": chartFile = Chart.delusional;
 			case "delusional-legacy": chartFile = Chart.delusionalLegacy;
-			case "malfunction": 
-				if (ClientPrefs.mechanics)
-					chartFile = Chart.malfunction;
-				else
-					chartFile = Chart.malfunctionNoMechanics;
+			case "malfunction": chartFile = Chart.malfunction;
 				
 			case "malfunction-legacy": chartFile = Chart.malfunctionLegacy;
 			case "bless": chartFile = Chart.bless;
@@ -127,8 +123,6 @@ class Song
 			case "twisted-grins": 
 				chartFile = Chart.twistedGrins;
 
-				if (jsonInput == 'events')
-					chartFile = Event.twistedGrinsNoteSpeed;
 			case "dont-cross":
 				if (!ClientPrefs.mechanics)
 				{

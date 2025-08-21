@@ -19,6 +19,7 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.BitmapFilter;
 import openfl.utils.Assets as OpenFlAssets;
+import openfl.filters.ShaderFilter;
 
 using StringTools;
 
@@ -28,9 +29,10 @@ class EpicSelectorWOOO extends MusicBeatState {
 	var grpCats:FlxTypedGroup<Alphabet>;
 	var curSelected:Int = 0;
 	var BG:FlxSprite;
+	var defaultShader2:FlxRuntimeShader;
     override function create(){
 
-		freeplayCats = ['Episode 1', 'Extras', 'Legacy'];
+		freeplayCats = ['Story', 'Extras', 'Legacy'];
 
         BG = new FlxSprite().loadGraphic(Paths.image('Funkin_avi/freeplay/menuFreeplay'));
 		BG.updateHitbox();
@@ -42,13 +44,22 @@ class EpicSelectorWOOO extends MusicBeatState {
 		DiscordClient.changePresence("Freeplay Menu", "Choosing Category...", 'icon', 'disc-player');
 		#end
 
+		defaultShader2 = new FlxRuntimeShader(Shaders.monitorFilter, null, 140);
+
+		if(!ClientPrefs.lowQuality) {
+			FlxG.camera.setFilters(
+			[
+				new ShaderFilter(defaultShader2)
+			]);
+		}
+
 		Application.current.window.title = "Funkin.avi:Scrapped - Freeplay: Category Menu";
 
         grpCats = new FlxTypedGroup<Alphabet>();
 		add(grpCats);
         for (i in 0...freeplayCats.length)
         {
-			var catsText:Alphabet = new Alphabet(100, (70 * i) + 250, freeplayCats[i], true);
+			var catsText:Alphabet = new Alphabet(90, 320, freeplayCats[i], true);
             catsText.targetY = i;
 			catsText.isMenuItem = true;
 			grpCats.add(catsText);

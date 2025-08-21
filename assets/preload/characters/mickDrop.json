@@ -1,68 +1,68 @@
 {
 	"animations": [
 		{
-			"offsets": [
-				710,
-				320
-			],
 			"loop": false,
-			"fps": 9,
+			"offsets": [
+				94,
+				-2
+			],
 			"anim": "idle",
-			"indices": [],
-			"name": "mickeyIsolateDrop idle"
+			"fps": 9,
+			"name": "mickeyIsolateDrop idle",
+			"indices": []
 		},
 		{
-			"loop": false,
 			"offsets": [
-				698,
-				317
+				93,
+				0
 			],
+			"loop": false,
+			"fps": 12,
 			"anim": "singLEFT",
-			"fps": 12,
-			"name": "mickeyIsolateDrop left",
-			"indices": []
+			"indices": [],
+			"name": "mickeyIsolateDrop left"
 		},
 		{
-			"loop": false,
 			"offsets": [
-				710,
-				322
+				95,
+				0
 			],
+			"loop": false,
+			"fps": 12,
 			"anim": "singDOWN",
-			"fps": 12,
-			"name": "mickeyIsolateDrop down",
-			"indices": []
+			"indices": [],
+			"name": "mickeyIsolateDrop down"
 		},
 		{
-			"loop": false,
 			"offsets": [
-				714,
-				322
+				95,
+				1
 			],
+			"loop": false,
+			"fps": 12,
 			"anim": "singUP",
-			"fps": 12,
-			"name": "mickeyIsolateDrop up",
-			"indices": []
+			"indices": [],
+			"name": "mickeyIsolateDrop up"
 		},
 		{
-			"loop": false,
 			"offsets": [
-				722,
-				320
+				94,
+				-4
 			],
-			"anim": "singRIGHT",
+			"loop": false,
 			"fps": 12,
-			"name": "mickeyIsolateDrop right",
-			"indices": []
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "mickeyIsolateDrop right"
 		}
 	],
 	"no_antialiasing": false,
 	"image": "characters/mickDrop/mickeyIsolateDrop",
 	"position": [
-		0,
-		0
+		320,
+		520
 	],
-	"healthicon": "mickey",
+	"healthicon": "avier",
 	"flip_x": false,
 	"healthbar_colors": [
 		216,
@@ -70,8 +70,8 @@
 		216
 	],
 	"camera_position": [
-		-390,
-		0
+		315,
+		320
 	],
 	"sing_duration": 6.1,
 	"scale": 0.6

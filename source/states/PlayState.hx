@@ -1752,9 +1752,7 @@ class PlayState extends MusicBeatState
 				introSoundsSuffix = "-cartoon";
 			case "Cycled Sins Legacy" | "Cycled Sins":
 				introSoundsSuffix = "-sins";
-			case "Malfunction":
-				introSoundsSuffix = "-error";
-			case "Malfunction Legacy":
+			case "Malfunction Legacy" | "Malfunction":
 				introSoundsSuffix = "-glitch";
 			default:
 				if(isPixelStage) {
@@ -5707,6 +5705,14 @@ class PlayState extends MusicBeatState
 			MusicBeatState.switchState(new CharacterEditorState(dad.curCharacter));
 			FlxG.mouse.load(Paths.image('UI/funkinAVI/mouses/Hand').bitmap);
 		}
+
+		if (FlxG.keys.justPressed.NINE && !endingSong && !inCutscene) {
+			persistentUpdate = false;
+			paused = true;
+			cancelMusicFadeTween();
+			MusicBeatState.switchState(new modcharting.ModchartEditorState());
+			FlxG.mouse.load(Paths.image('UI/funkinAVI/mouses/Hand').bitmap);
+		}
 		
 		if (startedCountdown)
 		{
@@ -8663,13 +8669,6 @@ class PlayState extends MusicBeatState
 						for (cam in [camHUD])
 							FlxTween.tween(cam, {alpha: 1}, 1, {ease: FlxEase.sineOut});
 				}
-			case 'Isolated': 
-				switch (curStep)
-				{
-					case 1150: 
-						defaultCamZoom = camGame.zoom = 1.2;
-				}
-
 			case 'Laugh Track':
 				switch (curStep)
 				{
@@ -9296,15 +9295,7 @@ class PlayState extends MusicBeatState
 						tweenCamera(1.4, 3, 'sineInOut');
 						camFlashSystem(BG_FLASH, {alpha: 0.32, timer: 1.2, colors: [194, 194, 194]});
 
-					case 95: 
-						cameraSpeed += 3;
-						isCameraOnForcedPos = true;
-						camFollow.x -= 950;
-						//updateSectionCamera('dad', false);
-
 					case 96:
-						isCameraOnForcedPos = false;
-						cameraSpeed -= 3;
 						defaultCamZoom = 0.85;
 						tweenCamera(0.85, 0.4, 'expoOut');
 
@@ -10272,42 +10263,15 @@ class PlayState extends MusicBeatState
 						FlxTween.tween(mickeySpirit, {alpha: 0}, 4, {ease: FlxEase.quartOut});
 						isCameraOnForcedPos = false;
 						defaultCamZoom = 0.9;
-					case 1082:
-						FlxTween.tween(camGame, {zoom: 1.6}, 1, {ease: FlxEase.sineInOut});
-						camVideo.visible = true;
-						camVideo.fade(FlxColor.BLACK, 0.7);
 					case 1086:
-						camGame.visible = false;
 						FlxTween.tween(camHUD, {alpha: 0}, 2);
-						camVideo.zoom += 0.3;
-						camVideo.fade(FlxColor.BLACK, 0.2, true);
-						FlxTween.tween(camVideo, {zoom: 1}, 0.5, {ease: FlxEase.sineOut});
-						camFlashSystem(BG_DARK, {timer: 5});
 						death.setVideoTime(0);
 						death.resume();
-						death.visible = true;
-					case 1134:
-						camFlashSystem(BG_DARK, {alpha: 1, timer: 0.5, ease: FlxEase.sineOut});
+						death.visible = false;
 					case 1136:
 						camFlashSystem(BG_FLASH, {alpha: 1, timer: 0.3, ease: FlxEase.sineOut});
-						if (canaddshaders)
-						{
-							if (!ClientPrefs.lowQuality)
-							{
-								camGame.setFilters([
-									new ShaderFilter(dramaticCamMovement),
-									new ShaderFilter(monitorFilter)
-								]);
-							}
-							else
-							{
-								camGame.setFilters([
-									new ShaderFilter(monitorFilter)
-								]);
-							}
-						}
 					case 1144:
-						FlxTween.tween(camVideo, {alpha: 0}, 4);
+						FlxTween.tween(camGame, {alpha: 0}, 4);
 				}
 
 			if ((curBeat >= 216 && curBeat < 340) || (curBeat >= 344 && curBeat < 356) || (curBeat >= 360 && curBeat < 388) || 
@@ -10966,7 +10930,7 @@ class PlayState extends MusicBeatState
 					FlxG.camera.zoom += 0.1;
 				}
 
-			case 'Malfunction Legacy':
+			case 'Malfunction Legacy' | 'Malfunction':
 				switch (curBeat)
 				{
 					case 136 | 140:

@@ -503,8 +503,6 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.music.stop();
 				LoadingState.loadAndSwitchState(new PlayState());
 			});
-
-			FlxG.sound.music.volume = 0;
 		}
 
 		mutex.acquire();

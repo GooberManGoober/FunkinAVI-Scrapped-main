@@ -3959,7 +3959,6 @@ enum abstract Modchart(String) from String to String {
 			-1
 		]
 	],
-	"playfields": 3,
 	"events": [
 		[
 			"ease",
@@ -4454,20 +4453,6 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				95,
-				"1",
-				"expoOut",
-				"0,P1StrumZ,0,P1StrumX,0,P1StrumY,0,P2StrumZ,0,P1StrumAlpha,0,P2StrumAlpha"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				96,
 				"0",
 				"expoOut",
@@ -5367,21 +5352,7 @@ enum abstract Modchart(String) from String to String {
 				160,
 				"1",
 				"backInOut",
-				"-800,P1StrumZ,0.8,P1StrumAlpha,320,P2StrumX,-30,P2StrumY,0.1,TipX,0.2,TipY,0,TipZ,0.2,DrunkX,0.3,DrunkY,2,DrunkZ"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				174,
-				"2",
-				"backOut",
-				"0,P1StrumZ,0,P1StrumAlpha,0,P2StrumX,0.8,P2StrumAlpha,-800,P2StrumZ,-320,P1StrumX,-30,P1StrumY"
+				"-800,P2StrumZ,0.8,P2StrumAlpha,-320,P1StrumX,-30,P1StrumY,0.1,TipX,0.2,TipY,0,TipZ,0.2,DrunkX,0.3,DrunkY,2,DrunkZ"
 			],
 			[
 				false,
@@ -5395,7 +5366,7 @@ enum abstract Modchart(String) from String to String {
 				184,
 				"8",
 				"quartInOut",
-				"0,P1StrumZ,0,P2StrumAlpha,0,TipX,0,P2StrumAlpha,0,P2StrumZ,0,P1StrumX,0,P1StrumY,0,P2StrumY,0,TipY,0,DrunkX,0,DrunkY,0,DrunkZ,0,Bump"
+				"0,P1StrumZ,0,P2StrumAlpha,0,TipX,0,P1StrumAlpha,0,P2StrumZ,0,P2StrumX,0,P1StrumY,0,P2StrumY,0,TipY,0,DrunkX,0,DrunkY,0,DrunkZ,0,Bump"
 			],
 			[
 				false,
@@ -5549,91 +5520,7 @@ enum abstract Modchart(String) from String to String {
 				192,
 				1,
 				"circInOut",
-				"0.5,P1StrumAlpha,-350,P1StrumZ,120,P2StrumX,1,BeatXP2,1,BeatYP1"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				199,
-				1,
-				"circInOut",
-				"20,P1Lane4Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				200,
-				1,
-				"backOut",
-				"0,P1Lane4Y,20,P1Lane2Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				202,
-				1,
-				"backOut",
-				"0,P1Lane2Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				203,
-				1,
-				"backOut",
-				"20,P1Lane1Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				204,
-				1,
-				"backOut",
-				"20,P1Lane4Y,0,P1Lane1Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				206,
-				1,
-				"backOut",
-				"0,P1Lane4Y"
+				"0.5,P2StrumAlpha,-350,P2StrumZ,-120,P1StrumX,1,BeatXP1,1,BeatYP2"
 			],
 			[
 				false,
@@ -5784,80 +5671,10 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				199.94896875,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				201.959625,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				203.96484375,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				205.95725,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				207,
 				"1",
 				"circInOut",
-				"0,P1StrumAlpha,0.5,P2StrumAlpha,-350,P2StrumZ,0,P2StrumX,-120,P1StrumX,0,P1StrumZ,0,BeatXP2,1,BeatXP1,1,BeatYP2,0,BeatYP1"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				212,
-				"5",
-				"circInOut",
-				"1,P2StrumAlpha,-150,P2StrumX,-320,P1StrumX,-40,P1StrumY,-120,P1StrumZ"
+				"0,P2StrumAlpha,0.5,P1StrumAlpha,-350,P1StrumZ,0,P1StrumX,120,P2StrumX,0,P2StrumZ,0,BeatXP1,1,BeatXP2,1,BeatYP1,0,BeatYP2"
 			],
 			[
 				false,
@@ -5871,21 +5688,7 @@ enum abstract Modchart(String) from String to String {
 				224,
 				"1",
 				"circInOut",
-				"1,P2StrumAlpha,0,P2StrumAlpha,0,P1StrumX,0,P1StrumY, 0,P1StrumZ,0,BeatXP1"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				219,
-				"0",
-				"circInOut",
-				"1,P2StrumAlpha,0,P2StrumZ,0,P2StrumX,0,BeatYP2,0,BeatXP2"
+				"1,P1StrumAlpha,0,P1StrumAlpha,0,P2StrumX,0,P2StrumY, 0,P1StrumZ,0,BeatXP2"
 			],
 			[
 				false,
@@ -5911,20 +5714,6 @@ enum abstract Modchart(String) from String to String {
 			"ease",
 			[
 				210,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				211.973,
 				"0",
 				"backOut",
 				"1.3,StrumScale"
@@ -5994,63 +5783,7 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				218.97278125,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				220,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				221,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				222,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223,
 				"0",
 				"backOut",
 				"1.3,StrumScale"
@@ -6190,90 +5923,6 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				221.25,
-				"0.5",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				222.25,
-				"0.5",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223.25,
-				"0.5",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223.9771875,
-				"0",
-				"backOut",
-				"1.6,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				224.25,
-				"1.2",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				175,
-				1,
-				"cubeInOut",
-				"0.7,Playfield2AlphaValue,-500,Playfield2ZValue,0.55,Playfield3AlphaValue,-350,Playfield3ZValue"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				185,
 				"5",
 				"cubeInOut",
@@ -6292,20 +5941,6 @@ enum abstract Modchart(String) from String to String {
 				1,
 				"cubeInOut",
 				"0.7,Playfield2AlphaValue,-500,Playfield2ZValue,0.55,Playfield3AlphaValue,-350,Playfield3ZValue"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223.97684375,
-				"0",
-				"expoOut",
-				"1,Bump:speed,0.2,TipX,0.1,TipY,0.1,TipZ,0.2,DrunkX,0.1 ,DrunkY,1,DrunkZ,,Bump,1,DrunkX:speed,3,DrunkZ:speed"
 			],
 			[
 				false,
@@ -7684,8 +7319,163 @@ enum abstract Modchart(String) from String to String {
 				1,
 				1
 			]
+		],
+		[
+			"ease",
+			[
+				96,
+				"1",
+				"expoOut",
+				"0,P1StrumZ,0,P1StrumX,0,P1StrumY,0,P2StrumZ,0,P1StrumAlpha,0,P2StrumAlpha"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				176,
+				"1",
+				"cubeInOut",
+				"0.7,Playfield2AlphaValue,-500,Playfield2ZValue,0.55,Playfield3AlphaValue,-350,Playfield3ZValue"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				176,
+				"2",
+				"backOut",
+				"0,P2StrumZ,0,P2StrumAlpha,0,P1StrumX,0.8,P1StrumAlpha,-800,P1StrumZ,320,P2StrumX,-30,P2StrumY"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				200,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				202,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				204,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				206,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				223.75,
+				"0",
+				"expoOut",
+				"1,Bump:speed,0.2,TipX,0.1,TipY,0.1,TipZ,0.2,DrunkX,0.1 ,DrunkY,1,DrunkZ,,Bump,1,DrunkX:speed,3,DrunkZ:speed"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				212,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				219,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				220.25,
+				"0",
+				"backOut",
+				"0,BeatYP1,0,BeatXP2"
+			],
+			[
+				false,
+				1,
+				1
+			]
 		]
-	]
+	],
+	"playfields": 3
 }';
     var isolateModchartD:String = '{
 	"modifiers": [
@@ -7907,6 +7697,7 @@ enum abstract Modchart(String) from String to String {
 			-1
 		]
 	],
+	"playfields": 3,
 	"events": [
 		[
 			"ease",
@@ -8401,20 +8192,6 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				95,
-				"1",
-				"expoOut",
-				"0,P1StrumZ,0,P1StrumX,0,P1StrumY,0,P2StrumZ,0,P1StrumAlpha,0,P2StrumAlpha"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				96,
 				"0",
 				"expoOut",
@@ -9314,21 +9091,7 @@ enum abstract Modchart(String) from String to String {
 				160,
 				"1",
 				"backInOut",
-				"-800,P1StrumZ,0.8,P1StrumAlpha,320,P2StrumX,-30,P2StrumY,0.1,TipX,0.2,TipY,0,TipZ,0.2,DrunkX,0.3,DrunkY,2,DrunkZ"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				174,
-				"2",
-				"backOut",
-				"0,P1StrumZ,0,P1StrumAlpha,0,P2StrumX,0.8,P2StrumAlpha,-800,P2StrumZ,-320,P1StrumX,-30,P1StrumY"
+				"-800,P2StrumZ,0.8,P2StrumAlpha,-320,P1StrumX,-30,P1StrumY,0.1,TipX,0.2,TipY,0,TipZ,0.2,DrunkX,0.3,DrunkY,2,DrunkZ"
 			],
 			[
 				false,
@@ -9342,7 +9105,7 @@ enum abstract Modchart(String) from String to String {
 				184,
 				"8",
 				"quartInOut",
-				"0,P1StrumZ,0,P2StrumAlpha,0,TipX,0,P2StrumAlpha,0,P2StrumZ,0,P1StrumX,0,P1StrumY,0,P2StrumY,0,TipY,0,DrunkX,0,DrunkY,0,DrunkZ,0,Bump"
+				"0,P1StrumZ,0,P2StrumAlpha,0,TipX,0,P1StrumAlpha,0,P2StrumZ,0,P2StrumX,0,P1StrumY,0,P2StrumY,0,TipY,0,DrunkX,0,DrunkY,0,DrunkZ,0,Bump"
 			],
 			[
 				false,
@@ -9496,91 +9259,7 @@ enum abstract Modchart(String) from String to String {
 				192,
 				1,
 				"circInOut",
-				"0.5,P1StrumAlpha,-350,P1StrumZ,120,P2StrumX,1,BeatXP2,1,BeatYP1"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				199,
-				1,
-				"circInOut",
-				"20,P1Lane4Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				200,
-				1,
-				"backOut",
-				"0,P1Lane4Y,20,P1Lane2Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				202,
-				1,
-				"backOut",
-				"0,P1Lane2Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				203,
-				1,
-				"backOut",
-				"20,P1Lane1Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				204,
-				1,
-				"backOut",
-				"20,P1Lane4Y,0,P1Lane1Y"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				206,
-				1,
-				"backOut",
-				"0,P1Lane4Y"
+				"0.5,P2StrumAlpha,-350,P2StrumZ,-120,P1StrumX,1,BeatXP1,1,BeatYP2"
 			],
 			[
 				false,
@@ -9731,80 +9410,10 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				199.94896875,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				201.959625,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				203.96484375,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				205.95725,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				207,
 				"1",
 				"circInOut",
-				"0,P1StrumAlpha,0.5,P2StrumAlpha,-350,P2StrumZ,0,P2StrumX,-120,P1StrumX,0,P1StrumZ,0,BeatXP2,1,BeatXP1,1,BeatYP2,0,BeatYP1"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				212,
-				"5",
-				"circInOut",
-				"1,P2StrumAlpha,-150,P2StrumX,-320,P1StrumX,-40,P1StrumY,-120,P1StrumZ"
+				"0,P2StrumAlpha,0.5,P1StrumAlpha,-350,P1StrumZ,0,P1StrumX,120,P2StrumX,0,P2StrumZ,0,BeatXP1,1,BeatXP2,1,BeatYP1,0,BeatYP2"
 			],
 			[
 				false,
@@ -9818,21 +9427,7 @@ enum abstract Modchart(String) from String to String {
 				224,
 				"1",
 				"circInOut",
-				"1,P2StrumAlpha,0,P2StrumAlpha,0,P1StrumX,0,P1StrumY, 0,P1StrumZ,0,BeatXP1"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				219,
-				"0",
-				"circInOut",
-				"1,P2StrumAlpha,0,P2StrumZ,0,P2StrumX,0,BeatYP2,0,BeatXP2"
+				"1,P1StrumAlpha,0,P1StrumAlpha,0,P2StrumX,0,P2StrumY, 0,P1StrumZ,0,BeatXP2"
 			],
 			[
 				false,
@@ -9858,20 +9453,6 @@ enum abstract Modchart(String) from String to String {
 			"ease",
 			[
 				210,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				211.973,
 				"0",
 				"backOut",
 				"1.3,StrumScale"
@@ -9941,63 +9522,7 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				218.97278125,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				220,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				221,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				222,
-				"0",
-				"backOut",
-				"1.3,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223,
 				"0",
 				"backOut",
 				"1.3,StrumScale"
@@ -10137,90 +9662,6 @@ enum abstract Modchart(String) from String to String {
 		[
 			"ease",
 			[
-				221.25,
-				"0.5",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				222.25,
-				"0.5",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223.25,
-				"0.5",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223.9771875,
-				"0",
-				"backOut",
-				"1.6,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				224.25,
-				"1.2",
-				"backOut",
-				"1,StrumScale"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				175,
-				1,
-				"cubeInOut",
-				"0.7,Playfield2AlphaValue,-500,Playfield2ZValue,0.55,Playfield3AlphaValue,-350,Playfield3ZValue"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
 				185,
 				"5",
 				"cubeInOut",
@@ -10239,20 +9680,6 @@ enum abstract Modchart(String) from String to String {
 				1,
 				"cubeInOut",
 				"0.7,Playfield2AlphaValue,-500,Playfield2ZValue,0.55,Playfield3AlphaValue,-350,Playfield3ZValue"
-			],
-			[
-				false,
-				1,
-				1
-			]
-		],
-		[
-			"ease",
-			[
-				223.97684375,
-				"0",
-				"expoOut",
-				"1,Bump:speed,0.2,TipX,0.1,TipY,0.1,TipZ,0.2,DrunkX,0.1 ,DrunkY,1,DrunkZ,,Bump,1,DrunkX:speed,3,DrunkZ:speed"
 			],
 			[
 				false,
@@ -11631,9 +11058,162 @@ enum abstract Modchart(String) from String to String {
 				1,
 				1
 			]
+		],
+		[
+			"ease",
+			[
+				96,
+				"1",
+				"expoOut",
+				"0,P1StrumZ,0,P1StrumX,0,P1StrumY,0,P2StrumZ,0,P1StrumAlpha,0,P2StrumAlpha"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				176,
+				"1",
+				"cubeInOut",
+				"0.7,Playfield2AlphaValue,-500,Playfield2ZValue,0.55,Playfield3AlphaValue,-350,Playfield3ZValue"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				176,
+				"2",
+				"backOut",
+				"0,P2StrumZ,0,P2StrumAlpha,0,P1StrumX,0.8,P1StrumAlpha,-800,P1StrumZ,320,P2StrumX,-30,P2StrumY"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				200,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				202,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				204,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				206,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				223.75,
+				"0",
+				"expoOut",
+				"1,Bump:speed,0.2,TipX,0.1,TipY,0.1,TipZ,0.2,DrunkX,0.1 ,DrunkY,1,DrunkZ,,Bump,1,DrunkX:speed,3,DrunkZ:speed"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				212,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				219,
+				"0",
+				"backOut",
+				"1.3,StrumScale"
+			],
+			[
+				false,
+				1,
+				1
+			]
+		],
+		[
+			"ease",
+			[
+				220.25,
+				"0",
+				"backOut",
+				"0,BeatYP1,0,BeatXP2"
+			],
+			[
+				false,
+				1,
+				1
+			]
 		]
-	],
-	"playfields": 3
+	]
 }';
     var devilishModchart:String = '{
         "events": [

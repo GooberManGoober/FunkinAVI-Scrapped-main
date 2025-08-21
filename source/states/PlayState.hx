@@ -10337,7 +10337,6 @@ class PlayState extends MusicBeatState
 				{
 					if (ClientPrefs.flashing)
 						camGame.flash(FlxColor.WHITE, 0.5);
-					defaultCamZoom = 2.8;
 				}
 
 				if (curBeat == 388)

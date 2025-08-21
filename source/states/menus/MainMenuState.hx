@@ -114,7 +114,7 @@ class MainMenuState extends MusicBeatState
 		"AHHH, FUCK, THERE'S RULE 34 OF SUICIDE MOUSE, WHYYYYYY????",
 		"Check out this cool rare little easter egg that I found, which I want to show to you but I can't cause I'm just a title screen message.",
 		"There's still uranium in my ass, send help.",
-		"Main Menu Music: Rotten Petals",
+		"Main Menu Music: Alone",
 		"Mickey lost his ballsack.",
 		"Oh the horror of AI generated images.",
 		"You should [R] Reset Character NOW", // boblox reference
@@ -513,7 +513,7 @@ class MainMenuState extends MusicBeatState
 										FlxG.mouse.visible = false;
 										MusicBeatState.switchState(new StoryMenu());
 									case 'freeplay':
-										MusicBeatState.switchState(new GeneralMenu());
+										MusicBeatState.switchState(new EpicSelectorWOOO());
 										FlxG.sound.music.fadeIn(0.5, 0, 1);
 										FlxG.sound.playMusic(Paths.music('aviOST/seekingFreedom'));
 									case 'credits':

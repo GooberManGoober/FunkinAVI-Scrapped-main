@@ -132,14 +132,7 @@ class ModchartFile
                         json = cast Json.parse(ClientPrefs.downScroll ? Modchart.deluluModchartD : Modchart.deluluModchartU);
                     else
                         json = {modifiers: [], events: [], playfields: 1};
-                /*
-                case "Malfunction":
-                    if (ClientPrefs.mechanics) 
-                        json = cast Json.parse(ClientPrefs.downScroll ? Modchart.malfunctionModchartD : Modchart.malfunctionModchartU);
-                     else
-                        json = {modifiers: [], events: [], playfields: 1};
-                */
-                case "Malfunction Legacy":
+                case "Malfunction Legacy" | "Malfunction":
                     if (ClientPrefs.mechanics)
                         json = cast Json.parse(ClientPrefs.downScroll ? Modchart.malLegacyModD : Modchart.malLegacyModU);
                     else

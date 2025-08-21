@@ -38,6 +38,8 @@ class FreeplayState extends MusicBeatState
 	var intendedScore:Int = 0;
 	var intendedRating:Float = 0;
 
+	var canBopCam:Bool = false;
+
 	var path:String = 'Funkin_avi/freeplay';
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
@@ -133,7 +135,7 @@ class FreeplayState extends MusicBeatState
 				addSong('Bless', 3, (GameData.blessLock != 'unlocked' && GameData.blessLock != 'beaten' ? 'mysteryfp' : 'noise'), FlxColor.WHITE, 'PualTheUnTruest', 'HARD', FlxColor.fromRGB(255, 187, 187), (GameData.blessLock == "beaten" || GameData.blessLock == "unlocked" ? [30, -10] : [25, 0]), "None");
 				addSong("Don't Cross!", 3, (GameData.crossinLock != 'unlocked' && GameData.crossinLock != 'beaten' ? 'mysteryfp' : 'cross'), FlxColor.fromRGB(255, 0, 0), 'PualTheUnTruest', 'GOOD LUCK', FlxColor.fromRGB(201, 0, 0), (GameData.crossinLock == "beaten" || GameData.crossinLock == "unlocked" ? [23, -10] : [25, 0]), "Chart is randomized every attempt.");
 				addSong('War Dilemma', 3, (GameData.warLock != 'unlocked' && GameData.warLock != 'beaten' ? 'mysteryfp' : 'ethernalg'), FlxColor.fromRGB(204, 41, 103), 'Sayan Sama & obscurity', 'HARD', FlxColor.fromRGB(255, 187, 187), (GameData.warLock == "beaten" || GameData.warLock == "unlocked" ? [24, 1] : [25, 0]), "Modcharts that may cause visual distortion.");
-				addSong('Twisted Grins', 3, (GameData.tgLock != 'unlocked' && GameData.tgLock != 'beaten' ? 'mysteryfp' : 'smile'), FlxColor.fromRGB(54, 38, 38), 'PualTheUnTruest', 'HARD', FlxColor.fromRGB(255, 187, 187), (GameData.tgLock == "beaten" || GameData.tgLock == "unlocked" ? [25, -10] : [25, 0]), "Scroll speed changes & Modcharts that may cause visual distortion");
+				addSong('Twisted Grins', 3, (GameData.tgLock != 'unlocked' && GameData.tgLock != 'beaten' ? 'mysteryfp' : 'smile'), FlxColor.fromRGB(54, 38, 38), 'ForFurtherNotice', 'HARD', FlxColor.fromRGB(255, 187, 187), (GameData.tgLock == "beaten" || GameData.tgLock == "unlocked" ? [25, -10] : [25, 0]), "Scroll speed changes & Modcharts that may cause visual distortion");
 				addSong('Mercy', 3, (GameData.mercyLock != 'beaten' && GameData.mercyLock != 'beaten' ? 'mysteryfp' : 'walt'), FlxColor.fromRGB(176, 169, 116), 'Ophomix24', 'INSANE', FlxColor.fromRGB(255, 110, 110), (GameData.mercyLock == "beaten" || GameData.mercyLock == "unlocked" ? [27, -20] : [25, 0]), "Drains your health until death. Utilizes the mechanic keybind, highly recommend checking your controls setting before playing.");
 				addSong('Cycled Sins', 3, (GameData.sinsLock != 'unlocked' && GameData.sinsLock != 'beaten' ? 'mysteryfp' : 'relapseNEW-pixel'), FlxColor.fromRGB(105, 30, 30), 'JBlitz', 'HARD', FlxColor.fromRGB(255, 187, 187), (GameData.sinsLock == "beaten" || GameData.sinsLock == "unlocked" ? [24, -21] : [25, 0]), "Dodge Relapse Mouse's gunshots. Utilizes the mechanic keybind, highly recommend checking your controls setting before playing."); //messing with the saves for this later
 				
@@ -201,7 +203,10 @@ class FreeplayState extends MusicBeatState
 		for (i in 0...songs.length)
 		{
 			songText2 = new FlxText(0, 0, 570, songs[i].songName);
-			songText = new Alphabet(100, (43 * i) + 120, songs[i].songName, true);
+			if (freeplayMenuList != 2)
+				songText = new Alphabet(90, 320, songs[i].songName, true);
+			else
+				songText = new Alphabet(100, (43 * i) + 120, songs[i].songName, true);
 			
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 
@@ -255,6 +260,9 @@ class FreeplayState extends MusicBeatState
 		
 		changeSelection();
 		changeDiff();
+
+		// this is probably the most retartded shit ever sorry man
+		// camZoomTween = FlxTween.tween(this, {}, 0);
 
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
 
@@ -333,6 +341,12 @@ class FreeplayState extends MusicBeatState
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
+		if (freeplayMenuList != 2)
+		{
+			for (icon in iconArray) 
+				icon.scale.set(FlxMath.lerp(1, icon.scale.x, CoolUtil.boundTo(1 - (elapsed * 9.6), 0, 1)), FlxMath.lerp(1, icon.scale.y, CoolUtil.boundTo(1 - (elapsed * 9.6), 0, 1)));
+		}
+		
 		if (FlxG.sound.music.volume < 0.7)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -429,6 +443,23 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
+		if (freeplayMenuList != 2)
+		{
+			for (i in 0...iconArray.length)
+			{
+				if(songs[i].songName == "Birthday")
+					iconArray[i].animation.curAnim.curFrame = 1; // funi
+				//i swear to god theres too much .replace
+				else if(songs[i].songName.toLowerCase().replace(' ', '-').replace("'", '').replace('!', '') == "dont-cross")
+				{
+					iconArray[i].animation.curAnim.curFrame = 0;
+					iconArray[i].shake(4, 30, 0.1);
+				}
+				else
+					iconArray[i].animation.curAnim.curFrame = 2;
+			}
+		}
+
 		if (controls.BACK)
 		{
 			persistentUpdate = false;
@@ -438,12 +469,14 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			threadActive = false;
 			FlxG.sound.playMusic(Paths.music('aviOST/seekingFreedom'));
-			MusicBeatState.switchState(new GeneralMenu());
+			MusicBeatState.switchState(new EpicSelectorWOOO());
 			FlxG.mouse.visible = true;
 		}
 
 		if (accepted)
 		{
+			canBopCam = false;
+			
 			songInstPlaying = false;
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
@@ -484,6 +517,11 @@ class FreeplayState extends MusicBeatState
 
 			FlxG.sound.music.volume = 0.0;
 			FlxG.sound.music.fadeIn(1.0, 0.0, 1.0);
+			canBopCam = true;
+
+			songInstPlaying = true;
+			getBPM();
+			FlxTween.num(Conductor.bpm, bpm, 2, null, shitshitfuckfuck -> Conductor.bpm = shitshitfuckfuck);
 
 			songToPlay = null;
 		}
@@ -496,31 +534,9 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('funkinAVI/menu/scrollSfx'));
 		}
 		super.update(elapsed);
-	}
 
-	function spawnMusicalNote()
-		{
-			final musicNote = new FlxSprite(800, 130, Paths.image('favi/ui/bdaynotes/note_${FlxG.random.int(1, 3)}', 'shared'));
-			musicNote.scale.set(.65, .65);
-			musicNote.updateHitbox();
-			musicNote.antialiasing = ClientPrefs.globalAntialiasing;
-			musicNote.setColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
-			musicNote.cameras = [camHUD];
-			add(musicNote);
-	
-			musicNote.alpha = 0;
-			FlxTween.tween(musicNote, {alpha: 1}, .5, {ease: FlxEase.sineInOut});
-	
-			final randomTimer = FlxG.random.float(3.5, 7);
-	
-			musicNote.velocity.x = -FlxG.random.float(120, 230);
-	
-			FlxTween.tween(musicNote, {y: musicNote.y - 70}, FlxG.random.float(1, 4), {ease: FlxEase.sineInOut, type: 4});
-			FlxTween.tween(musicNote, {alpha: 0}, randomTimer, {ease: FlxEase.sineInOut, startDelay: 1.5, onComplete: tweeeeeee -> {
-				remove(musicNote);
-				musicNote.destroy();
-			}});
-		}
+		cameraBumpingZooms(FlxG.camera, 1, null, elapsed);
+	}
 
 	// i would remove this but too lazy to remove this function from other menus rn so I don't get any compiling errors lol
 	public static function destroyFreeplayVocals() {
@@ -566,7 +582,27 @@ class FreeplayState extends MusicBeatState
 	}
 
 	override function beatHit() {
+		if (curBeat % 2 == 0 && canBopCam && freeplayMenuList != 2)
+			iconArray[curSelected].scale.set(1.2, 1.2);
+
 		super.beatHit();
+	}
+
+	inline public static function cameraBumpingZooms(leCam:FlxCamera, daZaza:Float = 1.05, ?forceZaza:Array<Float>, elapsed:Float)
+	{
+		var easeLerp = CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1);
+
+		if (forceZaza == null)
+			forceZaza = [0, 0, 0, 0];
+
+		if (leCam != null)
+		{
+			// camera stuffs
+			leCam.zoom = FlxMath.lerp(daZaza + forceZaza[0], leCam.zoom, easeLerp);
+
+			// not even forceZoom anymore but still
+			leCam.angle = FlxMath.lerp(0 + forceZaza[2], leCam.angle, easeLerp);
+		}
 	}
 
 	var shittyTmr:FlxTimer;

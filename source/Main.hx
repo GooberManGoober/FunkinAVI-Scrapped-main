@@ -80,7 +80,6 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 
 		var game:FlxGame = new FlxGame(gameWidth, gameHeight, Init, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
-		@:privateAccess game._customSoundTray = gameObjects.ui.Soundtray;
 		addChild(game);
 
 		#if !mobile

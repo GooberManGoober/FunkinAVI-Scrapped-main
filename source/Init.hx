@@ -101,9 +101,6 @@ class Init extends FlxState
 
         var curState = Main.initialState;
 
-        if (!GameData.hasSeenWarning)
-            curState = FlashingState;
-
         trace('Initialization complete, switching to ${Type.getClassName(curState)}');
         FlxG.switchState(Type.createInstance(curState, []));   
     }

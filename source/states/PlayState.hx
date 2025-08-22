@@ -82,35 +82,6 @@ class PlayState extends MusicBeatState
 		['S+', 1] //The value on this one isn't used actually, since Perfect is always "1"
 	];
 
-	public var botTxtArray:Array<Any> = [
-		"AUTOPLAY",
-		"BOTPLAY",
-		"BURN IN HELL",
-		"hi nikoru lol",
-		"YOU'RE FUCKING CHEATING!",
-		"what the rat doin?",
-		"2 WORDS: GIT GUD",
-		"THIS AIN'T PSYCH ANYMORE, IT'S OPTIMIZED NOW",
-		"JAMMING TO THE SONG",
-		"you're just using the botplay key to see all these random messages, aren't you?",
-		"YOU FUCKING SUCK AT RHYTHM GAMES LMFAO",
-		"POV: YOU'RE TOO LAZY TO ACTUALLY PLAY THE GAME",
-		"eyeless mouse is real.",
-		"BOO!",
-		"IT'S ABOUT DRIVE, IT'S ABOUT POWER",
-		"WE STAY HUNGRY, WE DEVOUR",
-		"i'm fucking high on crack man...",
-		"ALL OF OUR FOOD KEEPS BLOWING UP",
-		"sample text",
-		"I did ur mom 2023",
-		"WHAT THE FUCK IS WRONG WITH YOU?",
-		"no.",
-		"i bet you fail to the tutorial still...",
-		"I will personally skin you <3",
-		"BOTPLAY 2: ELECTRIC BOOGALOO",
-		"five nights at freddy's"
-	];
-
 	//Spectra hud vars
 	public var spectraSongTime:FlxText;
 	public var centerMark:FlxText; // song display name and difficulty at the center
@@ -234,8 +205,37 @@ class PlayState extends MusicBeatState
 	public var cpuControlled:Bool = false;
 	public var practiceMode:Bool = false;
 
-	public var botplaySine:Float = 0;
-	public var botplayTxt:FlxText;
+	public var autoplaySine:Float = 0;
+	public var autoplayMark:FlxText; // botplay/autoplay indicator at the center
+
+	public var botTxtArray:Array<Any> = [
+		"AUTOPLAY",
+		"BOTPLAY",
+		"BURN IN HELL",
+		"hi nikoru lol",
+		"YOU'RE FUCKING CHEATING!",
+		"what the rat doin?",
+		"2 WORDS: GIT GUD",
+		"THIS AIN'T PSYCH ANYMORE, IT'S OPTIMIZED NOW",
+		"JAMMING TO THE SONG",
+		"you're just using the botplay key to see all these random messages, aren't you?",
+		"YOU FUCKING SUCK AT RHYTHM GAMES LMFAO",
+		"POV: YOU'RE TOO LAZY TO ACTUALLY PLAY THE GAME",
+		"eyeless mouse is real.",
+		"BOO!",
+		"IT'S ABOUT DRIVE, IT'S ABOUT POWER",
+		"WE STAY HUNGRY, WE DEVOUR",
+		"i'm fucking high on crack man...",
+		"ALL OF OUR FOOD KEEPS BLOWING UP",
+		"sample text",
+		"I did ur mom 2023",
+		"WHAT THE FUCK IS WRONG WITH YOU?",
+		"no.",
+		"i bet you fail to the tutorial still...",
+		"I will personally skin you <3",
+		"BOTPLAY 2: ELECTRIC BOOGALOO",
+		"five nights at freddy's"
+	];
 
 	public var iconP1:HealthIcon;
 	public var iconP2:HealthIcon;
@@ -555,7 +555,6 @@ class PlayState extends MusicBeatState
 	var mascotRoomPOV:FlxSprite;
 
 	// MID-SONG VIDEO SCENES
-	var death:VideoSprite;
 	var devilishGaming:VideoSprite;
 	var deluSing:VideoSprite;
 	var lununuIntro:VideoSprite;
@@ -2411,6 +2410,13 @@ class PlayState extends MusicBeatState
 				if (!ClientPrefs.middleScroll) centerMark.screenCenter(X);
 				add(centerMark);
 
+				autoplayMark = new FlxText(scoreTxt.x + 150, scoreTxt.y, FlxG.width - 780, '', 32);
+				autoplayMark.text = '[${botTxtArray[FlxG.random.int(0, botTxtArray.length-1)]}]';
+				autoplayMark.setFormat(Paths.font("VanillaExtractRegular.ttf"), 14, FlxColor.WHITE, RIGHT);
+				autoplayMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2.3);
+				autoplayMark.visible = cpuControlled;
+				add(autoplayMark);
+
 		}
 
 		watermarkTxt.cameras = [camHUD];
@@ -2430,173 +2436,169 @@ class PlayState extends MusicBeatState
 			iconP2.visible = false;
 		}
 
-		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
-		botplayTxt.setFormat(Paths.font("disneyFont.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		botplayTxt.scrollFactor.set();
-		botplayTxt.borderSize = 1.25;
-		botplayTxt.visible = false;
-		add(botplayTxt);
-		if(ClientPrefs.downScroll) {
-			botplayTxt.y = timeBarBG.y - 78;
+		if (ClientPrefs.downScroll)
+		{
+			crashLives = new FlxText(600, 170, 0, "", 20);
+			crashLivesIcon = new FlxSprite(550, 170);
+		}
+		else
+		{
+			crashLives = new FlxText(600, 500, 0, "", 20);
+			crashLivesIcon = new FlxSprite(550, 500);
 		}
 
-		if (ClientPrefs.downScroll)
-			{
-				crashLives = new FlxText(600, 170, 0, "", 20);
-				crashLivesIcon = new FlxSprite(550, 170);
-			}
-			else
-			{
-				crashLives = new FlxText(600, 500, 0, "", 20);
-				crashLivesIcon = new FlxSprite(550, 500);
-			}
-	
-			crashLives.setFormat(Paths.font("Retro Gaming.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			crashLives.borderSize = 2;
-			crashLives.borderQuality = 2;
-			crashLives.antialiasing = false;
-			crashLives.scrollFactor.set();
-			crashLives.cameras = [camHUD];
-	
-			crashLivesIcon.frames = Paths.getSparrowAtlas('UI/funkinAVI/gimmicks/malfunctionGimmickIcon');
-			crashLivesIcon.animation.addByPrefix('idle', 'lives-icon idle', 15);
-			crashLivesIcon.animation.addByPrefix('OMFG IT GLITCHES', 'lives-icon glitchin', 15);
-			crashLivesIcon.animation.play('idle');
-			crashLivesIcon.scale.set(2.2, 2.2);
-			crashLivesIcon.antialiasing = false;
-			crashLivesIcon.cameras = [camHUD];
+		crashLives.setFormat(Paths.font("Retro Gaming.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		crashLives.borderSize = 2;
+		crashLives.borderQuality = 2;
+		crashLives.antialiasing = false;
+		crashLives.scrollFactor.set();
+		crashLives.cameras = [camHUD];
 
-			waltScreenThing = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
-			waltScreenThing.scrollFactor.set();
-			waltScreenThing.cameras = [camOther];
-			waltScreenThing.alpha = 0.001;
+		crashLivesIcon.frames = Paths.getSparrowAtlas('UI/funkinAVI/gimmicks/malfunctionGimmickIcon');
+		crashLivesIcon.animation.addByPrefix('idle', 'lives-icon idle', 15);
+		crashLivesIcon.animation.addByPrefix('OMFG IT GLITCHES', 'lives-icon glitchin', 15);
+		crashLivesIcon.animation.play('idle');
+		crashLivesIcon.scale.set(2.2, 2.2);
+		crashLivesIcon.antialiasing = false;
+		crashLivesIcon.cameras = [camHUD];
 
-			dodgeWarning = new FlxSprite(1080, 540).loadGraphic(Paths.image('favi/ui/dodgeSins/cycledWarn' + (FlxG.random.bool(2) ? "-alt" : "")));
-			dodgeWarning.antialiasing = false;
-			dodgeWarning.scale.set(4, 4);
-			dodgeWarning.cameras = [camOther];
-			dodgeWarning.screenCenter();
-			dodgeWarning.alpha = 0.001;
-			if (curStage == "apartment")
+		waltScreenThing = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
+		waltScreenThing.scrollFactor.set();
+		waltScreenThing.cameras = [camOther];
+		waltScreenThing.alpha = 0.001;
+
+		dodgeWarning = new FlxSprite(1080, 540).loadGraphic(Paths.image('favi/ui/dodgeSins/cycledWarn' + (FlxG.random.bool(2) ? "-alt" : "")));
+		dodgeWarning.antialiasing = false;
+		dodgeWarning.scale.set(4, 4);
+		dodgeWarning.cameras = [camOther];
+		dodgeWarning.screenCenter();
+		dodgeWarning.alpha = 0.001;
+		if (curStage == "apartment")
+		{
+			if (SONG.song == "Cycled Sins")
 			{
-				if (SONG.song == "Cycled Sins")
-				{
-					dodgeWarning.scale.set(3, 3);
-					dodgeWarning.x += 450;
-				}
-				add(dodgeWarning);
+				dodgeWarning.scale.set(3, 3);
+				dodgeWarning.x += 450;
 			}
+			add(dodgeWarning);
+		}
 
-			if (curStage == "waltRoom" || SONG.song == "Delusional Legacy")
-				add(waltScreenThing);
-	
-			if (!ClientPrefs.lowQuality)
-			{
-				switch (curStage)
-				{
-					case 'stage' | 'desktop' | 'waltRoom' | 'apartment' | 'treasureIsland' | 'forbiddenRealm' | 'fuckingLine' | 'staticVoid' | 'vaultRoom' | 'war' | 'grassNation':
-					// don't add scratch assets
-	
-					case 'theLoop':
-						scratch = new FlxSprite();
-						scratch.frames = Paths.getSparrowAtlas('favi/filters/scratchShit');
-						scratch.animation.addByPrefix('e', 'scratch thing', 24, true);
-						scratch.animation.play('e');
-						scratch.cameras = [camHUD];
-						add(scratch);
-					
-					default:
-						scratch = new FlxSprite();
-						scratch.frames = Paths.getSparrowAtlas('favi/filters/scratchShit');
-						scratch.animation.addByPrefix('e', 'scratch thing', 24, true);
-						scratch.animation.play('e');
-						scratch.cameras = [camOther];
-						add(scratch);
-				}
-			}
+		if (curStage == "waltRoom" || SONG.song == "Delusional Legacy")
+			add(waltScreenThing);
 
+		if (!ClientPrefs.lowQuality)
+		{
 			switch (curStage)
 			{
-				case "forestNew" | "desktop" | "circus" | 'clubhouse' | 'trueGrinsOfSins':
-					//do nothing, gf exists
-				case "menuSongs":
-					boyfriend.visible = false;
-					dad.visible = false;
-					gf.visible = false;
-				case 'apartment':
-					if (SONG.song == "Cycled Sins Legacy") gf.visible = false;
+				case 'stage' | 'desktop' | 'waltRoom' | 'apartment' | 'treasureIsland' | 'forbiddenRealm' | 'fuckingLine' | 'staticVoid' | 'vaultRoom' | 'war' | 'grassNation':
+				// don't add scratch assets
+
+				case 'theLoop':
+					scratch = new FlxSprite();
+					scratch.frames = Paths.getSparrowAtlas('favi/filters/scratchShit');
+					scratch.animation.addByPrefix('e', 'scratch thing', 24, true);
+					scratch.animation.play('e');
+					scratch.cameras = [camHUD];
+					add(scratch);
+				
 				default:
-					gf.visible = false;
+					scratch = new FlxSprite();
+					scratch.frames = Paths.getSparrowAtlas('favi/filters/scratchShit');
+					scratch.animation.addByPrefix('e', 'scratch thing', 24, true);
+					scratch.animation.play('e');
+					scratch.cameras = [camOther];
+					add(scratch);
 			}
+		}
 
-			var waltInstructionsMain:FlxText = new FlxText(370, 500, 0, "Take Advantage of the SPACEBAR!", 30);
-			waltInstructionsMain.cameras = [camOther];
-			waltInstructionsMain.setFormat(Paths.font("splatter.otf"), 30);
-			waltInstructionsMain.scrollFactor.set();
-	
-			var waltSubTxt:FlxText = new FlxText(waltInstructionsMain.x + 66, waltInstructionsMain.y + 40, 0,
-				"(It will help you regain health when critically low)", 15);
-			waltSubTxt.setFormat(Paths.font("splatter.otf"), 15);
-			waltSubTxt.cameras = [camOther];
-			waltSubTxt.alpha = 0;
-			waltSubTxt.scrollFactor.set();
-	
-			inkFormWarning = new FlxText(0, 0, 0, "PRESS SPACE!", 15);
-			inkFormWarning.setFormat(Paths.font("splatter.otf"), 50);
-			inkFormWarning.cameras = [camOther];
-			inkFormWarning.alpha = 0;
-			inkFormWarning.scrollFactor.set();
-			inkFormWarning.screenCenter();
-	
-			mercyBoostIcon = new FlxSprite(-10, 600);
-			mercyBoostIcon.frames = Paths.getSparrowAtlas("favi/ui/mercyIcon");
-			mercyBoostIcon.animation.addByPrefix("full", "full", 7, true);
-			mercyBoostIcon.animation.addByPrefix("hmm", "hmm", 7, true);
-			mercyBoostIcon.animation.addByPrefix("halfway", "halfway", 7, true);
-			mercyBoostIcon.animation.addByPrefix("thatsBad", "thatsBad", 7, true);
-			mercyBoostIcon.animation.addByPrefix("almostOut", "almostOut", 7, true);
-			mercyBoostIcon.animation.addByPrefix("empty", "empty", 7, true);
-			mercyBoostIcon.animation.play("full");
-			mercyBoostIcon.scale.set(0.75, 0.75);
-			mercyBoostIcon.scrollFactor.set();			
+		switch (curStage)
+		{
+			case "forestNew" | "desktop" | "circus" | 'clubhouse' | 'trueGrinsOfSins':
+				//do nothing, gf exists
+			case "menuSongs":
+				boyfriend.visible = false;
+				dad.visible = false;
+				gf.visible = false;
+			case 'apartment':
+				if (SONG.song == "Cycled Sins Legacy") gf.visible = false;
+			default:
+				gf.visible = false;
+		}
 
-			spaceBarCounter = new FlxText(0, 650, 140, '${limitThing}', 15);
-			spaceBarCounter.setFormat(Paths.font("splatter.otf"), 30, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.WHITE);
-			spaceBarCounter.cameras = [camOther];
-			//spaceBarCounter.alpha = 0;
-			spaceBarCounter.scrollFactor.set();
+		var waltInstructionsMain:FlxText = new FlxText(370, 500, 0, "Take Advantage of the SPACEBAR!", 30);
+		waltInstructionsMain.cameras = [camOther];
+		waltInstructionsMain.setFormat(Paths.font("splatter.otf"), 30);
+		waltInstructionsMain.scrollFactor.set();
 
-			if (!ClientPrefs.lowQuality)
-				{
-					globalGradient = new FlxSprite().loadGraphic(Paths.image('UI/gimmicks/gradient'));
-					globalGradient.screenCenter();
-					globalGradient.setGraphicSize(Std.int(globalGradient.width * 0.68));
-					globalGradient.cameras = [camOther];
-					globalGradient.alpha = 0;
-					add(globalGradient);
-				}
-		
-			if (curStage == 'waltRoom')
+		var waltSubTxt:FlxText = new FlxText(waltInstructionsMain.x + 66, waltInstructionsMain.y + 40, 0,
+			"(It will help you regain health when critically low)", 15);
+		waltSubTxt.setFormat(Paths.font("splatter.otf"), 15);
+		waltSubTxt.cameras = [camOther];
+		waltSubTxt.alpha = 0;
+		waltSubTxt.scrollFactor.set();
+
+		inkFormWarning = new FlxText(0, 0, 0, "PRESS SPACE!", 15);
+		inkFormWarning.setFormat(Paths.font("splatter.otf"), 50);
+		inkFormWarning.cameras = [camOther];
+		inkFormWarning.alpha = 0;
+		inkFormWarning.scrollFactor.set();
+		inkFormWarning.screenCenter();
+
+		mercyBoostIcon = new FlxSprite(-10, 600);
+		mercyBoostIcon.frames = Paths.getSparrowAtlas("favi/ui/mercyIcon");
+		mercyBoostIcon.animation.addByPrefix("full", "full", 7, true);
+		mercyBoostIcon.animation.addByPrefix("hmm", "hmm", 7, true);
+		mercyBoostIcon.animation.addByPrefix("halfway", "halfway", 7, true);
+		mercyBoostIcon.animation.addByPrefix("thatsBad", "thatsBad", 7, true);
+		mercyBoostIcon.animation.addByPrefix("almostOut", "almostOut", 7, true);
+		mercyBoostIcon.animation.addByPrefix("empty", "empty", 7, true);
+		mercyBoostIcon.animation.play("full");
+		mercyBoostIcon.scale.set(0.75, 0.75);
+		mercyBoostIcon.scrollFactor.set();			
+
+		spaceBarCounter = new FlxText(0, 650, 140, '${limitThing}', 15);
+		spaceBarCounter.setFormat(Paths.font("splatter.otf"), 30, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.WHITE);
+		spaceBarCounter.cameras = [camOther];
+		//spaceBarCounter.alpha = 0;
+		spaceBarCounter.scrollFactor.set();
+
+		if (!ClientPrefs.lowQuality)
+		{
+			globalGradient = new FlxSprite().loadGraphic(Paths.image('UI/gimmicks/gradient'));
+			globalGradient.screenCenter();
+			globalGradient.setGraphicSize(Std.int(globalGradient.width * 0.68));
+			globalGradient.cameras = [camOther];
+			globalGradient.alpha = 0;
+			add(globalGradient);
+		}
+	
+		if (curStage == 'waltRoom')
+		{
+			if (ClientPrefs.mechanics)
 			{
-				if (ClientPrefs.mechanics)
-				{
-					add(waltInstructionsMain);
-					add(waltSubTxt);
-					add(mercyBoostIcon);
-					add(spaceBarCounter);
-		
-					FlxTween.tween(waltInstructionsMain, {alpha: 0}, 1, {ease: FlxEase.quadInOut, startDelay: 8});
-					FlxTween.tween(waltSubTxt, {alpha: 0}, 1, {ease: FlxEase.quadInOut, startDelay: 8});
-					FlxTween.tween(waltSubTxt, {alpha: 1}, 0.7, {ease: FlxEase.quadInOut, startDelay: 3});
-				}
+				add(waltInstructionsMain);
+				add(waltSubTxt);
+				add(mercyBoostIcon);
+				add(spaceBarCounter);
+	
+				FlxTween.tween(waltInstructionsMain, {alpha: 0}, 1, {ease: FlxEase.quadInOut, startDelay: 8});
+				FlxTween.tween(waltSubTxt, {alpha: 0}, 1, {ease: FlxEase.quadInOut, startDelay: 8});
+				FlxTween.tween(waltSubTxt, {alpha: 1}, 0.7, {ease: FlxEase.quadInOut, startDelay: 3});
 			}
+		}
 
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
-		botplayTxt.cameras = [camHUD];
+		switch (curStage)
+		{
+			case 'menuSongs' | 'abandonedStreet' | 'alleyway' | 'ddStage':
+			
+			default:
+				autoplayMark.cameras = [camHUD];
+		}
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
@@ -3208,11 +3210,6 @@ class PlayState extends MusicBeatState
 					deluSing.destroy();
 					deluSing = null;
 				});
-				death = new VideoSprite(false);
-				death.visible = false;
-				death.load(Paths.video("mickeyDeath"));
-				death.cameras = [camVideo];
-				death.play();
 				minnieJumpscare = new VideoSprite(false);
 				minnieJumpscare.visible = false;
 				minnieJumpscare.load(Paths.video("minniePart"), [VideoSprite.muted]);
@@ -3223,12 +3220,10 @@ class PlayState extends MusicBeatState
 					minnieJumpscare.destroy();
 					minnieJumpscare = null;
 				});
-				add(death);
 				add(deluSing);
 				add(minnieJumpscare);
 				new FlxTimer().start(0.001, function(tmr:FlxTimer)
 				{
-					death.pause();
 					deluSing.pause();
 					minnieJumpscare.pause();
 				});
@@ -5003,8 +4998,6 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
-			if (death != null && death.visible)
-				death.pause();
 			if (devilishGaming != null && devilishGaming.visible)
 				devilishGaming.pause();
 			if (deluSing != null && deluSing.visible)
@@ -5052,8 +5045,6 @@ class PlayState extends MusicBeatState
 	{
 		if (paused)
 		{
-			if (death != null && death.visible)
-				death.resume();
 			if (devilishGaming != null && devilishGaming.visible)
 				devilishGaming.resume();
 			if (deluSing != null && deluSing.visible)
@@ -5142,8 +5133,6 @@ class PlayState extends MusicBeatState
 	{
 		if (FlxG.autoPause)
 		{
-			if (death != null && death.visible)
-				death.resume();
 			if (devilishGaming != null && devilishGaming.visible)
 				devilishGaming.resume();
 			if (deluSing != null && deluSing.visible)
@@ -5187,8 +5176,6 @@ class PlayState extends MusicBeatState
 	{
 		if (FlxG.autoPause)
 			{
-				if (death != null && death.visible)
-					death.pause();
 				if (devilishGaming != null && devilishGaming.visible)
 					devilishGaming.pause();
 				if (deluSing != null && deluSing.visible)
@@ -5537,14 +5524,20 @@ class PlayState extends MusicBeatState
 		setOnLuas('curDecStep', curDecStep);
 		setOnLuas('curDecBeat', curDecBeat);
 
-		if(botplayTxt.visible) {
-			botplaySine += 180 * elapsed;
-			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
-		}
-
 		if (cpuControlled)
 		{
-			scoreTxt.visible = false;
+			switch (curStage)
+			{
+				case 'menuSongs' | 'abandonedStreet' | 'alleyway' | 'ddStage':
+					scoreTxt.visible = false;
+				default:
+					scoreTxt.visible = false;
+					if (autoplayMark.visible)
+					{
+						autoplaySine += 180 * (elapsed / 4);
+						autoplayMark.alpha = 1 - Math.sin((Math.PI * autoplaySine) / 80);
+					}
+			}
 		}
 
 		if (controls.PAUSE && startedCountdown && canPause)
@@ -5975,18 +5968,18 @@ class PlayState extends MusicBeatState
 			switch (char.animation.curAnim.name.substring(4))
 			{
 				case 'UP' | 'UP-alt' | 'UPmiss':
-					camOffset[1] -= 40;
+					camOffset[1] -= 20;
 
 				case 'RIGHT' | 'RIGHT-alt' | 'RIGHTmiss':
-					camOffset[0] += 40;
-					if (!CoolUtil.spaceToDash(SONG.song.toLowerCase()).endsWith('-legacy')) camOffset[2] += 1.3;
+					camOffset[0] += 20;
+					if (!SONG.song.endsWith('Legacy')) camOffset[2] += 1.3;
 
 				case 'LEFT' | 'LEFT-alt' | 'LEFTmiss':
-					camOffset[0] -= 40;
-					if (!CoolUtil.spaceToDash(SONG.song.toLowerCase()).endsWith('-legacy')) camOffset[2] -= 1.3;
+					camOffset[0] -= 20;
+					if (!SONG.song.endsWith('Legacy')) camOffset[2] -= 1.3;
 
 				case 'DOWN' | 'DOWN-alt' | 'DOWNmiss':
-					camOffset[1] += 40;
+					camOffset[1] += 20;
 			}
 		}
 
@@ -10265,11 +10258,26 @@ class PlayState extends MusicBeatState
 						defaultCamZoom = 0.9;
 					case 1086:
 						FlxTween.tween(camHUD, {alpha: 0}, 2);
-						death.setVideoTime(0);
-						death.resume();
-						death.visible = false;
+						FlxG.sound.play(Paths.sound('Mickey_fuckin_dying'));
+						camFlashSystem(BG_DARK, {timer: 5});
 					case 1136:
 						camFlashSystem(BG_FLASH, {alpha: 1, timer: 0.3, ease: FlxEase.sineOut});
+						if (canaddshaders)
+						{
+							if (!ClientPrefs.lowQuality)
+							{
+								camGame.setFilters([
+									new ShaderFilter(dramaticCamMovement),
+									new ShaderFilter(monitorFilter)
+								]);
+							}
+							else
+							{
+								camGame.setFilters([
+									new ShaderFilter(monitorFilter)
+								]);
+							}
+						}
 					case 1144:
 						FlxTween.tween(camGame, {alpha: 0}, 4);
 				}
@@ -11069,12 +11077,12 @@ class PlayState extends MusicBeatState
 		// ok ok i need a plan b
 		// retarded code AND untested because monthly motel shit bla bla bla
 		// just know that we are NOT sonic legacy :sob:
-		if (introSoundsSuffix != "-sins")
-			{
-				if (boyfriend.curCharacter != 'etherealMickey' || boyfriend.curCharacter != 'everett-relapse') iconP1.scale.set(1.2, 1.2);
-				if (dad.curCharacter != 'white-noise-new' || dad.curCharacter != 'etherealGoofy' || dad.curCharacter != 'walt-new'
-					|| dad.curCharacter != 'walt-true' || dad.curCharacter != 'relapsedNEW') iconP2.scale.set(1.2, 1.2);
-			}
+		if (introSoundsSuffix != "-sins" && SONG.song != "Twisted Grins")
+		{
+			if (boyfriend.curCharacter != 'etherealMickey' || boyfriend.curCharacter != 'everett-relapse') iconP1.scale.set(1.2, 1.2);
+			if (dad.curCharacter != 'white-noise-new' || dad.curCharacter != 'etherealGoofy' || dad.curCharacter != 'walt-new'
+				|| dad.curCharacter != 'walt-true' || dad.curCharacter != 'relapsedNEW') iconP2.scale.set(1.2, 1.2);
+		}
 
 		if (SONG.song == "Isolated")
 		{
@@ -11120,293 +11128,259 @@ class PlayState extends MusicBeatState
 		{
 			case 'abandonedStreet':
 				switch (SONG.song)
-					{
-						case 'Lunacy':
-							if (!lowQuality)
-								{
-									if (curBeat == 228 || curBeat == 238 || curBeat == 244 || curBeat == 252 || curBeat == 260 || curBeat == 270 || curBeat == 276 || curBeat == 284 || curBeat == 292 || curBeat == 300 || curBeat == 308 || curBeat == 316 || curBeat == 324 || curBeat == 332 || curBeat == 340 || curBeat == 248)
+				{
+					case 'Lunacy':
+						if (!lowQuality)
+						{
+							if (curBeat == 228 || curBeat == 238 || curBeat == 244 || curBeat == 252 || curBeat == 260 || curBeat == 270 || curBeat == 276 || curBeat == 284 || curBeat == 292 || curBeat == 300 || curBeat == 308 || curBeat == 316 || curBeat == 324 || curBeat == 332 || curBeat == 340 || curBeat == 248)
+							{
+								if (fireTweenHandler != null)
+									fireTweenHandler.cancel();
+								if (rainTween != null)
+									rainTween.cancel();
+				
+								if (rain != null)
+									rainTween = FlxTween.tween(rain, {alpha: 0.5}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
 									{
-										if (fireTweenHandler != null)
-											fireTweenHandler.cancel();
-										if (rainTween != null)
-											rainTween.cancel();
-						
-										if (rain != null)
-											rainTween = FlxTween.tween(rain, {alpha: 0.5}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
-											{
-												rainTween = null;
-											}});
+										rainTween = null;
+									}});
 
-										fireTweenHandler = FlxTween.tween(fireThing, {alpha: 0.75, y: -250}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
-											{
-												fireTweenHandler = null;
-											}
-										});
-									}
-									if (curBeat == 230 || curBeat == 240 || curBeat == 248 || curBeat == 256 || curBeat == 262 || curBeat == 272 || curBeat == 280 || curBeat == 288 || curBeat == 296 || curBeat == 304 || curBeat == 312 || curBeat == 320 || curBeat == 328 || curBeat == 336 || curBeat == 344 || curBeat == 352)
+								fireTweenHandler = FlxTween.tween(fireThing, {alpha: 0.75, y: -250}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
 									{
-										if (fireTweenHandler != null)
-											fireTweenHandler.cancel();
-										if (rainTween != null)
-											rainTween.cancel();
-						
-										fireTweenHandler = FlxTween.tween(fireThing, {alpha: 0.0001, y: -80}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
-											{
-												fireTweenHandler = null;
-											}
-										});
+										fireTweenHandler = null;
+									}
+								});
+							}
+							if (curBeat == 230 || curBeat == 240 || curBeat == 248 || curBeat == 256 || curBeat == 262 || curBeat == 272 || curBeat == 280 || curBeat == 288 || curBeat == 296 || curBeat == 304 || curBeat == 312 || curBeat == 320 || curBeat == 328 || curBeat == 336 || curBeat == 344 || curBeat == 352)
+							{
+								if (fireTweenHandler != null)
+									fireTweenHandler.cancel();
+								if (rainTween != null)
+									rainTween.cancel();
+				
+								fireTweenHandler = FlxTween.tween(fireThing, {alpha: 0.0001, y: -80}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
+									{
+										fireTweenHandler = null;
+									}
+								});
 
-										if (rain != null)
-											rainTween = FlxTween.tween(rain, {alpha: 0.0001}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
-												{
-													rainTween = null;
-												}});
-									}
-									if (curBeat == 416)
+								if (rain != null)
+									rainTween = FlxTween.tween(rain, {alpha: 0.0001}, 0.35, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
+										{
+											rainTween = null;
+										}});
+							}
+							if (curBeat == 416)
+							{
+								if (fireTweenHandler != null)
+									fireTweenHandler.cancel();
+				
+								fireTweenHandler = FlxTween.tween(fireThing, {alpha: 1, y: -350}, 19.5, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween)
 									{
-										if (fireTweenHandler != null)
-											fireTweenHandler.cancel();
-						
-										fireTweenHandler = FlxTween.tween(fireThing, {alpha: 1, y: -350}, 19.5, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween)
-											{
-												fireTweenHandler = null;
-											}
-										});
+										fireTweenHandler = null;
 									}
-									if (curBeat == 480)
-									{
-										if (rain != null) rain.alpha = 1;
-										fireThing.alpha = 0.35;
-										fireThing.y = -120;
-									}
-									if (curBeat == 536)
-									{
-										fireTweenHandler = FlxTween.tween(fireThing, {alpha: 0, y: 0}, 1, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
-											{
-												fireTweenHandler = null;
-											}
-										});
-									}
-								}
-						case 'Delusional':
-							if (curBeat == 1)
+								});
+							}
+							if (curBeat == 480)
 							{
 								if (rain != null) rain.alpha = 1;
+								fireThing.alpha = 0.35;
+								fireThing.y = -120;
 							}
-							if (curBeat == 64)
-								{
-									FlxTween.tween(fakeLightOfHope, {alpha: 0.001}, 1.7);
-									if (!lowQuality) FlxTween.tween(stageFront, {alpha: 1}, 1.5);
-								}
-								if (curBeat == 176)
-								{
-									if (rain != null) 
+							if (curBeat == 536)
+							{
+								fireTweenHandler = FlxTween.tween(fireThing, {alpha: 0, y: 0}, 1, {ease: FlxEase.sineOut, onComplete: function(twn:FlxTween)
 									{
-										rain.kill();
-										rain.destroy();
-										rain = null;
+										fireTweenHandler = null;
 									}
-									if (heavyRain != null && !lowQuality)
-										heavyRain.alpha = 0.34;
-								}
-								if (curBeat == 280)
-								{
-									if (!lowQuality)
-									{
-										smokeShit.forEach(function(spr:FlxSprite)
-										{
-											FlxTween.tween(spr, {alpha: 0.55}, 1.5);
-										});
-										smokeFore.forEach(function(spr:FlxSprite)
-											{
-												FlxTween.tween(spr, {alpha: 0.55}, 1.5);
-										});
-									}
-								}
-								if (curBeat == 312 && !lowQuality)
-								{
-									FlxTween.tween(fireThing, {alpha: 1}, 1);
-									//smokeParticles.emitting = true;
-								} 
-								if (curBeat == 336)
-								{
-									if (!lowQuality)
-									{
-										smokeShit.forEach(function(spr:FlxSprite)
-										{
-											FlxTween.tween(spr, {alpha: 0.25}, 1.5);
-										});
-										smokeFore.forEach(function(spr:FlxSprite)
-										{
-												FlxTween.tween(spr, {alpha: 0.25}, 1.5);
-										});
-									}
-								}
-								if (curBeat == 474) // load daytime street assets
-								{
-									colorsOrSmthElse.kill();
-									colorsOrSmthElse.destroy();
-									colorsOrSmthElse = null;
-									//smokeParticles.emitting = false;
-									floor.kill();
-									floor.destroy();
-									floor = null;
-									if (!lowQuality)
-									{
-										fireThing.kill();
-										fireThing.destroy();
-										fireThing = null;
-										smokeShit.forEach(function(spr:FlxSprite)
-											{
-												spr.alpha = 0;
-											});
-											smokeFore.forEach(function(spr:FlxSprite)
-											{
-												spr.alpha = 0;
-											});
-										heavyRain.visible = false;
-										totallyanoriginalname.visible = true;
-										stageCurtains.visible = false;
-										stageFront.kill();
-										stageFront.destroy();
-										stageFront = null;
-									}
-									minnieBackground.visible = true;
-								}
-
-								if (curBeat == 679 && !lowQuality)
-								{
-									stageCurtains.alpha = 0.0001;
-									stageCurtains.visible = true;
-								}
-
-								if (curBeat == 680 || curBeat == 688 || curBeat == 696 || curBeat == 700 || curBeat == 704 || curBeat == 712 || curBeat == 720)
-								{
-									if (!lowQuality)
-									{
-										stageCurtains.alpha = 1;
-										FlxTween.tween(stageCurtains, {alpha: 0}, 1, {ease: FlxEase.circOut});
-									}
-								}
-
-								if (curBeat == 728 && !lowQuality)
-									FlxTween.tween(stageCurtains, {alpha: 1}, 5);
-
-								if (curBeat == 740) // go back to the street in a even more decayed state
-								{
-									//smokeParticles.emitting = true;
-									//fireParticles.emitting = true;
-									if (!lowQuality)
-									{
-										smokeShit.forEach(function(spr:FlxSprite)
-											{
-												spr.alpha = 0.7;
-											});
-											smokeFore.forEach(function(spr:FlxSprite)
-											{
-												spr.alpha = 0.74;
-											});
-										heavyRain.visible = true;
-										totallyanoriginalname.kill();
-										totallyanoriginalname.destroy();
-										totallyanoriginalname = null;
-									}
-									streetRuins.visible = true;
-									fakeLightOfHope.alpha = 0.5;
-									minnieBackground.kill();
-									minnieBackground.destroy();
-									minnieBackground = null;
-								}
-								if (curBeat == 744 || curBeat == 752 || curBeat == 760 || curBeat == 768 || curBeat == 772 || curBeat == 776 || curBeat == 784 || curBeat == 792 || curBeat == 800 || curBeat == 804 ||
-									curBeat == 808 || curBeat == 816 || curBeat == 824 || curBeat == 832 || curBeat == 836 || curBeat == 840 || curBeat == 848 || curBeat == 856 || curBeat == 864 || curBeat == 868 ||
-									curBeat == 880 || curBeat == 884 || curBeat == 888 || curBeat == 892 || curBeat == 896 || curBeat == 900 || curBeat == 904 || curBeat == 908 || curBeat == 913 || curBeat == 916 ||
-									curBeat == 920 || curBeat == 924 || curBeat == 929 || curBeat == 933 || curBeat == 936 || curBeat == 940 || curBeat == 944 || curBeat == 948 || curBeat == 952 || curBeat == 956 ||
-									curBeat == 960 || curBeat == 964 || curBeat == 968 || curBeat == 972 || curBeat == 976 || curBeat == 980 || curBeat == 984 || curBeat == 988 || curBeat == 993 || curBeat == 997 ||
-									curBeat == 1000 || curBeat == 1004)
-								{
-									fakeLightOfHope.alpha = 1;
-									FlxTween.tween(fakeLightOfHope, {alpha: 0.5}, 0.85);
-								}
-								if (curBeat == 872)
-								{
-									FlxTween.tween(fakeLightOfHope, {alpha: 1, color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
-									if (!lowQuality) FlxTween.tween(fireThing2, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
-									FlxTween.tween(streetRuins, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
-									if (!lowQuality)
-									{
-										FlxTween.tween(fireForeground, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
-										FlxTween.tween(heavyRain, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
-										smokeShit.forEach(function(spr:FlxSprite)
-										{
-											FlxTween.tween(spr, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
-										});
-										smokeFore.forEach(function(spr:FlxSprite)
-										{
-											FlxTween.tween(spr, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
-										});
-									}
-								}
-								if (curBeat == 880)
-								{
-									FlxTween.tween(fakeLightOfHope, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
-									if (!lowQuality) FlxTween.tween(fireThing2, {color: FlxColor.WHITE, alpha: 0.75}, 1.2, {ease: FlxEase.circOut});
-									FlxTween.tween(streetRuins, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
-									if (!lowQuality)
-									{
-										lightningStrike();
-										lightningStrikeFore();
-										FlxTween.tween(fireForeground, {color: FlxColor.WHITE, alpha: 0.6}, 2, {ease: FlxEase.circOut});
-										FlxTween.tween(heavyRain, {color: FlxColor.fromRGB(252, 141, 141)}, 0.5, {ease: FlxEase.circOut});
-										smokeShit.forEach(function(spr:FlxSprite)
-										{
-											FlxTween.tween(spr, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
-										});
-										smokeFore.forEach(function(spr:FlxSprite)
-										{
-											FlxTween.tween(spr, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
-										});
-									}
-								}
-								if (curBeat == 1008)
-								{
-									FlxTween.tween(fakeLightOfHope, {alpha: 0}, 2);
-									if (!lowQuality) FlxTween.tween(fireThing2, {alpha: 1}, 2);
-								}
-								if (curBeat == 1087)
-								{
-									if (!lowQuality)
-										{
-											fireForeground.kill();
-											fireForeground.destroy();
-											fireForeground = null;
-											smokeShit.forEach(function(spr:FlxSprite)
-												{
-													spr.kill();
-													spr.destroy();
-													spr = null;
-												});
-												smokeFore.forEach(function(spr:FlxSprite)
-												{
-													spr.kill();
-													spr.destroy();
-													spr = null;
-												});
-											fireThing2.kill();
-											fireThing2.destroy();
-											fireThing2 = null;
-											heavyRain.kill();
-											heavyRain.destroy();
-											heavyRain = null;
-											stageCurtains.visible = true;
-										}
-										streetRuins.kill();
-										streetRuins.destroy();
-										streetRuins = null;
-										fakeLightOfHope.kill();
-										fakeLightOfHope.destroy();
-										fakeLightOfHope = null;
-								}
+								});
 							}
+						}
+					case 'Delusional':
+						if (curBeat == 1)
+						{
+							if (rain != null) rain.alpha = 1;
+						}
+						if (curBeat == 64)
+						{
+							FlxTween.tween(fakeLightOfHope, {alpha: 0.001}, 1.7);
+							if (!lowQuality) FlxTween.tween(stageFront, {alpha: 1}, 1.5);
+						}
+						if (curBeat == 176)
+						{
+							if (rain != null) 
+							{
+								rain.kill();
+								rain.destroy();
+								rain = null;
+							}
+							if (heavyRain != null && !lowQuality)
+								heavyRain.alpha = 0.34;
+						}
+						if (curBeat == 280)
+						{
+							if (!lowQuality)
+							{
+								smokeShit.forEach(function(spr:FlxSprite)
+								{
+									FlxTween.tween(spr, {alpha: 0.55}, 1.5);
+								});
+								smokeFore.forEach(function(spr:FlxSprite)
+									{
+										FlxTween.tween(spr, {alpha: 0.55}, 1.5);
+								});
+							}
+						}
+						if (curBeat == 312 && !lowQuality)
+						{
+							FlxTween.tween(fireThing, {alpha: 1}, 1);
+							//smokeParticles.emitting = true;
+						} 
+						if (curBeat == 336)
+						{
+							if (!lowQuality)
+							{
+								smokeShit.forEach(function(spr:FlxSprite)
+								{
+									FlxTween.tween(spr, {alpha: 0.25}, 1.5);
+								});
+								smokeFore.forEach(function(spr:FlxSprite)
+								{
+										FlxTween.tween(spr, {alpha: 0.25}, 1.5);
+								});
+							}
+						}
+						if (curBeat == 474) // load daytime street assets
+						{
+							colorsOrSmthElse.kill();
+							colorsOrSmthElse.destroy();
+							colorsOrSmthElse = null;
+							//smokeParticles.emitting = false;
+							floor.kill();
+							floor.destroy();
+							floor = null;
+							if (!lowQuality)
+							{
+								fireThing.kill();
+								fireThing.destroy();
+								fireThing = null;
+								smokeShit.forEach(function(spr:FlxSprite)
+									{
+										spr.alpha = 0;
+									});
+									smokeFore.forEach(function(spr:FlxSprite)
+									{
+										spr.alpha = 0;
+									});
+								heavyRain.visible = false;
+								totallyanoriginalname.visible = true;
+								stageCurtains.visible = false;
+								stageFront.kill();
+								stageFront.destroy();
+								stageFront = null;
+							}
+							minnieBackground.visible = true;
+						}
+
+						if (curBeat == 679 && !lowQuality)
+						{
+							stageCurtains.alpha = 0.0001;
+							stageCurtains.visible = true;
+						}
+
+						if (curBeat == 680 || curBeat == 688 || curBeat == 696 || curBeat == 700 || curBeat == 704 || curBeat == 712 || curBeat == 720)
+						{
+							if (!lowQuality)
+							{
+								stageCurtains.alpha = 1;
+								FlxTween.tween(stageCurtains, {alpha: 0}, 1, {ease: FlxEase.circOut});
+							}
+						}
+
+						if (curBeat == 728 && !lowQuality)
+							FlxTween.tween(stageCurtains, {alpha: 1}, 5);
+
+						if (curBeat == 740) // go back to the street in a even more decayed state
+						{
+							//smokeParticles.emitting = true;
+							//fireParticles.emitting = true;
+							if (!lowQuality)
+							{
+								smokeShit.forEach(function(spr:FlxSprite)
+									{
+										spr.alpha = 0.7;
+									});
+									smokeFore.forEach(function(spr:FlxSprite)
+									{
+										spr.alpha = 0.74;
+									});
+								heavyRain.visible = true;
+								totallyanoriginalname.kill();
+								totallyanoriginalname.destroy();
+								totallyanoriginalname = null;
+							}
+							streetRuins.visible = true;
+							fakeLightOfHope.alpha = 0.5;
+							minnieBackground.kill();
+							minnieBackground.destroy();
+							minnieBackground = null;
+						}
+						if (curBeat == 744 || curBeat == 752 || curBeat == 760 || curBeat == 768 || curBeat == 772 || curBeat == 776 || curBeat == 784 || curBeat == 792 || curBeat == 800 || curBeat == 804 ||
+							curBeat == 808 || curBeat == 816 || curBeat == 824 || curBeat == 832 || curBeat == 836 || curBeat == 840 || curBeat == 848 || curBeat == 856 || curBeat == 864 || curBeat == 868 ||
+							curBeat == 880 || curBeat == 884 || curBeat == 888 || curBeat == 892 || curBeat == 896 || curBeat == 900 || curBeat == 904 || curBeat == 908 || curBeat == 913 || curBeat == 916 ||
+							curBeat == 920 || curBeat == 924 || curBeat == 929 || curBeat == 933 || curBeat == 936 || curBeat == 940 || curBeat == 944 || curBeat == 948 || curBeat == 952 || curBeat == 956 ||
+							curBeat == 960 || curBeat == 964 || curBeat == 968 || curBeat == 972 || curBeat == 976 || curBeat == 980 || curBeat == 984 || curBeat == 988 || curBeat == 993 || curBeat == 997 ||
+							curBeat == 1000 || curBeat == 1004)
+						{
+							fakeLightOfHope.alpha = 1;
+							FlxTween.tween(fakeLightOfHope, {alpha: 0.5}, 0.85);
+						}
+						if (curBeat == 872)
+						{
+							FlxTween.tween(fakeLightOfHope, {alpha: 1, color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
+							if (!lowQuality) FlxTween.tween(fireThing2, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
+							FlxTween.tween(streetRuins, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
+							if (!lowQuality)
+							{
+								FlxTween.tween(fireForeground, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
+								FlxTween.tween(heavyRain, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
+								smokeShit.forEach(function(spr:FlxSprite)
+								{
+									FlxTween.tween(spr, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
+								});
+								smokeFore.forEach(function(spr:FlxSprite)
+								{
+									FlxTween.tween(spr, {color: FlxColor.RED}, 2, {ease: FlxEase.circInOut});
+								});
+							}
+						}
+						if (curBeat == 880)
+						{
+							FlxTween.tween(fakeLightOfHope, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
+							if (!lowQuality) FlxTween.tween(fireThing2, {color: FlxColor.WHITE, alpha: 0.75}, 1.2, {ease: FlxEase.circOut});
+							FlxTween.tween(streetRuins, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
+							if (!lowQuality)
+							{
+								lightningStrike();
+								lightningStrikeFore();
+								FlxTween.tween(fireForeground, {color: FlxColor.WHITE, alpha: 0.6}, 2, {ease: FlxEase.circOut});
+								FlxTween.tween(heavyRain, {color: FlxColor.fromRGB(252, 141, 141)}, 0.5, {ease: FlxEase.circOut});
+								smokeShit.forEach(function(spr:FlxSprite)
+								{
+									FlxTween.tween(spr, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
+								});
+								smokeFore.forEach(function(spr:FlxSprite)
+								{
+									FlxTween.tween(spr, {color: FlxColor.WHITE}, 0.5, {ease: FlxEase.circOut});
+								});
+							}
+						}
+						if (curBeat == 1008)
+						{
+							FlxTween.tween(fakeLightOfHope, {alpha: 0}, 2);
+							if (!lowQuality) FlxTween.tween(fireThing2, {alpha: 1}, 2);
+						}
+					}
 					if (!lowQuality)
 					{
 						if (SONG.song == "Delusional" && FlxG.random.bool(3) && tumbleWeed == null && curBeat < 474)
@@ -11615,6 +11589,12 @@ class PlayState extends MusicBeatState
 	override function sectionHit()
 	{
 		super.sectionHit();
+
+		if (SONG.song == "Twisted Grins")
+		{
+			iconP1.scale.set(1.2, 1.2);
+			iconP2.scale.set(1.2, 1.2);
+		}
 
 		if (SONG.notes[curSection] != null)
 		{

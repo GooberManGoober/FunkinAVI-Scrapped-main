@@ -13,7 +13,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
 
-class WarningState extends states.MusicBeatState
+class WarningState extends MusicBeatState
 {
         var warnText:FlxText;
 
@@ -33,16 +33,16 @@ class WarningState extends states.MusicBeatState
 
         override function create()
         {
-                Application.current.window.title = 'Funkin.avi - WARNING';
+                Application.current.window.title = 'Funkin.avi: Scrapped - WARNING';
                 
                 #if windows
-                base.system.CppAPI.darkMode();
+                CppAPI.darkMode();
                 #end
                         
                 GameData.loadShit();
                 
                 if (GameData.hasSeenWarning)
-                        Main.switchState(this, new states.TitleState());
+                        MusicBeatState.switchState(new TitleState());
 
                 coolInstance = this;
 
@@ -60,7 +60,7 @@ Press SHIFT to disable flashing lights & shaders.\n
 Press ESCAPE to close the game.\n
 ^You have been warned...^",
 			32);
-		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, EngineTools.setTextAlign("center"));
+		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
                 warnText.applyMarkup(warnText.text, [redTextMarker]);
 		add(warnText);
@@ -71,7 +71,7 @@ Press ESCAPE to close the game.\n
 		add(blackFade);
 
                 var scratchStuff:FlxSprite = new FlxSprite();
-		scratchStuff.frames = Paths.getSparrowAtlas('filters/scratchShit');
+		scratchStuff.frames = Paths.getSparrowAtlas('Funkin_avi/filters/scratchShit');
 		scratchStuff.animation.addByPrefix('idle', 'scratch thing 1', 24, true);
 		scratchStuff.animation.play('idle');
 		scratchStuff.screenCenter();
@@ -80,7 +80,7 @@ Press ESCAPE to close the game.\n
 		add(scratchStuff);
 
 		var grain:FlxSprite = new FlxSprite();
-		grain.frames = Paths.getSparrowAtlas('filters/Grainshit');
+		grain.frames = Paths.getSparrowAtlas('Funkin_avi/filters/Grainshit');
 		grain.animation.addByPrefix('idle', 'grains 1', 24, true);
 		grain.animation.play('idle');
 		grain.screenCenter();
@@ -94,33 +94,34 @@ Press ESCAPE to close the game.\n
         override function update(elapsed:Float)
         {
                 if (!hasSeenWarning) {
-                        if (Controls.getPressEvent("accept"))
+                        if (controls.ACCEPT)
                         {
-                                Application.current.window.title = 'Funkin.avi - Settings Updated...';
-                                FlxG.sound.play(Paths.sound('base/menus/cancelMenu'));
+                                Application.current.window.title = 'Funkin.avi: Scrapped - Settings Updated...';
+                                FlxG.sound.play(Paths.sound('cancelMenu'));
                                 FlxTween.tween(blackFade, {alpha: 1}, 1, {
                                         onComplete: function (twn:FlxTween) {
-                                                Main.switchState(this, new states.warnings.DisclaimerState());
+                                                MusicBeatState.switchState(new DisclaimerState());
                                         }
                                 });
                         }
 			else if (FlxG.keys.justPressed.SHIFT)
 			{
-				Application.current.window.title = 'Funkin.avi - Settings Updated...';
-				Init.trueSettings.set('Disable Flashing Lights', true);
-				Init.trueSettings.set('Disable Screen Shaders', true);
-				Init.trueSettings.set('Epilepsy Mode', false);
-				FlxG.sound.play(Paths.sound('base/menus/cancelMenu'));
+				Application.current.window.title = 'Funkin.avi: Scrapped - Settings Updated...';
+				ClientPrefs.flashing = false;
+                                ClientPrefs.shaders = false;
+                                ClientPrefs.epilepsy = false;
+			        ClientPrefs.saveSettings();
+				FlxG.sound.play(Paths.sound('cancelMenu'));
                                 FlxTween.tween(blackFade, {alpha: 1}, 1, {
                                         onComplete: function (twn:FlxTween) {
-                                                Main.switchState(this, new states.warnings.DisclaimerState()); // placeholder
+                                                MusicBeatState.switchState(new DisclaimerState());
                                         }
                                 });
 			}
-                        else if (Controls.getPressEvent("back"))
+                        else if (controls.BACK)
                         {
-                                Application.current.window.title = 'Funkin.avi - Closing Game...';
-                                FlxG.sound.play(Paths.sound('base/menus/cancelMenu'));
+                                Application.current.window.title = 'Funkin.avi: Scrapped - Closing Game...';
+                                FlxG.sound.play(Paths.sound('cancelMenu'));
                                 FlxTween.tween(blackFade, {alpha: 1}, 1, {
                                         onComplete: function (twn:FlxTween) {
                                                 System.exit(0);

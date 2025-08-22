@@ -27,7 +27,6 @@ import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.media.Sound;
-import states.MusicBeatState;
 
 class DisclaimerState extends MusicBeatState
 {
@@ -43,7 +42,7 @@ class DisclaimerState extends MusicBeatState
 
         override function create()
         {
-                Application.current.window.title = 'Funkin.avi - DISCLAIMER';
+                Application.current.window.title = 'Funkin.avi: Scrapped - DISCLAIMER';
 
                 var bg:FlxSprite = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
                 bg.scale.set(FlxG.width * 5, FlxG.height * 5);
@@ -55,7 +54,7 @@ as this is simply a project based on the creepypasta:\n+\"SUICIDEMOUSE.avi\".+\n
 certain songs in this modification of:\n#\"Friday Night Funkin'\".#\nIf you are squirmish about the sight or thought of ^blood^,\nthis mod isn't for you.\n\n
 Press ENTER to continue.\nPress ESCAPE to close the game.\n\n^Last chance to turn back...^",
                     32);
-		warnText.setFormat("VCR OSD Mono", 28, FlxColor.WHITE, EngineTools.setTextAlign("center"));
+		warnText.setFormat("VCR OSD Mono", 28, FlxColor.WHITE, CENTER);
                 warnText.screenCenter(Y);
                 warnText.applyMarkup(warnText.text, [redTextMarker, grayTextMarker, cyanTextMarker]);
                 add(warnText);
@@ -66,7 +65,7 @@ Press ENTER to continue.\nPress ESCAPE to close the game.\n\n^Last chance to tur
                 add(blackFade);
 
                 var scratchStuff:FlxSprite = new FlxSprite();
-                scratchStuff.frames = Paths.getSparrowAtlas('filters/scratchShit');
+                scratchStuff.frames = Paths.getSparrowAtlas('Funkin_avi/filters/scratchShit');
                 scratchStuff.animation.addByPrefix('idle', 'scratch thing 1', 24, true);
                 scratchStuff.animation.play('idle');
                 scratchStuff.screenCenter();
@@ -75,7 +74,7 @@ Press ENTER to continue.\nPress ESCAPE to close the game.\n\n^Last chance to tur
                 add(scratchStuff);
 
                 var grain:FlxSprite = new FlxSprite();
-                grain.frames = Paths.getSparrowAtlas('filters/Grainshit');
+                grain.frames = Paths.getSparrowAtlas('Funkin_avi/filters/Grainshit');
                 grain.animation.addByPrefix('idle', 'grains 1', 24, true);
                 grain.animation.play('idle');
                 grain.screenCenter();
@@ -88,27 +87,27 @@ Press ENTER to continue.\nPress ESCAPE to close the game.\n\n^Last chance to tur
 
         override function update(elapsed:Float)
         {
-                        if (Controls.getPressEvent("accept"))
-                        {
-                                Application.current.window.title = 'Funkin.avi - Proceeding to Game...';
-                                FlxG.sound.play(Paths.sound('base/menus/cancelMenu'));
-                                FlxTween.tween(blackFade, {alpha: 1}, 1, {
-                                        onComplete: function (twn:FlxTween) {
-                                                Main.switchState(this, new states.TitleState());
-                                        }
-                                });
-                                GameData.hasSeenWarning = true;
-                                GameData.saveShit();
-                        }
-                        else if (Controls.getPressEvent("back"))
-                        {
-                                Application.current.window.title = 'Funkin.avi - Closing Game...';
-                                FlxG.sound.play(Paths.sound('base/menus/cancelMenu'));
-                                FlxTween.tween(blackFade, {alpha: 1}, 1, {
-                                        onComplete: function (twn:FlxTween) {
-                                                System.exit(0);
-                                        }
-                                });
-                        }
+                if (controls.ACCEPT)
+                {
+                        Application.current.window.title = 'Funkin.avi: Scrapped - Proceeding to Game...';
+                        FlxG.sound.play(Paths.sound('cancelMenu'));
+                        FlxTween.tween(blackFade, {alpha: 1}, 1, {
+                                onComplete: function (twn:FlxTween) {
+                                        MusicBeatState.switchState(new TitleState());
+                                }
+                        });
+                        GameData.hasSeenWarning = true;
+                        GameData.saveShit();
+                }
+                else if (controls.BACK)
+                {
+                        Application.current.window.title = 'Funkin.avi: Scrapped - Closing Game...';
+                        FlxG.sound.play(Paths.sound('cancelMenu'));
+                        FlxTween.tween(blackFade, {alpha: 1}, 1, {
+                                onComplete: function (twn:FlxTween) {
+                                        System.exit(0);
+                                }
+                        });
+                }
         }
 }

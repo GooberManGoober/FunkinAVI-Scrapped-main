@@ -19,6 +19,7 @@ class AutoSaveWarningState extends FlxState
 		"I bet nobody's reading this...",
 		"This mod contains 40k+ lines of code.",
 		"The update wasn't suppose to be nearly 3 hours long at first.",
+		"This mod runs on Another Engine that isn't Psych Engine now!",
 		"This mod was made by a group of 50 people!",
 		"Malfunction was originally NEVER suppose to be in the game.",
 		"Some characters showcased in the game are in fact original ideas!",
@@ -32,27 +33,41 @@ class AutoSaveWarningState extends FlxState
 
 	public static function load()
 	{
-		GameData.loadShit();
+		GameData.loadShit(); // Collect Any Data
 		CoolUtil.createCoreFile();
 		#if windows
-        backend.windows.CppAPI.darkMode();
-        #end
+		CppAPI.darkMode();
+		#end
+
 		ClientPrefs.loadDefaultKeys();
+		FlxG.save.bind('funkin', CoolUtil.getSavePath());
+
+        PlayerSettings.init();
 		ClientPrefs.loadPrefs();
+		Highscore.load();
 	}
 
 	override function create()
 	{
+		CoolUtil.createCoreFile();
+
 		super.create();
 
-		#if desktop
-		DiscordClient.changePresence("FUN FACT:", doofinschmirtzFactinator[FlxG.random.int(0, doofinschmirtzFactinator.length - 1)], 'icon', 'mouse');
+		#if windows
+		CppAPI.darkMode();
+		#end
+
+		#if DISCORD_RPC
+		DiscordClient.changePresence("FUN FACT:", doofinschmirtzFactinator[FlxG.random.int(0, doofinschmirtzFactinator.length - 1)], 
+			'icon', 'mouse');
 		#end
 
 		openfl.Lib.application.window.title = "Funkin.avi: Scrapped - The Show Will Begin Shortly...";
 
+		GameData.loadShit(); // Collect Any Data
+
 		warningText = new FlxText(0, 0, FlxG.width,
-			'WARNING:\nThis Mod contains some flashing lights!\nYou can always disable them in the Options Menu.\n^You\'ve been warned!^', 44);
+			'WARNING:\nThis game contains an auto save system.\nIf you see this logo right below\n^DON\'T TURN OFF THE DEVICE!^', 44);
 		warningText.setFormat(Paths.font('vcr.ttf'), 37, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		warningText.screenCenter().y -= 40;
 		warningText.alpha = 0;
@@ -92,7 +107,10 @@ class AutoSaveWarningState extends FlxState
 				ease: FlxEase.quadInOut,
 				onComplete: __ ->
 				{
-					MusicBeatState.switchState(new states.menus.TitleState());
+					if (GameData.hasSeenWarning)
+						MusicBeatState.switchState(new TitleState());
+					else
+						MusicBeatState.switchState(new WarningState());
 				}
 			});
 		});

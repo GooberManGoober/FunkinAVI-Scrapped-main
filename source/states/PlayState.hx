@@ -113,6 +113,9 @@ class PlayState extends MusicBeatState
 	public var modchartSaves:Map<String, FlxSave> = new Map();
 	#end
 
+	//muckney health color lmao
+	public var muckneyColors:Array<Int> = [];
+
 	public var BF_X:Float = 770;
 	public var BF_Y:Float = 100;
 	public var DAD_X:Float = 100;
@@ -549,6 +552,8 @@ class PlayState extends MusicBeatState
 	var chainsI3:FlxSprite;
 	var lightI:FlxSprite;
 	var flairI:FlxSprite;
+
+	public static var cameraBumpSpeed:Float = 4;
 
 	//NEGLECTION
 	var mascotRoom:FlxSprite;
@@ -3296,6 +3301,11 @@ class PlayState extends MusicBeatState
 
 		ModchartFuncs.loadLuaFunctions();
 
+		if (SONG.song == 'Twisted Grins')
+		{
+			cameraBumpSpeed = 8;
+		}
+
 		callOnLuas('onCreatePost', []);
 
 		super.create();
@@ -3564,6 +3574,14 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
+	public function muckneyHealthColorShitLol()
+	{
+		muckneyColors = [FlxG.random.int(0, 255), FlxG.random.int(0, 255), FlxG.random.int(0, 255)];
+
+		healthBar.createFilledBar(FlxColor.fromRGB(muckneyColors[0], muckneyColors[1], muckneyColors[2]),
+		FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
+	}
+
 	public function reloadHealthBarColors() {
 		switch (SONG.song)
 		{
@@ -3657,7 +3675,7 @@ class PlayState extends MusicBeatState
 		if(gfCheck && char.curCharacter.startsWith('gf')) { //IF DAD IS GIRLFRIEND, HE GOES TO HER POSITION
 			char.setPosition(GF_X, GF_Y);
 			char.scrollFactor.set(0.95, 0.95);
-			char.danceEveryNumBeats = 2;
+			char.danceEveryNumBeats = (SONG.song == 'Twisted Grins' ? 4 : 2);
 		}
 		char.x += char.positionArray[0];
 		char.y += char.positionArray[1];
@@ -4196,29 +4214,6 @@ class PlayState extends MusicBeatState
 				FlxG.sound.list.add(sfx);
 				sfx.volume = 0.6;
 			}
-
-			Lib.application.window.onClose.removeAll();
-			Lib.application.window.onClose.add(function() {
-				persistentUpdate = false;
-				persistentDraw = true;
-				paused = true;
-	
-				if(inst != null) {
-					inst.pause();
-					vocals.pause();
-					bf_vocals.pause();
-					opp_vocals.pause();
-				}
-	
-				openSubState(new Prompt('Are you sure you want to quit?\n\nYou will lose your unsaved progress.', 0, function(){
-					System.exit(0);
-					DiscordClient.shutdown();
-				}, function(){
-					persistentUpdate = true;
-					persistentDraw = true;
-				},false, camOther));
-				Lib.application.window.onClose.cancel();
-			});
 
 			for (i in 0...playerStrums.length) {
 				setOnLuas('defaultPlayerStrumX' + i, playerStrums.members[i].x);
@@ -5103,29 +5098,6 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		Lib.application.window.onClose.removeAll();
-		Lib.application.window.onClose.add(function() {
-			persistentUpdate = false;
-			persistentDraw = true;
-			instance.paused = true;
-
-			if(inst != null) {
-				inst.pause();
-				vocals.pause();
-				bf_vocals.pause();
-				opp_vocals.pause();
-			}
-
-			openSubState(new Prompt('Are you sure you want to quit?\n\nYour data will still save if you do.', 0, function(){
-				System.exit(0);
-				DiscordClient.shutdown();
-			}, function(){
-				persistentUpdate = true;
-				persistentDraw = true;
-			},false, camOther));
-			Lib.application.window.onClose.cancel();
-		});
-
 		super.closeSubState();
 	}
 
@@ -5251,6 +5223,9 @@ class PlayState extends MusicBeatState
 	override public function update(elapsed:Float)
 	{
 		callOnLuas('onUpdate', [elapsed]);
+
+		if (PlayState.SONG.song == "Birthday")
+			muckneyHealthColorShitLol();
 
 		updateHealthBar();
 
@@ -7126,13 +7101,24 @@ class PlayState extends MusicBeatState
 			music.pause();
 		}
 		
-		if(ClientPrefs.noteOffset <= 0 || ignoreNoteOffset) {
-			finishCallback();
-		} else {
-			finishTimer = new FlxTimer().start(ClientPrefs.noteOffset / 1000, function(tmr:FlxTimer) {
+		var save:AutoSaveLogo = new AutoSaveLogo('Funkin_avi/autoSave', FlxG.width * 0.78, FlxG.height * 0.69);
+		save.saveOnly();
+		add(save);
+
+		for(uis in [camHUD])
+		FlxTween.tween(uis, {alpha: 0}, 1, {ease: FlxEase.cubeOut});
+
+		new FlxTimer().start(3, _ -> {
+			save.fade(true);
+		
+			if(ClientPrefs.noteOffset <= 0 || ignoreNoteOffset) {
 				finishCallback();
-			});
-		}
+			} else {
+				finishTimer = new FlxTimer().start(ClientPrefs.noteOffset / 1000, function(tmr:FlxTimer) {
+					finishCallback();
+				});
+			}
+		});
 	}
 
 
@@ -8368,20 +8354,9 @@ class PlayState extends MusicBeatState
 				brt = note.noteSplashBrt;
 			}
 		}
-		var offsetX:Int;
-		var offsetY:Int;
-
-		switch (skin)
-		{
-			case "noteSplashes":
-				offsetX = 0;
-				offsetY = 0;
-			default:
-				offsetX = 25;
-				offsetY = 40;
-		}
+		
 		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
-		splash.setupNoteSplash(x + offsetX, y + offsetY, data, skin, hue, sat, brt);
+		splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
 		if (lightI != null)
 			if (lightI.visible) 
 				splash.setColorTransform(-1, -1, -1, 1, 255, 255, 255, 0); 
@@ -8496,7 +8471,7 @@ class PlayState extends MusicBeatState
 			gf.playAnim('scared', true);
 		}
 
-		if(ClientPrefs.camZooms) {
+		if((FlxG.camera.zoom < 1.35 && curBeat % cameraBumpSpeed == 0) && ClientPrefs.camZooms) {
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;
 
@@ -10369,12 +10344,6 @@ class PlayState extends MusicBeatState
 					case 424: FlxTween.tween(dad, {alpha: 0}, 5);
 				}
 
-			case "Twisted Grins":
-				switch (curBeat)
-				{
-					
-				}
-
 			case "Bless":
 				switch (curBeat)
 				{
@@ -11084,6 +11053,15 @@ class PlayState extends MusicBeatState
 				|| dad.curCharacter != 'walt-true' || dad.curCharacter != 'relapsedNEW') iconP2.scale.set(1.2, 1.2);
 		}
 
+		if (curBeat % ((PlayState.SONG.song == 'Twisted Grins') ? 2 : 1) == 0)
+		{
+			iconP1.scale.set(1.2, 1.2);
+			iconP1.updateHitbox();
+
+			iconP2.scale.set(1.2, 1.2);
+			iconP2.updateHitbox();
+		}
+
 		if (SONG.song == "Isolated")
 		{
 			lunacyIcon.scale.set(1.2, 1.2);
@@ -11122,6 +11100,12 @@ class PlayState extends MusicBeatState
 		if (curBeat % dad.danceEveryNumBeats == 0 && dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing') && !dad.stunned)
 		{
 			dad.dance();
+		}
+
+		if (camZooming && (FlxG.camera.zoom < 1.35 && curBeat % cameraBumpSpeed == 0) && ClientPrefs.camZooms && SONG.song != "Cycled Sins") // me when recreating the actual relapse game visuals lmao
+		{
+			FlxG.camera.zoom += 0.015 * camZoomingMult;
+			camHUD.zoom += 0.03 * camZoomingMult;
 		}
 
 		switch (curStage)
@@ -11590,23 +11574,11 @@ class PlayState extends MusicBeatState
 	{
 		super.sectionHit();
 
-		if (SONG.song == "Twisted Grins")
-		{
-			iconP1.scale.set(1.2, 1.2);
-			iconP2.scale.set(1.2, 1.2);
-		}
-
 		if (SONG.notes[curSection] != null)
 		{
 			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
 			{
 				moveCameraSection();
-			}
-
-			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && SONG.song != "Cycled Sins") // me when recreating the actual relapse game visuals lmao
-			{
-				FlxG.camera.zoom += 0.015 * camZoomingMult;
-				camHUD.zoom += 0.03 * camZoomingMult;
 			}
 
 			if (SONG.notes[curSection].changeBPM)

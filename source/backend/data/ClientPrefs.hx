@@ -7,6 +7,7 @@ class ClientPrefs {
 	public static var middleScroll:Bool = false;
 	public static var opponentStrums:Bool = true;
 	public static var showFPS:Bool = true;
+	public static var systemCursor:Bool = false;
 	public static var flashing:Bool = true;
 	public static var globalAntialiasing:Bool = true;
 	public static var lowQuality:Bool = false;
@@ -108,6 +109,7 @@ class ClientPrefs {
 		settings.data.middleScroll = middleScroll;
 		settings.data.opponentStrums = opponentStrums;
 		settings.data.showFPS = showFPS;
+		settings.data.systemCursor = systemCursor;
 		settings.data.flashing = flashing;
 		settings.data.globalAntialiasing = globalAntialiasing;
 		settings.data.lowQuality = lowQuality;
@@ -175,6 +177,9 @@ class ClientPrefs {
 			if(Main.infoCounter != null) {
 				Main.infoCounter.visible = showFPS;
 			}
+		}
+		if(settings.data.systemCursor != null) {
+			systemCursor = settings.data.systemCursor;
 		}
 		if(settings.data.flashing != null) {
 			flashing = settings.data.flashing;

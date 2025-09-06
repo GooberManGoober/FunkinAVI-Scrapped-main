@@ -21,6 +21,7 @@ import flixel.util.FlxColor;
 import lime.app.Application;
 import flixel.input.keyboard.FlxKey;
 import openfl.filters.ShaderFilter;
+import gameObjects.ui.AutoSaveLogo;
 
 using StringTools;
 
@@ -536,6 +537,10 @@ class MainMenuState extends MusicBeatState
 			{
 				GameData.unlockEverything();
 				FlxG.sound.play(Paths.sound('funkinAVI/easterEggSound'));
+				var save:AutoSaveLogo = new AutoSaveLogo('Funkin_avi/autoSave', FlxG.width * 0.78, FlxG.height * 0.69);
+				save.saveAndLoad();
+				add(save);
+				new FlxTimer().start(3, _ -> save.fade(true));
 			}		
 			if (FlxG.keys.justPressed.TWO && Main.debug)
 			{

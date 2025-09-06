@@ -1,22 +1,37 @@
 package states.options;
 
-import flixel.text.FlxText.FlxTextFormat;
-import flixel.text.FlxText.FlxTextFormatMarkerPair;
 import flash.text.TextField;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 import lime.utils.Assets;
+import flixel.FlxSubState;
+import flash.text.TextField;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.util.FlxSave;
 import haxe.Json;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
-import backend.FlxTextAlphabet;
-import gameObjects.utils.AttachedFlxText;
+import flixel.graphics.FlxGraphic;
+
+using StringTools;
+
 class BaseOptionsMenu extends MusicBeatSubstate
 {
 	private var curOption:Option = null;
 	private var curSelected:Int = 0;
 	private var optionsArray:Array<Option>;
 
-	private var grpOptions:FlxTypedGroup<FlxTextAlphabet>;
+	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
-	private var grpTexts:FlxTypedGroup<AttachedFlxText>;
+	private var grpTexts:FlxTypedGroup<AttachedText>;
 
 	private var boyfriend:Character = null;
 	private var descBox:FlxSprite;
@@ -25,13 +40,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	public var title:String;
 	public var rpcTitle:String;
 
-	var selectorLeft:FlxSprite;
-	var selectorRight:FlxSprite;
-
-	var dogshitPath:String = 'Funkin_avi/options';
-
-	var redTextMarker = new FlxTextFormatMarkerPair(new FlxTextFormat(FlxColor.RED, true, true), '^^');
-	
 	public function new()
 	{
 		super();
@@ -43,79 +51,59 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		DiscordClient.changePresence(rpcTitle, "Changing settings...", "icon", "gear");
 		#end
 		
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('Funkin_avi/options/background'));
-		bg.setGraphicSize(FlxG.width, FlxG.height);
-		bg.updateHitbox();
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('Funkin_avi/menu/menuDesat'));
+		bg.color = 0xFFea71fd;
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
-		bg.color = 0x343434;
 		add(bg);
 
 		// avoids lagspikes while scrolling through menus!
-		grpOptions = new FlxTypedGroup<FlxTextAlphabet>();
+		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
-		grpTexts = new FlxTypedGroup<AttachedFlxText>();
+		grpTexts = new FlxTypedGroup<AttachedText>();
 		add(grpTexts);
 
 		checkboxGroup = new FlxTypedGroup<CheckboxThingie>();
 		add(checkboxGroup);
 
 		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+		descBox.alpha = 0.6;
+		add(descBox);
 
-		var shit = new FlxText(0, FlxG.height * 0.05, 0, title);
-		shit.setFormat(Paths.font("disneyFreeplayFont.ttf"), 25, FlxColor.fromRGB(255, 255, 255, Std.int(255 * .5)), CENTER, OUTLINE, FlxColor.BLACK);
-		shit.screenCenter(X);
-		add(shit);
+		var titleText:Alphabet = new Alphabet(75, 40, title, true);
+		titleText.scaleX = 0.6;
+		titleText.scaleY = 0.6;
+		titleText.alpha = 0.4;
+		add(titleText);
 
-		var selectorLeft = new FlxText(shit.x - 310, shit.y + 70, 0, '< ');
-		selectorLeft.setFormat(Paths.font("disneyFreeplayFont.ttf"), 150, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-		selectorLeft.scale.set(.6, .6);
-		selectorLeft.antialiasing = ClientPrefs.globalAntialiasing;
-		//FlxTween.tween(selectorLeft, {x: 176.5}, 1, {ease: FlxEase.expoOut});
-		add(selectorLeft);
-
-		var selectorRight = new FlxText(shit.x + 320, shit.y + 70, 0, ' >');
-		selectorRight.scale.set(.6, .6);
-		selectorRight.antialiasing = ClientPrefs.globalAntialiasing;
-		selectorRight.setFormat(Paths.font("disneyFreeplayFont.ttf"), 150, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-		add(selectorRight);
-
-		descText = new FlxText(50, 900, 1180, "", 32);
-		descText.setFormat(Paths.font("DisneyFont.ttf"), 30, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.scrollFactor.set();
 		descText.borderSize = 2.4;
-		descText.applyMarkup(descText.text, [redTextMarker]);
 		add(descText);
 
 		for (i in 0...optionsArray.length)
 		{
-			var optionText:FlxTextAlphabet = new FlxTextAlphabet(480, 135, 0, optionsArray[i].name);
-			optionText.setFormat(Paths.font("BROUGHTTHESTYLE.otf"), 90, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			var optionText:Alphabet = new Alphabet(290, 260, optionsArray[i].name, false);
 			optionText.isMenuItem = true;
-			optionText.changeY = false;
-			optionText.changeLerp = true;
-			optionText.lerpVal = 1;
-			optionText.distancePerItem.x += 200;
 			/*optionText.forceX = 300;
 			optionText.yMult = 90;*/
 			optionText.targetY = i;
-			optionText.screenCenter(X).x -= 50;
+			optionText.changeX = false;
 			grpOptions.add(optionText);
 
 			if(optionsArray[i].type == 'bool') {
-				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x + optionText.width + 100, optionText.y, optionsArray[i].getValue() == true);
+				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
 				checkbox.sprTracker = optionText;
-				checkbox.offsetY = -50;
 				checkbox.ID = i;
 				checkboxGroup.add(checkbox);
 			} else {
+				optionText.x -= 80;
+				optionText.startPosition.x -= 80;
 				//optionText.xAdd -= 80;
-				var valueText:AttachedFlxText = new AttachedFlxText('' + optionsArray[i].getValue(), optionText.width + 80, 0);
-				valueText.setFormat(Paths.font("BROUGHTTHESTYLE.otf"), 90, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				var valueText:AttachedText = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 80);
 				valueText.sprTracker = optionText;
-				//valueText.offsetY = -50;
-				valueText.offsetX = -120;
 				valueText.copyAlpha = true;
 				valueText.ID = i;
 				grpTexts.add(valueText);
@@ -128,50 +116,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				reloadBoyfriend();
 			}
 			updateTextFrom(optionsArray[i]);
-		}
-
-		var graphic:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$dogshitPath/IMG_1017'));
-		graphic.setGraphicSize(FlxG.width, FlxG.height);
-		graphic.updateHitbox();
-		graphic.screenCenter();
-		graphic.antialiasing = ClientPrefs.globalAntialiasing;
-		add(graphic);
-
-		var graphic:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$dogshitPath/Untitled1595_20240710134131'));
-		graphic.setGraphicSize(FlxG.width, FlxG.height);
-		graphic.updateHitbox();
-		graphic.screenCenter();
-		graphic.antialiasing = ClientPrefs.globalAntialiasing;
-		add(graphic);
-
-		if (!ClientPrefs.lowQuality)
-		{
-			var gradient:FlxSprite = new FlxSprite().loadGraphic(Paths.image('Funkin_avi/filters/gradient'));
-			gradient.scrollFactor.set(0, 0);
-			gradient.setGraphicSize(Std.int(gradient.width * 0.75));
-			gradient.updateHitbox();
-			gradient.screenCenter();
-			gradient.antialiasing = true;
-			gradient.scale.x += .1;
-			add(gradient);
-
-			var scratchStuff:FlxSprite = new FlxSprite();
-			scratchStuff.frames = Paths.getSparrowAtlas('Funkin_avi/filters/scratchShit');
-			scratchStuff.animation.addByPrefix('idle', 'scratch thing 1', 24, true);
-			scratchStuff.animation.play('idle');
-			scratchStuff.screenCenter();
-			scratchStuff.scale.x = 1.1;
-			scratchStuff.scale.y = 1.1;
-			add(scratchStuff);
-
-			var grain:FlxSprite = new FlxSprite();
-			grain.frames = Paths.getSparrowAtlas('Funkin_avi/filters/Grainshit');
-			grain.animation.addByPrefix('idle', 'grains 1', 24, true);
-			grain.animation.play('idle');
-			grain.screenCenter();
-			grain.scale.x = 1.1;
-			grain.scale.y = 1.1;
-			add(grain);
 		}
 
 		changeSelection();
@@ -188,11 +132,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	var holdValue:Float = 0;
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_LEFT_P)
+		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
 		}
-		if (controls.UI_RIGHT_P)
+		if (controls.UI_DOWN_P)
 		{
 			changeSelection(1);
 		}
@@ -220,13 +164,13 @@ class BaseOptionsMenu extends MusicBeatSubstate
 					reloadCheckboxes();
 				}
 			} else {
-				if(controls.UI_UP || controls.UI_DOWN) {
-					var pressed = (controls.UI_UP_P || controls.UI_DOWN_P);
+				if(controls.UI_LEFT || controls.UI_RIGHT) {
+					var pressed = (controls.UI_LEFT_P || controls.UI_RIGHT_P);
 					if(holdTime > 0.5 || pressed) {
 						if(pressed) {
 							var add:Dynamic = null;
 							if(curOption.type != 'string') {
-								add = controls.UI_UP ? -curOption.changeValue : curOption.changeValue;
+								add = controls.UI_LEFT ? -curOption.changeValue : curOption.changeValue;
 							}
 
 							switch(curOption.type)
@@ -249,7 +193,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 								case 'string':
 									var num:Int = curOption.curOption; //lol
-									if(controls.UI_UP_P) --num;
+									if(controls.UI_LEFT_P) --num;
 									else num++;
 
 									if(num < 0) {
@@ -266,7 +210,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 							curOption.change();
 							FlxG.sound.play(Paths.sound('funkinAVI/menu/scrollSfx'));
 						} else if(curOption.type != 'string') {
-							holdValue += curOption.scrollSpeed * elapsed * (controls.UI_UP ? -1 : 1);
+							holdValue += curOption.scrollSpeed * elapsed * (controls.UI_LEFT ? -1 : 1);
 							if(holdValue < curOption.minValue) holdValue = curOption.minValue;
 							else if (holdValue > curOption.maxValue) holdValue = curOption.maxValue;
 
@@ -286,7 +230,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 					if(curOption.type != 'string') {
 						holdTime += elapsed;
 					}
-				} else if(controls.UI_UP_R || controls.UI_DOWN_R) {
+				} else if(controls.UI_LEFT_R || controls.UI_RIGHT_R) {
 					clearHold();
 				}
 			}
@@ -309,26 +253,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				}
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				reloadCheckboxes();
-			}
-		}
-
-		if (boyfriend != null && boyfriend.visible)
-		{
-			if (controls.NOTE_UP_P)
-			{
-				boyfriend.playAnim("singUP");
-			}
-			if (controls.NOTE_DOWN_P)
-			{
-				boyfriend.playAnim("singDOWN");
-			}
-			if (controls.NOTE_LEFT_P)
-			{
-				boyfriend.playAnim("singLEFT");
-			}
-			if (controls.NOTE_RIGHT_P)
-			{
-				boyfriend.playAnim("singRIGHT");
 			}
 		}
 
@@ -366,12 +290,9 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		if (curSelected >= optionsArray.length)
 			curSelected = 0;
 
-		grpOptions.members[curSelected].screenCenter(X);
-
 		descText.text = optionsArray[curSelected].description;
 		descText.screenCenter(Y);
 		descText.y += 270;
-		descText.applyMarkup(descText.text, [redTextMarker]);
 
 		var bullShit:Int = 0;
 
@@ -379,29 +300,28 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
-			item.alpha = 0;
+			item.alpha = 0.6;
 			if (item.targetY == 0) {
 				item.alpha = 1;
 			}
 		}
 		for (text in grpTexts) {
-			text.alpha = 0;
+			text.alpha = 0.6;
 			if(text.ID == curSelected) {
 				text.alpha = 1;
 			}
 		}
 
+		descBox.setPosition(descText.x - 10, descText.y - 10);
+		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
+		descBox.updateHitbox();
+
 		if(boyfriend != null)
 		{
 			boyfriend.visible = optionsArray[curSelected].showBoyfriend;
 		}
-
 		curOption = optionsArray[curSelected]; //shorter lol
 		FlxG.sound.play(Paths.sound('funkinAVI/menu/scrollSfx'));
-	}
-
-	override function closeSubState() {
-		super.closeSubState();
 	}
 
 	public function reloadBoyfriend()
@@ -414,12 +334,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			boyfriend.destroy();
 		}
 
-		boyfriend = new Character(440, 220, 'everett-modern', true);
+		boyfriend = new Character(840, 170, 'bf', true);
 		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.75));
-		boyfriend.addOffset("singLEFT", 18, 0);
-		boyfriend.addOffset("singRIGHT", -36, 0);
-		boyfriend.addOffset("singUP", -33, 23);
-		boyfriend.addOffset("singDOWN", -7, -22);
 		boyfriend.updateHitbox();
 		boyfriend.dance();
 		insert(1, boyfriend);

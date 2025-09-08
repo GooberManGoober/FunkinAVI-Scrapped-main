@@ -6573,43 +6573,21 @@ class PlayState extends MusicBeatState
 				Lib.application.window.onClose.add(function() {
 					DiscordClient.shutdown();
 				});
+				
+				vocals.stop();
+				bf_vocals.stop();
+				opp_vocals.stop();
+				inst.stop();
 
-				if (FreeplayState.freeplayMenuList != 3)
-				{
-					vocals.stop();
-					bf_vocals.stop();
-					opp_vocals.stop();
-					inst.stop();
-
-					persistentUpdate = false;
-					persistentDraw = false;
-					for (tween in modchartTweens) {
-						tween.active = true;
-					}
-					for (timer in modchartTimers) {
-						timer.active = true;
-					}
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
+				persistentUpdate = false;
+				persistentDraw = false;
+				for (tween in modchartTweens) {
+					tween.active = true;
 				}
-				else
-				{
-					vocals.stop();
-					bf_vocals.stop();
-					opp_vocals.stop();
-					FlxTween.tween(this, {playbackRate: 0.001}, 7, {ease: FlxEase.expoOut});
-					FlxTween.tween(inst, {pitch: 0.001}, 7, {ease: FlxEase.expoOut, onComplete: function(twn:FlxTween)
-					{
-						persistentUpdate = false;
-						persistentDraw = false;
-						for (tween in modchartTweens) {
-							tween.active = true;
-						}
-						for (timer in modchartTimers) {
-							timer.active = true;
-						}
-					}});
-					openSubState(new ManiaLoseSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
+				for (timer in modchartTimers) {
+					timer.active = true;
 				}
+				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
 
 				// MusicBeatState.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 

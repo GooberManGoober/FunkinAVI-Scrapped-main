@@ -1303,7 +1303,7 @@ class ChartingState extends MusicBeatState
 			ignoreWarnings = FlxG.save.data.ignoreWarnings;
 		};
 		
-		sliderRate = new FlxUISlider(this, 'playbackSpeed', metronomeOffsetStepper.x + 68, metronomeStepper.y - 20, 0.1, 500, 130, 20, 15, 5, FlxColor.WHITE, FlxColor.BLACK);
+		sliderRate = new FlxUISlider(this, 'playbackSpeed', metronomeOffsetStepper.x + 68, metronomeStepper.y - 20, 0.5, 3, 130, null, 5, FlxColor.WHITE, FlxColor.BLACK);
 		sliderRate.nameLabel.text = 'Playback Rate';
 		tab_group_chart.add(sliderRate);
 

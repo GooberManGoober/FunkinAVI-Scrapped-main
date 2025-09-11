@@ -110,7 +110,7 @@ class FreeplayState extends MusicBeatState
 				chromAberration.setFloat('aberration', 0.07);
 				chromAberration.setFloat('effectTime', 0.005);
 
-				addSong('Devilish Deal', 3, 'satanddNEW', FlxColor.fromRGB(65, 88, 94), 'obscurity', 'EASY', FlxColor.WHITE, [25, -18], "None");
+				addSong('Devilish Deal', 3, 'satandd', FlxColor.fromRGB(65, 88, 94), 'obscurity', 'EASY', FlxColor.WHITE, [25, -18], "None");
 				addSong('Isolated', 3, 'avier', FlxColor.fromRGB(60, 60, 60), 'obscurity', 'NORMAL', FlxColor.fromRGB(255, 220, 220), [15, 0], "Modcharts that move notes on occasion.");
 				addSong('Lunacy', 3, 'lunaavier', FlxColor.fromRGB(69, 54, 54), 'obscurity', 'HARD', FlxColor.fromRGB(255, 187, 187), [15, 0], "Modcharts that may cause visual distortion.");
 				addSong('Delusional', 3, 'deluavier', FlxColor.fromRGB(79, 32, 32), 'FR3SHMoure', 'INSANE', FlxColor.fromRGB(255, 110, 110), [15, 0], "Modcharts that may cause visual distortion");
@@ -283,28 +283,28 @@ class FreeplayState extends MusicBeatState
 		//add(text);
 
 		if(!ClientPrefs.lowQuality)
-			{
-				var scratchStuff:FlxSprite = new FlxSprite();
-				scratchStuff.frames = Paths.getSparrowAtlas('Funkin_avi/filters/scratchShit');
-				scratchStuff.animation.addByPrefix('idle', 'scratch thing 1', 24, true);
-				scratchStuff.animation.play('idle');
-				scratchStuff.screenCenter();
-				scratchStuff.scale.x = 1.1;
-				scratchStuff.scale.y = 1.1;
-				add(scratchStuff);
-	
-				var grain:FlxSprite = new FlxSprite();
-				grain.frames = Paths.getSparrowAtlas('Funkin_avi/filters/Grainshit');
-				grain.animation.addByPrefix('idle', 'grains 1', 24, true);
-				grain.animation.play('idle');
-				grain.screenCenter();
-				grain.scale.x = 1.1;
-				grain.scale.y = 1.1;
-				add(grain);
-	
-				scratchStuff.cameras = [camHUD];
-				grain.cameras = [camHUD];
-			}
+		{
+			var scratchStuff:FlxSprite = new FlxSprite();
+			scratchStuff.frames = Paths.getSparrowAtlas('Funkin_avi/filters/scratchShit');
+			scratchStuff.animation.addByPrefix('idle', 'scratch thing 1', 24, true);
+			scratchStuff.animation.play('idle');
+			scratchStuff.screenCenter();
+			scratchStuff.scale.x = 1.1;
+			scratchStuff.scale.y = 1.1;
+			add(scratchStuff);
+
+			var grain:FlxSprite = new FlxSprite();
+			grain.frames = Paths.getSparrowAtlas('Funkin_avi/filters/Grainshit');
+			grain.animation.addByPrefix('idle', 'grains 1', 24, true);
+			grain.animation.play('idle');
+			grain.screenCenter();
+			grain.scale.x = 1.1;
+			grain.scale.y = 1.1;
+			add(grain);
+
+			scratchStuff.cameras = [camHUD];
+			grain.cameras = [camHUD];
+		}
 		
 		if (!songInstPlaying) 
 			Conductor.bpm = 98;
@@ -856,14 +856,14 @@ class FreeplayState extends MusicBeatState
 			case 'devilish-deal': bpm = 90;
 			case 'isolated' | 'isolated-legacy': bpm = 165;
 			case 'lunacy': bpm = 188;
-			case 'delusional' | 'bless' | 'birthday': bpm = 175;
+			case 'delusional' | 'birthday': bpm = 175;
 			case 'hunted' | 'malfunction-legacy' | 'war-dilemma' | 'mercy' | 'mercy-legacy' | 'hunted-legacy': bpm = 160;
 			case 'laugh-track': bpm = 180;
 			case 'malfunction': bpm = 166;
 			case 'twisted-grins': bpm = 390;
 			case "don't-cross!": bpm = 140;
 			case 'cycled-sins': bpm = 161;
-			case 'isolated-beta' | 'isolated-old': bpm = 120;
+			case 'isolated-beta' | 'isolated-old' | 'bless': bpm = 120;
 		}
 		return bpm;
 	}
@@ -930,7 +930,8 @@ class FreeplayState extends MusicBeatState
 				case "Devilish Deal" | "Isolated" | "Lunacy" | "Malfunction" | "Lunacy Legacy" | "Malfunction Legacy" | "Mercy Legacy": songArtist = "obscurity.";
 				case "Delusional" | "Birthday" | "Delusional Legacy" | "A True Monster": songArtist = "FR3SHMoure";
 				case "Hunted" | "Hunted Legacy" | "Cycled Sins" | "Cycled Sins Legacy": songArtist = "JBlitz";
-				case "Laugh Track" | "Dont Cross" | "Bless": songArtist = "PualTheUnTruest";
+				case "Laugh Track" | "Dont Cross": songArtist = "PualTheUnTruest";
+				case "Bless": songArtist = "END_SELLA";
 				case "Isolated Beta" | "Isolated Old" | "Rotten Petals" | "Seeking Freedom" | "Your Final Bow": songArtist = "Yama Haki/Toko";
 				case "Twisted Grins Legacy" | "Curtain Call": songArtist = "Sayan Sama";
 				case "Isolated Legacy": songArtist = "Toko & obscurity.";

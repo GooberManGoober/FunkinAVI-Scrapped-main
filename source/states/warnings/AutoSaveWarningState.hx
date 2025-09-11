@@ -8,7 +8,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import gameObjects.ui.AutoSaveLogo;
 
 class AutoSaveWarningState extends FlxState
 {
@@ -28,8 +27,6 @@ class AutoSaveWarningState extends FlxState
 		"We kicked out 30 members throughout development.",
 		"This mod has about 200+ messages on the title and menu screens!"
 	];
-
-	var saveDetectorImage:AutoSaveLogo;
 
 	public static function load()
 	{
@@ -67,7 +64,7 @@ class AutoSaveWarningState extends FlxState
 		GameData.loadShit(); // Collect Any Data
 
 		warningText = new FlxText(0, 0, FlxG.width,
-			'WARNING:\nThis game contains an auto save system.\nIf you see this logo right below\n^DON\'T TURN OFF THE DEVICE!^', 44);
+			'WARNING:\nThis game contains an auto save system.\n^DON\'T TURN OFF THE DEVICE WHEN SHIT IS SAVING!^', 44);
 		warningText.setFormat(Paths.font('vcr.ttf'), 37, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		warningText.screenCenter().y -= 40;
 		warningText.alpha = 0;
@@ -97,12 +94,8 @@ class AutoSaveWarningState extends FlxState
 			add(grain);
 		}
 
-		saveDetectorImage = new AutoSaveLogo('Funkin_avi/autoSave', FlxG.width * 0.78, FlxG.height * 0.69); // funny number
-		add(saveDetectorImage);
-
 		new FlxTimer().start(10, _ ->
 		{
-			FlxTween.tween(saveDetectorImage, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
 			FlxTween.tween(warningText, {alpha: 0, y: warningText.y + 100}, 2, {
 				ease: FlxEase.quadInOut,
 				onComplete: __ ->

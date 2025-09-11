@@ -139,11 +139,6 @@ class ModchartFile
                         json = {modifiers: [], events: [], playfields: 1};
                 case "Devilish Deal":
                     json = cast Json.parse(Modchart.devilishModchart);
-                case "Bless":
-                    if (ClientPrefs.mechanics)
-                        json = Json.parse(ClientPrefs.downScroll ? Modchart.blessDownscroll : Modchart.blessUpscroll);
-                    else
-                        json = {modifiers: [], events: [], playfields: 1};
                 case "War Dilemma":
                     if (ClientPrefs.mechanics)
                         json = cast Json.parse(ClientPrefs.downScroll ? Modchart.warModchartD : Modchart.warModchartU);

@@ -516,20 +516,12 @@ class PlayState extends MusicBeatState
 	var circusPath:String = 'favi/stages/circus/e/';
 
 	//BLESS
-	var chains:FlxSprite;
-	var vault:FlxSprite;
-	var thingy:FlxSprite;
-	var chains2:FlxSprite;
-	var chains3:FlxSprite;
-	var light:FlxSprite;
-	var flair:FlxSprite;
-	var chainsI:FlxSprite;
-	var vaultI:FlxSprite;
-	var thingyI:FlxSprite;
-	var chainsI2:FlxSprite;
-	var chainsI3:FlxSprite;
-	var lightI:FlxSprite;
-	var flairI:FlxSprite;
+	var vault:BGSprite;
+	var vaultINVERT:BGSprite;
+	var chains:BGSprite;
+	var chainsINVERT:BGSprite;
+	var vaultSpook:BGSprite;
+	var vaultSpookINVERT:BGSprite;
 
 	public static var cameraBumpSpeed:Float = 4;
 
@@ -1216,77 +1208,35 @@ class PlayState extends MusicBeatState
 					funiLight.scale.set(0.85, 0.8);
 				case 'vaultRoom':
 					//spawnGirlfriend = false;
+
+					defaultCamZoom = 0.9;
 	
-					vault = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'vault'));
-					vault.scale.set(2.45, 2.3);
+					vault = new BGSprite(pathway + 'vault');
+					vault.scale.set(1.4, 1.4);
 					add(vault);
-					chains = new FlxSprite(-225, -100).loadGraphic(Paths.image(pathway + 'chains1'));
-					chains.scale.set(2.5, 2.3);
-					chains.scrollFactor.set(1.2, 1.25);
-					chains2 = new FlxSprite(-225, -100).loadGraphic(Paths.image(pathway + 'chains2'));
-					chains2.scale.set(2.5, 2.3);
-					chains2.scrollFactor.set(1.1, 1.2);
-					chains3 = new FlxSprite(-225, -100).loadGraphic(Paths.image(pathway + 'chains3'));
-					chains3.scale.set(2.5, 2.3);
-					chains3.scrollFactor.set(1, 1.15);
-					light = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'lightSource'));
-					light.blend = DIFFERENCE;
-					light.alpha = 0.37;
-					light.scrollFactor.set(0.95, 1);
-					light.scale.set(2.45, 2.3);
-					flair = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'lightFlair'));
-					flair.blend = SCREEN;
-					flair.alpha = 0.6;
-					flair.scrollFactor.set(1.4, 1.25);
-					flair.scale.set(2.5, 2.4);
-					thingy = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'darkness'));
-					thingy.scale.set(2.45, 2.3);
 
-					foreground.add(chains3);
-					foreground.add(chains2);
+					chains = new BGSprite(pathway + 'chains', 0, 0, 1.13, 1.13);
+					chains.scale.set(1.4, 1.4);
 					foreground.add(chains);
-					foreground.add(light);
-					foreground.add(flair);
-					foreground.add(thingy);
+					
+					vaultSpook = new BGSprite(pathway + 'holyshitdarkness');
+					vaultSpook.scale.set(1.4, 1.4);
+					foreground.add(vaultSpook);
 
-					vaultI = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'vaultInvert'));
-					vaultI.scale.set(2.45, 2.3);
-					vaultI.visible = false;
-					add(vaultI);
-					chainsI = new FlxSprite(-225, -100).loadGraphic(Paths.image(pathway + 'chainsI1'));
-					chainsI.scale.set(2.5, 2.3);
-					chainsI.scrollFactor.set(1.2, 1.25);
-					chainsI.visible = false;
-					chainsI2 = new FlxSprite(-225, -100).loadGraphic(Paths.image(pathway + 'chainsI2'));
-					chainsI2.scale.set(2.5, 2.3);
-					chainsI2.scrollFactor.set(1.1, 1.2);
-					chainsI2.visible = false;
-					chainsI3 = new FlxSprite(-225, -100).loadGraphic(Paths.image(pathway + 'chainsI3'));
-					chainsI3.scale.set(2.5, 2.3);
-					chainsI3.scrollFactor.set(1, 1.15);
-					chainsI3.visible = false;
-					lightI = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'lightInvert'));
-					lightI.blend = DIFFERENCE;
-					lightI.alpha = 0.37;
-					lightI.scrollFactor.set(0.95, 1);
-					lightI.scale.set(2.45, 2.3);
-					lightI.visible = false;
-					flairI = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'flairInvert'));
-					flairI.blend = SCREEN;
-					flairI.alpha = 0.6;
-					flairI.scrollFactor.set(1.4, 1.25);
-					flairI.scale.set(2.5, 2.4);
-					flairI.visible = false;
-					thingyI = new FlxSprite(-200, -100).loadGraphic(Paths.image(pathway + 'brighter'));
-					thingyI.scale.set(2.45, 2.3);
-					thingyI.visible = false;
+					vaultINVERT = new BGSprite(pathway + 'vaultWhite');
+					vaultINVERT.scale.set(1.4, 1.4);
+					vaultINVERT.alpha = 0;
+					add(vaultINVERT);
 
-					foreground.add(chainsI3);
-					foreground.add(chainsI2);
-					foreground.add(chainsI);
-					foreground.add(lightI);
-					foreground.add(flairI);
-					foreground.add(thingyI);
+					chainsINVERT = new BGSprite(pathway + 'chainsWhite', 0, 0, 1.13, 1.13);
+					chainsINVERT.scale.set(1.4, 1.4);
+					chainsINVERT.alpha = 0;
+					foreground.add(chainsINVERT);
+					
+					vaultSpookINVERT = new BGSprite(pathway + 'holyshititstoobright');
+					vaultSpookINVERT.scale.set(1.4, 1.4);
+					vaultSpookINVERT.alpha = 0;
+					foreground.add(vaultSpookINVERT);
 				case 'waltRoom':
 					//spawnGirlfriend = false;
 					
@@ -3254,10 +3204,10 @@ class PlayState extends MusicBeatState
 			case 'trueGrinsOfSins':
 				boyfriend.setPosition(1300, 400);
 				dad.setPosition(0, 0);
-				gf.setPosition(1100, 560);
+				gf.setPosition(9100, 560);
 			case 'vaultRoom':
-				boyfriend.setPosition(960, 530);
-				if (dad.curCharacter == 'white-noise-new') dad.setPosition(-680, -520); else dad.setPosition(90, 60);
+				boyfriend.setPosition(1200, 660);
+				dad.setPosition(300, 130);
 			case 'waltRoom':
 				switch (dad.curCharacter)
 				{
@@ -3992,7 +3942,7 @@ class PlayState extends MusicBeatState
 			}
 
 			startedCountdown = true;
-			Conductor.songPosition = (SONG.song == "Cycled Sins" || SONG.song == "Twisted Grins") ? ((-.8 * 5) * 1000) : -Conductor.crochet * 5;
+			Conductor.songPosition = SONG.song == "Cycled Sins" ? ((-.8 * 5) * 1000) : -Conductor.crochet * 5;
 			setOnLuas('startedCountdown', true);
 			callOnLuas('onCountdownStarted', []);
 
@@ -4011,7 +3961,7 @@ class PlayState extends MusicBeatState
 				return;
 			}
 
-			startTimer = new FlxTimer().start((SONG.song == "Cycled Sins" || SONG.song == "Twisted Grins") ? .8 : Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
+			startTimer = new FlxTimer().start(SONG.song == "Cycled Sins" ? .8 : Conductor.crochet / 1000 / playbackRate, function(tmr:FlxTimer)
 			{
 				if (gf != null && tmr.loopsLeft % Math.round(gfSpeed * gf.danceEveryNumBeats) == 0 && gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
 				{
@@ -6772,22 +6722,12 @@ class PlayState extends MusicBeatState
 			cameraOnDad = true;
 			moveCamera(true);
 			callOnLuas('onMoveCamera', ['dad']);
-
-			switch (curStage)
-			{
-				case 'vaultRoom': defaultCamZoom = .7;
-			}
 		}
 		else
 		{
 			cameraOnDad = false;
 			moveCamera(false);
 			callOnLuas('onMoveCamera', ['boyfriend']);
-
-			switch (curStage)
-			{
-				case 'vaultRoom': defaultCamZoom = .9;
-			}
 		}
 	}
 
@@ -7193,7 +7133,7 @@ class PlayState extends MusicBeatState
 		comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
 
 		if (SONG.song == "Bless")
-			if (lightI.visible)
+			if (chainsINVERT.alpha >= 1)
 				rating.setColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
 
 		insert(members.indexOf(strumLineNotes), rating);
@@ -7265,7 +7205,7 @@ class PlayState extends MusicBeatState
 			numScore.visible = !ClientPrefs.hideHud;
 
 			if (SONG.song == "Bless")
-				if (lightI.visible)
+				if (chainsINVERT.alpha >= 1)
 					numScore.setColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
 
 			//if (combo >= 10 || combo == 0)
@@ -8086,11 +8026,6 @@ class PlayState extends MusicBeatState
 		
 		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
 		splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
-		if (lightI != null)
-			if (lightI.visible) 
-				splash.setColorTransform(-1, -1, -1, 1, 255, 255, 255, 0); 
-			else 
-				splash.setColorTransform(1, 1, 1, 1, 0, 0, 0, 0);
 		if (isPixelStage && ClientPrefs.shaders)
 			splash.shader = pixelizeUI;
 		grpNoteSplashes.add(splash);
@@ -10085,40 +10020,24 @@ class PlayState extends MusicBeatState
 			case "Bless":
 				if(curBeat == 544)
 				{
-					vault.visible = false;
-					chains.visible = false;
-					thingy.visible = false;
-					chains2.visible = false;
-					chains3.visible = false;
-					light.visible = false;
-					flair.visible = false;
-			
-					vaultI.visible = true;
-					chainsI.visible = true;
-					thingyI.visible = true;
-					chainsI2.visible = true;
-					chainsI3.visible = true;
-					lightI.visible = true;
-					flairI.visible = true;
+					vault.alpha = 0;
+					chains.alpha = 0;
+					vaultSpook.alpha = 0;
+					vaultINVERT.alpha = 1;
+					chainsINVERT.alpha = 1;
+					vaultSpookINVERT.alpha = 1;
+					FlxG.camera.flash(FlxColor.WHITE, 3);
 				}
 			
 				if(curBeat == 608)
 				{
-					vault.visible = true;
-					chains.visible = true;
-					thingy.visible = true;
-					chains2.visible = true;
-					chains3.visible = true;
-					light.visible = true;
-					flair.visible = true;
-			
-					vaultI.visible = false;
-					chainsI.visible = false;
-					thingyI.visible = false;
-					chainsI2.visible = false;
-					chainsI3.visible = false;
-					lightI.visible = false;
-					flairI.visible = false;
+					vault.alpha = 1;
+					chains.alpha = 1;
+					vaultSpook.alpha = 1;
+					vaultINVERT.alpha = 0;
+					chainsINVERT.alpha = 0;
+					vaultSpookINVERT.alpha = 0;
+					FlxG.camera.flash(FlxColor.BLACK, 3);
 				}
 
 			case 'Laugh Track':

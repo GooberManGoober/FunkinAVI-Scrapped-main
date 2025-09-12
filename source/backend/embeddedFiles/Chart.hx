@@ -86241,10 +86241,10 @@ enum abstract Chart(String) from String to String {
 
 	var twistedGrins:String = '{
 	"song": {
-		"player1": "everretBFfinal",
+		"player1": "bf-fake-new",
 		"composer": "ForFurtherNotice",
 		"player2": "mr-smiles-new",
-		"gfVersion": "lilith",
+		"gfVersion": "gf",
 		"notes": [
 			{
 				"lengthInSteps": 16,
@@ -123504,8 +123504,8 @@ enum abstract Chart(String) from String to String {
     var bless:String = '{
 	"song": {
 		"composer": "END_SELLA",
-		"player1": "everett-modern",
-		"player2": "white-noise-new",
+		"player1": "GraveyandBf",
+		"player2": "white-noise",
 		"notes": [
 			{
 				"lengthInSteps": 16,
@@ -135256,7 +135256,27 @@ enum abstract Chart(String) from String to String {
 					[
 						"Change Character",
 						"bf",
-						"everett-modern"
+						"GraveyandBf"
+					]
+				]
+			],
+			[
+				200347.826086957,
+				[
+					[
+						"Change Character",
+						"bf",
+						"guitar-bf"
+					]
+				]
+			],
+			[
+				208695.652173913,
+				[
+					[
+						"Change Character",
+						"bf",
+						"GraveyandBf"
 					]
 				]
 			]

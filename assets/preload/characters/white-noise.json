@@ -1,68 +1,68 @@
 {
 	"animations": [
 		{
+			"loop": false,
 			"offsets": [
 				0,
 				47
 			],
-			"loop": false,
-			"fps": 13,
 			"anim": "idle",
-			"indices": [],
-			"name": "White_Idle"
+			"fps": 13,
+			"name": "White_Idle",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				147,
 				48
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singLEFT",
-			"indices": [],
-			"name": "White_Left"
+			"fps": 24,
+			"name": "White_Left",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				-20,
 				-30
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singDOWN",
-			"indices": [],
-			"name": "White_Down"
+			"fps": 24,
+			"name": "White_Down",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				135,
 				123
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singUP",
-			"indices": [],
-			"name": "White_Up"
+			"fps": 24,
+			"name": "White_Up",
+			"indices": []
 		},
 		{
+			"loop": false,
 			"offsets": [
 				70,
 				6
 			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singRIGHT",
-			"indices": [],
-			"name": "White_Right"
+			"fps": 24,
+			"name": "White_Right",
+			"indices": []
 		}
 	],
 	"no_antialiasing": true,
-	"image": "characters/white-noise/WHITE_NOISE",
+	"image": "characters/WHITE_NOISE",
 	"position": [
 		70,
 		30
 	],
-	"healthicon": "white-noise",
+	"healthicon": "whitenew",
 	"flip_x": false,
 	"healthbar_colors": [
 		231,
@@ -70,7 +70,7 @@
 		231
 	],
 	"camera_position": [
-		-10,
+		-130,
 		-70
 	],
 	"sing_duration": 6.1,

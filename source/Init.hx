@@ -24,8 +24,6 @@ class Init extends FlxState
 		ClientPrefs.loadPrefs();
 		Highscore.load();
 		GameData.loadShit();
-
-		AppIcon.changeIcon("newIcon");
 		
 		CoolUtil.createCoreFile();
 

@@ -86,8 +86,6 @@ class CharacterEditorState extends MusicBeatState
 		cameraFollowPointer.color = FlxColor.WHITE;
 		add(cameraFollowPointer);
 
-		AppIcon.changeIcon("debugicon");
-
 		changeBGbutton = new FlxButton(FlxG.width - 360, 25, "", function()
 		{
 			onPixelBG = !onPixelBG;

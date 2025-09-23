@@ -152,7 +152,7 @@ class FAVIPauseSubState extends MusicBeatSubstate
 		songArt = new FlxSprite(780, 110);
 		songArtOutline = new FlxSprite(songArt.x - 20, songArt.y - 20 /*POV: you're lazy to do the math yourself*/).makeGraphic(890, 890, FlxColor.BLACK);
 		disc = new FlxSprite(songArt.x + 75, songArt.y - 12).loadGraphic(Paths.image('Funkin_avi/pause/disc'));
-		songName = new FlxText(FlxG.width * 0.78 + array[1], 10, 0, (PlayState.SONG.song == "Dont Cross" ? "Don't Cross!" : (PlayState.useFakeDeluName ? "Regret" : PlayState.SONG.song)), 32);
+		songName = new FlxText(FlxG.width * 0.78 + array[1], 10, 0, (PlayState.useFakeDeluName ? "Regret" : PlayState.SONG.song), 32);
 		countDown = new FlxText(0, 0, 1280, "", 0);
 		satanTxt = new FlxTypeText(0, 25, 1280, "");
 		pauseNameTxt = new FlxText(5, 700, 1280, "Now Playing: " + pauseSongStr + " - ForFurtherNotice");
@@ -427,17 +427,6 @@ class FAVIPauseSubState extends MusicBeatSubstate
 			DiscordClient.shutdown();
 		});
 
-		var random:Int = FlxG.random.int(1, 11);
-		var songName:Array<String> = ['Dont Cross', "Dont-Cross", "dont cross", "dont-cross"];
-
-		for (i in songName)
-			if (PlayState.SONG.song == i)
-			{
-				var songLowercase:String = "dont-cross";
-				var poop:String = "dont-cross-hard" + '${random}'; //fuck fuck fuck fuck fuck fuck
-				PlayState.SONG = Song.loadFromJson(poop, songLowercase, random);
-			}
-
 		if(noTrans)
 		{
 			FlxTransitionableState.skipNextTransOut = true;
@@ -539,15 +528,7 @@ class FAVIPauseSubState extends MusicBeatSubstate
 			case "Hunted": json = CreditsData.hunted;
 			case "Laugh Track": json = CreditsData.laughTrack;
 			case "Bless": json = CreditsData.bless;
-			case "Dont Cross":
-				switch(Song.getCharterCredits())
-				{
-					case "ThatOneSillyGuy": json = CreditsData.dontCross3;
-					case "Dreupy": json = CreditsData.dontCross1;
-					case "Purg": json = CreditsData.dontCross2;
-					case "MalyPlus": json = CreditsData.dontCross4;
-					case "rezeo285": json = CreditsData.dontCross5;
-				}
+			case "Don't Cross!": json = CreditsData.dontCross3;
 			case "War Dilemma": json = CreditsData.warDilemma;
 			case "Twisted Grins": json = CreditsData.twistedGrins;
 			case "Mercy": json = CreditsData.mercy;

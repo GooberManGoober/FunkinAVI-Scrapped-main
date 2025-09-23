@@ -366,7 +366,7 @@ class StoryMenu extends MusicBeatState
 		WeekData.setDirectoryFromWeek(loadedWeeks[curWeek]);
 
 		var diff:String = CoolUtil.difficulties[curDifficulty];
-		var newImage:FlxGraphic = Paths.image('Funkin_avi/storymenu/menudifficulties/' + Paths.formatToSongPath(diff));
+		var newImage:FlxGraphic = Paths.image('Funkin_avi/storymenu/menudifficulties/hard');
 		//trace(Paths.currentModDirectory + ', menudifficulties/' + Paths.formatToSongPath(diff));
 
 		if(sprDifficulty.graphic != newImage)

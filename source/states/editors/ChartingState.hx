@@ -51,7 +51,8 @@ class ChartingState extends MusicBeatState
 		['Set GF Speed', "Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"],
 		['Add Camera Zoom', "Used on MILF on that one \"hard\" part\nValue 1: Camera zoom add (Default: 0.015)\nValue 2: UI zoom add (Default: 0.03)\nLeave the values blank if you want to use Default."],
 		['Play Animation', "Plays an animation on a Character,\nonce the animation is completed,\nthe animation changes to Idle\n\nValue 1: Animation to play.\nValue 2: Character (Dad, BF, GF)"],
-		['Camera Follow Pos', "Value 1: X\nValue 2: Y\n\nThe camera won't change the follow point\nafter using this, for getting it back\nto normal, leave both values blank."],
+		['Camera Event', "A series of customizers and event types that\nchanges the camera behavior!\n\nValue 1: Name of event you want\nValue 2: Controls the event\n\nStart Hidden - makes the song start off hidden no matter where you place the event!\nChange Value - Value Name, Value Input\nTween Value - Value Name, Value Input, Duration, Ease type\nShake - Intensity, Duration, Game or HUD\nFade - R, G, B, Duration, Alpha, Fade In Bool Toggle\nFlash - R, G, B, Duration, Alpha, Blend Bool Toggle\nChange Pos/Set Position - X Pos, Y Pos\nTween Position: X Pos, Y Pos, Duration, Ease type\nSnap Position: X Pos, Y Pos\n\n(Please refer to documentation or code that comes with this for\nvalid value names for \"Tween Value\" & \"Change Value\")"],
+        ['Camera Follow Pos', "Value 1: X\nValue 2: Y\n\nThe camera won't change the follow point\nafter using this, for getting it back\nto normal, leave both values blank."],
 		['Alt Idle Animation', "Sets a specified suffix after the idle animation name.\nYou can use this to trigger 'idle-alt' if you set\nValue 2 to -alt\n\nValue 1: Character to set (Dad, BF or GF)\nValue 2: New suffix (Leave it blank to disable)"],
 		['Screen Shake', "Value 1: Camera shake\nValue 2: HUD shake\n\nEvery value works as the following example: \"1, 0.05\".\nThe first number (1) is the duration.\nThe second number (0.05) is the intensity."],
 		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
@@ -208,8 +209,6 @@ class ChartingState extends MusicBeatState
 			addSection();
 			PlayState.SONG = _song;
 		}
-
-		AppIcon.changeIcon("debugicon");
 
 		Lib.application.window.onClose.removeAll(); // goes back to normal hopefully
 		Lib.application.window.onClose.add(function() {
@@ -1758,7 +1757,6 @@ class ChartingState extends MusicBeatState
 					MusicBeatState.switchState(new MainMenuState()); 
 					FlxG.sound.playMusic(Paths.music('aviOST/rottenPetals'));
 					FlxG.mouse.visible = true;
-					AppIcon.changeIcon("newIcon");
 				}, null,ignoreWarnings));
 				return;
 			}

@@ -76,7 +76,6 @@ class FreeplayState extends MusicBeatState
 
 	var intendedColor:Int;
 	var colorTween:FlxTween;
-	var crossRandom:Int = FlxG.random.int(1, 11);
 
 	var songText2:FlxText;
 	var songText:Alphabet;
@@ -192,11 +191,6 @@ class FreeplayState extends MusicBeatState
 		bg.loadGraphic(Paths.image(path + '/menuFreeplay'));
 		add(bg);
 
-		if (freeplayMenuList != 2)
-		{
-			AppIcon.changeIcon("newIcon");
-		}
-
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
 
@@ -227,12 +221,6 @@ class FreeplayState extends MusicBeatState
 			add(icon);
 		}
 			
-		// Basically an exact replica of the Funkin.avi V1 Freeplay Menu lol
-		if (freeplayMenuList == 2)
-		{
-			AppIcon.changeIcon("legacyIcon");
-		}
-		
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
@@ -354,8 +342,6 @@ class FreeplayState extends MusicBeatState
 
 		Conductor.songPosition = FlxG.sound.music.time;
 
-		var isDontCross:Bool = songs[curSelected].songName == "Don't Cross!";
-
 		if (FlxG.keys.justPressed.B) {
 			changeBotPlay();
 		}
@@ -450,7 +436,7 @@ class FreeplayState extends MusicBeatState
 				if(songs[i].songName == "Birthday")
 					iconArray[i].animation.curAnim.curFrame = 1; // funi
 				//i swear to god theres too much .replace
-				else if(songs[i].songName.toLowerCase().replace(' ', '-').replace("'", '').replace('!', '') == "dont-cross")
+				else if(songs[i].songName == "Don't Cross!")
 				{
 					iconArray[i].animation.curAnim.curFrame = 0;
 					iconArray[i].shake(4, 30, 0.1);
@@ -480,14 +466,12 @@ class FreeplayState extends MusicBeatState
 			songInstPlaying = false;
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
-			if (isDontCross) // I've been suffering trying to get the randomizer to work with hardcoded charts only to find out this piece of shit was causing the crash oh my FUCKING GOD I'M GONNA RIP MY FUCKING HEAD OFF!!!!! (don)
-				songLowercase = "dont-cross";
 			var poop:String = Highscore.formatSong(songLowercase, curDifficulty); //fuck fuck fuck fuck fuck fuck
 			trace(poop);
 
 			threadActive = false;
 
-			PlayState.SONG = Song.loadFromJson(poop, songLowercase, crossRandom);
+			PlayState.SONG = Song.loadFromJson(poop, songLowercase);
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 
@@ -886,10 +870,7 @@ class FreeplayState extends MusicBeatState
 						{
 							var inst:Sound;
 
-							if (songs[curSelected].songName == "Don't Cross!")
-								inst = Paths.inst("dont-cross", CoolUtil.difficulties[curDifficulty]);
-							else
-								inst = Paths.inst(songs[curSelected].songName, CoolUtil.difficulties[curDifficulty]);
+							inst = Paths.inst(songs[curSelected].songName, CoolUtil.difficulties[curDifficulty]);
 
 							if (index == curSelected && threadActive)
 							{
@@ -915,7 +896,7 @@ class FreeplayState extends MusicBeatState
 				case 'isolated' | 'neglection' | 'resentment' | 'lunacy-legacy' | 'hunted' | 'mortiferum-risus' | 'isolated-legacy': difficultyRank = 'NORMAL';
 				case 'delusional' | 'mercy' | 'malfunction-legacy': difficultyRank = 'INSANE';
 				case 'malfunction': difficultyRank = 'null';
-				case "dont-cross": difficultyRank = 'GOOD LUCK';
+				case "don't-cross!": difficultyRank = 'GOOD LUCK';
 				case 'birthday': difficultyRank = 'PARTY';
 				case "rotten-petals" | "seeking-freedom" | "your-final-bow" | "curtain-call" |"am-i-real?" | "a-true-monster" | "ship-the-fart-yay-hooray-<3-(distant-stars)" | "ahh-the-scary-(somber-night)" | "the-wretched-tilezones-(simple-life)": difficultyRank = "MANIA";
 				default: difficultyRank = 'HARD';
@@ -930,7 +911,7 @@ class FreeplayState extends MusicBeatState
 				case "Devilish Deal" | "Isolated" | "Lunacy" | "Malfunction" | "Lunacy Legacy" | "Malfunction Legacy" | "Mercy Legacy": songArtist = "obscurity.";
 				case "Delusional" | "Birthday" | "Delusional Legacy" | "A True Monster": songArtist = "FR3SHMoure";
 				case "Hunted" | "Hunted Legacy" | "Cycled Sins" | "Cycled Sins Legacy": songArtist = "JBlitz";
-				case "Laugh Track" | "Dont Cross": songArtist = "PualTheUnTruest";
+				case "Laugh Track" | "Don't Cross!": songArtist = "PualTheUnTruest";
 				case "Bless": songArtist = "END_SELLA";
 				case "Isolated Beta" | "Isolated Old" | "Rotten Petals" | "Seeking Freedom" | "Your Final Bow": songArtist = "Yama Haki/Toko";
 				case "Twisted Grins Legacy" | "Curtain Call": songArtist = "Sayan Sama";

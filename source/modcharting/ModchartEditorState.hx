@@ -266,8 +266,6 @@ class ModchartEditorState extends MusicBeatState
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 
-        AppIcon.changeIcon("debugicon");
-
         Lib.application.window.onClose.removeAll(); // goes back to normal hopefully
 		Lib.application.window.onClose.add(function() {
 			DiscordClient.shutdown();

@@ -248,6 +248,10 @@ class PlayState extends MusicBeatState
 	public static var camVideo:FlxCamera;
 	public static var cameraSpeed:Float = 1;
 
+	var flashSprite:FlxSprite;
+	var flashSpeed:Float = 0.0;
+	var camTwn:Array<FlxTween> = [];
+
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	var dialogueJson:DialogueFile = null;
 
@@ -733,16 +737,6 @@ class PlayState extends MusicBeatState
 			}
 			if (!GameData.canOverrideCPU)
 				GameData.checkBotplay(null);
-		}
-
-		switch (SONG.song)
-		{
-			case "Isolated Old" | "Isolated Beta" | "Isolated Legacy" | "Lunacy Legacy" | "Delusional Legacy" | "Hunted Legacy" | "Twisted Grins Legacy" | "Cycled Sins Legacy" | "Mercy Legacy" | "Malfunction Legacy":
-				AppIcon.changeIcon("legacyIcon");
-			case "Malfunction":
-				AppIcon.changeIcon("glitchIcon");
-			default:
-				AppIcon.changeIcon("newIcon");
 		}
 
 		#if DISCORD_ALLOWED
@@ -1522,7 +1516,7 @@ class PlayState extends MusicBeatState
 			"Delusional",
 			"Hunted",
 			"Laugh Track",
-			"Dont Cross",
+			"Don't Cross!",
 			"Cycled Sins",
 			"Bless",
 			"Mercy",
@@ -1547,8 +1541,7 @@ class PlayState extends MusicBeatState
 			windowName = "Funkin.avi: Scrapped - Episode 1 - Isolated (Composed by: obscurity) - Chart by: Purg [NORMAL] - Mechanics: " + (ClientPrefs.mechanics ? "Enabled" : "Disabled"); // shitty long ass name that credits literally every fucking thing
 		else
 			windowName = "Funkin.avi: Scrapped - " + 
-			(isStoryMode ? curEpisode + " - " : "Freeplay - ") + 
-			(SONG.song == "Dont Cross" ? "Don't Cross!" : SONG.song) + 
+			(isStoryMode ? curEpisode + " - " : "Freeplay - ") + SONG.song + 
 			" (Composed by: " + FreeplayState.getArtistName() + 
 			") - Chart by: " + Song.getCharterCredits() + 
 			" [" + FreeplayState.getDiffRank() + "]" + 
@@ -1733,6 +1726,12 @@ class PlayState extends MusicBeatState
 
 		resetCharPos();
 
+		flashSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
+		flashSprite.scale.set(3, 3);
+		flashSprite.screenCenter();
+		flashSprite.alpha = 0.001;
+		flashSprite.cameras = [camBars];
+		add(flashSprite);
 		
 		blendFlash = new FlxSprite().makeGraphic(1, 1, 0xFFFFFFFF);
 		blendFlash.scale.set(FlxG.width * 5, FlxG.height * 5);
@@ -2106,7 +2105,7 @@ class PlayState extends MusicBeatState
 				watermarkTxt.screenCenter(X);
 				add(watermarkTxt);
 
-				songTxt = new FlxText(watermarkTxt.x, watermarkTxt.y + 30, 1280, (SONG.song == "Dont Cross" ? "Don't Cross!" : '$infoDisplay'));
+				songTxt = new FlxText(watermarkTxt.x, watermarkTxt.y + 30, 1280, '$infoDisplay');
 				songTxt.setFormat(Paths.font('DisneyFont.ttf'), 22, FlxColor.WHITE, CENTER);
 				songTxt.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 				songTxt.alpha = 0.6;
@@ -2354,7 +2353,7 @@ class PlayState extends MusicBeatState
 			else
 				windowName = "Funkin.avi: Scrapped - " + 
 				(isStoryMode ? curEpisode + " - " : "Freeplay - ") + 
-				(SONG.song == "Dont Cross" ? "Don't Cross!" : SONG.song) + 
+				SONG.song + 
 				" [" + FreeplayState.getDiffRank() + "]"; // short version that displays after 5 seconds yayaya
 
 			lime.app.Application.current.window.title = windowName;
@@ -2528,8 +2527,7 @@ class PlayState extends MusicBeatState
 						if (SONG.song == "Devilish Deal" && isStoryMode && GameData.episode1FPLock != "unlocked")
 						{
 							windowName = "Funkin.avi: Scrapped - " + 
-							(isStoryMode ? curEpisode + " - " : "Freeplay - ") + 
-							(SONG.song == "Dont Cross" ? "Don't Cross!" : SONG.song) + 
+							(isStoryMode ? curEpisode + " - " : "Freeplay - ") + SONG.song + 
 							" (Composed by: " + FreeplayState.getArtistName() + 
 							") - Chart by: " + Song.getCharterCredits() + 
 							" [" + FreeplayState.getDiffRank() + "]"; // shitty long ass name that credits literally every fucking thing
@@ -2538,8 +2536,7 @@ class PlayState extends MusicBeatState
 							windowTimer = new FlxTimer().start(5, function(tmr:FlxTimer)
 							{
 								windowName = "Funkin.avi: Scrapped - " + 
-								(isStoryMode ? curEpisode + " - " : "Freeplay - ") + 
-								(SONG.song == "Dont Cross" ? "Don't Cross!" : SONG.song) + 
+								(isStoryMode ? curEpisode + " - " : "Freeplay - ") + SONG.song + 
 								" [" + FreeplayState.getDiffRank() + "]"; // short version that displays after 5 seconds yayaya
 					
 								lime.app.Application.current.window.title = windowName;
@@ -4027,7 +4024,7 @@ class PlayState extends MusicBeatState
 								countdownIntro.antialiasing = antialias;
 								switch (SONG.song)
 								{
-									case "War Dilemma" | "Dont Cross" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
+									case "War Dilemma" | "Don't Cross!" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
 										//nothing
 									default:
 										insert(members.indexOf(notes), countdownIntro);
@@ -4045,7 +4042,7 @@ class PlayState extends MusicBeatState
 					case 1:
 						switch (SONG.song)
 						{
-							case "War Dilemma" | "Dont Cross" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
+							case "War Dilemma" | "Don't Cross!" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
 								countdownReady = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 							default:
 								countdownReady = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
@@ -4072,7 +4069,7 @@ class PlayState extends MusicBeatState
 					case 2:
 						switch (SONG.song)
 						{
-							case "War Dilemma" | "Dont Cross" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
+							case "War Dilemma" | "Don't Cross!" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
 								countdownSet = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 							default:
 								countdownSet = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
@@ -4099,7 +4096,7 @@ class PlayState extends MusicBeatState
 					case 3:
 						switch (SONG.song)
 						{
-							case "War Dilemma" | "Dont Cross" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
+							case "War Dilemma" | "Don't Cross!" | "Bless" | "Mercy" | "Mercy Legacy" | "Delutrance":
 								countdownGo = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 							default:
 								countdownGo = new FlxSprite().loadGraphic(Paths.image(introAlts[3]));
@@ -4417,12 +4414,13 @@ class PlayState extends MusicBeatState
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 
 		var songName:String = Paths.formatToSongPath(SONG.song);
-		var fuckYou:String = "dont-cross";
-		var file:String = Paths.json((SONG.song == "Dont Cross" ? fuckYou : songName) + '/events');
-		var eventsData:Array<Dynamic>;
-
-		if (OpenFlAssets.exists(file) || SONG.song == "Dont Cross" || (SONG.song == "Twisted Grins" && ClientPrefs.mechanics)) {
-			eventsData = Song.loadFromJson('events', (SONG.song == "Dont Cross" ? fuckYou : songName) ).events;
+		var file:String = Paths.json(songName + '/events');
+		#if MODS_ALLOWED
+		if (FileSystem.exists(Paths.modsJson(songName + '/events')) || FileSystem.exists(file)) {
+		#else
+		if (OpenFlAssets.exists(file)) {
+		#end
+			var eventsData:Array<Dynamic> = Song.loadFromJson('events', songName).events;
 			for (event in eventsData) //Event Notes
 			{
 				for (i in 0...event[1].length)
@@ -4568,6 +4566,13 @@ class PlayState extends MusicBeatState
 
 				var newCharacter:String = event.value2;
 				addCharacterToList(newCharacter, charType);
+
+			case "Camera Event":
+				if (event.value1.toLowerCase().trim() == "starthidden" || event.value1.toLowerCase().trim() == "start hidden")
+				{
+					camHUD.alpha = 0.001;
+					camBars.fade(FlxColor.BLACK, 0.001);
+				}
 
 			case 'Dadbattle Spotlight':
 				dadbattleBlack = new BGSprite(null, -800, -400, 0, 0);
@@ -4936,6 +4941,8 @@ class PlayState extends MusicBeatState
 	{
 		callOnLuas('onUpdate', [elapsed]);
 
+		flashSprite.alpha = FlxMath.lerp(0, flashSprite.alpha, Math.exp(-elapsed * flashSpeed));
+
 		if (PlayState.SONG.song == "Birthday")
 			muckneyHealthColorShitLol();
 
@@ -5101,8 +5108,7 @@ class PlayState extends MusicBeatState
 					if (SONG.song == "Devilish Deal" && isStoryMode && GameData.episode1FPLock != "unlocked")
 					{
 						windowName = "Funkin.avi: Scrapped - " + 
-						(isStoryMode ? curEpisode + " - " : "Freeplay - ") + 
-						(SONG.song == "Dont Cross" ? "Don't Cross!" : SONG.song) + 
+						(isStoryMode ? curEpisode + " - " : "Freeplay - ") + SONG.song + 
 						" (Composed by: " + FreeplayState.getArtistName() + 
 						") - Chart by: " + Song.getCharterCredits() + 
 						" [" + FreeplayState.getDiffRank() + "]"; // shitty long ass name that credits literally every fucking thing
@@ -5111,8 +5117,7 @@ class PlayState extends MusicBeatState
 						windowTimer = new FlxTimer().start(5, function(tmr:FlxTimer)
 						{
 							windowName = "Funkin.avi: Scrapped - " + 
-							(isStoryMode ? curEpisode + " - " : "Freeplay - ") + 
-							(SONG.song == "Dont Cross" ? "Don't Cross!" : SONG.song) + 
+							(isStoryMode ? curEpisode + " - " : "Freeplay - ") + SONG.song + 
 							" [" + FreeplayState.getDiffRank() + "]"; // short version that displays after 5 seconds yayaya
 				
 							lime.app.Application.current.window.title = windowName;
@@ -5203,6 +5208,14 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (SONG.notes[curSection] != null)
+		{
+			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
+			{
+				moveCameraSection();
+			}
+		}
+
 		super.update(elapsed);
 
 		setOnLuas('curDecStep', curDecStep);
@@ -5212,7 +5225,7 @@ class PlayState extends MusicBeatState
 		{
 			switch (curStage)
 			{
-				case 'menuSongs' | 'abandonedStreet' | 'alleyway' | 'ddStage':
+				case 'abandonedStreet' | 'alleyway' | 'ddStage':
 					scoreTxt.visible = false;
 				default:
 					scoreTxt.visible = false;
@@ -6351,6 +6364,206 @@ class PlayState extends MusicBeatState
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
 		switch(eventName) {
+			case 'Camera Event':	
+				var triggerInfo:Array<String> = value2.split(',');
+				switch (value1.toLowerCase())
+				{
+					case "tweenvalue" | "tween value":
+						switch (triggerInfo[0].toLowerCase())
+						{
+							case "zoom":
+								if (camTwn[0] != null)
+									camTwn[0].cancel();
+
+								camTwn[0] = FlxTween.tween(camGame, {zoom: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim()), onComplete: function(twn:FlxTween)
+								{
+									defaultCamZoom = Std.parseFloat(triggerInfo[1]);
+									camTwn[0] = null;
+								}});
+							
+							case "cameraspeed" | "camera speed" | "cam speed" | "camspeed" | "speed":
+								if (camTwn[1] != null)
+									camTwn[1].cancel();
+
+								camTwn[1] = FlxTween.tween(this, {cameraSpeed: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim()), onComplete: function(twn:FlxTween)
+								{
+									camTwn[1] = null;
+								}});
+
+							case "alpha":
+								if (camTwn[2] != null)
+									camTwn[2].cancel();
+
+								if (Std.parseFloat(triggerInfo[1]) > 1 || Std.parseFloat(triggerInfo[1]) < 0)
+									triggerInfo[1] = "1";
+
+								camTwn[2] = FlxTween.tween(camGame, {alpha: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim()), onComplete: function(twn:FlxTween)
+								{
+									camTwn[2] = null;
+								}});
+
+							case "hudalpha" | "hud alpha":
+								if (camTwn[3] != null)
+									camTwn[3].cancel();
+
+								if (Std.parseFloat(triggerInfo[1]) > 1 || Std.parseFloat(triggerInfo[1]) < 0)
+									triggerInfo[1] = "1";
+
+								camTwn[3] = FlxTween.tween(camHUD, {alpha: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim()), onComplete: function(twn:FlxTween)
+								{
+									camTwn[3] = null;
+								}});
+
+							case "angle":
+								if (camTwn[4] != null)
+									camTwn[4].cancel();
+
+								camTwn[4] = FlxTween.tween(camGame, {angle: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim()), onComplete: function(twn:FlxTween)
+								{
+									camTwn[4] = null;
+								}});
+
+							case "hudangle" | "hud angle":
+								if (camTwn[5] != null)
+									camTwn[5].cancel();
+
+								camTwn[5] = FlxTween.tween(camHUD, {angle: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim()), onComplete: function(twn:FlxTween)
+								{
+									camTwn[5] = null;
+								}});
+
+							case "vidalpha" | "vid alpha":
+								if (camTwn[6] != null)
+									camTwn[6].cancel();
+
+								if (Std.parseFloat(triggerInfo[1]) > 1 || Std.parseFloat(triggerInfo[1]) < 0)
+									triggerInfo[1] = "1";
+
+								camTwn[6] = FlxTween.tween(camVideo, {alpha: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim()), onComplete: function(twn:FlxTween)
+								{
+									camTwn[6] = null;
+								}});
+
+							default:
+								#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+								addTextToDebug('ERROR ("Camera Event" Event) - Value data type does not exist!', FlxColor.RED);
+								#else
+								FlxG.log.warn('ERROR ("Camera Event" Event) - Value data type does not exist!');
+								#end
+						}
+
+					case "starthidden" | "start hidden":
+						//do nothing cause it's already doing something
+
+					case "changevalue" | "change value":
+						switch (triggerInfo[0].toLowerCase())
+						{
+							case "staticzoom" | "static zoom": camGame.zoom = defaultCamZoom = Std.parseFloat(triggerInfo[1]);
+							case "addzoom" | "add zoom": camGame.zoom += Std.parseFloat(triggerInfo[1]);
+							case "addhudzoom" | "add hud zoom": camHUD.zoom += Std.parseFloat(triggerInfo[1]);
+							case "defaultcamzoom" | "default cam zoom" | "default camera zoom": defaultCamZoom = Std.parseFloat(triggerInfo[1]);
+							case "alpha": camGame.alpha = Std.parseFloat(triggerInfo[1]);
+							case "cameraspeed" | "cam speed" | "camspeed" | "camera speed" | "speed": cameraSpeed = Std.parseFloat(triggerInfo[1]);
+							case "hudalpha" | "hud alpha": camHUD.alpha = Std.parseFloat(triggerInfo[1]);
+							case "vidalpha" | "vid alpha": camVideo.alpha = Std.parseFloat(triggerInfo[1]);
+							case "angle": camGame.angle = Std.parseFloat(triggerInfo[1]);
+							case "hudangle" | "hud angle": camHUD.angle = Std.parseFloat(triggerInfo[1]);
+							case "adddefaultcamzoom" | "add default cam zoom" | "add default camera zoom": defaultCamZoom += Std.parseFloat(triggerInfo[1]);
+							default:
+								#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+								addTextToDebug('ERROR ("Camera Event" Event) - Value data type does not exist!', FlxColor.RED);
+								#else
+								FlxG.log.warn('ERROR ("Camera Event" Event) - Value data type does not exist!');
+								#end
+						}
+
+					case "shake":
+						if (triggerInfo[2] == "hud")
+							camHUD.shake(Std.parseFloat(triggerInfo[0]), Std.parseFloat(triggerInfo[1]));
+						else
+							camGame.shake(Std.parseFloat(triggerInfo[0]), Std.parseFloat(triggerInfo[1]));
+
+					case "flash":
+						if (ClientPrefs.flashing)
+						{
+							if (triggerInfo[0] == null) triggerInfo[0] = "255";
+							if (triggerInfo[1] == null) triggerInfo[1] = "255";
+							if (triggerInfo[2] == null) triggerInfo[2] = "255";
+							if (triggerInfo[3] == null) triggerInfo[3] = "1";
+							if (triggerInfo[4] == null) triggerInfo[4] = "1";
+							if (triggerInfo[5] == null) triggerInfo[5] = "false";
+				
+							var boolShit:Bool = false;
+				
+							if (triggerInfo[5].toLowerCase().trim() == "true")
+								boolShit = true;
+				
+							flashSprite.color = FlxColor.fromRGB(Std.parseInt(triggerInfo[0]), Std.parseInt(triggerInfo[1]), Std.parseInt(triggerInfo[2]));
+							flashSpeed = Std.parseFloat(triggerInfo[3]);
+							flashSprite.alpha = Std.parseFloat(triggerInfo[4]);
+							flashSprite.blend = (boolShit ? ADD : NORMAL);
+						}
+
+					case "fade":
+						if (triggerInfo[0] == null) triggerInfo[0] = "0";
+						if (triggerInfo[1] == null) triggerInfo[1] = "0";
+						if (triggerInfo[2] == null) triggerInfo[2] = "0";
+						if (triggerInfo[3] == null) triggerInfo[3] = "1";
+						if (triggerInfo[4] == null) triggerInfo[4] = "false";
+
+						var boolShit:Bool = false;
+		
+						if (triggerInfo[4].toLowerCase().trim() == "true")
+							boolShit = true;
+
+						camBars.fade(FlxColor.fromRGB(Std.parseInt(triggerInfo[0]), Std.parseInt(triggerInfo[1]), Std.parseInt(triggerInfo[2])), Std.parseFloat(triggerInfo[3]), boolShit);
+					case "changepos" | "change pos" | "set position" | "setposition":
+						if(camFollow != null)
+						{
+							isCameraOnForcedPos = false;
+							if(triggerInfo[0] != null || triggerInfo[1] != null)
+							{
+								isCameraOnForcedPos = true;
+								if(triggerInfo[0] == null) triggerInfo[0] = "0";
+								if(triggerInfo[1] == null) triggerInfo[1] = "0";
+								camFollow.x = Std.parseFloat(triggerInfo[0]);
+								camFollow.y = Std.parseFloat(triggerInfo[1]);
+							}
+						}
+
+					case "tweenpos" | "tween pos" | "tweenposition" | "tween position":
+						if (camFollow != null)
+						{
+							if (camTwn[7] != null)
+								camTwn[7].cancel();
+
+							isCameraOnForcedPos = false;
+							if(triggerInfo[0] != null || triggerInfo[1] != null)
+							{
+								isCameraOnForcedPos = true;
+								if(triggerInfo[0] == null) triggerInfo[0] = "0";
+								if(triggerInfo[1] == null) triggerInfo[1] = "0";
+								camTwn[7] = FlxTween.tween(camFollow, {x: Std.parseFloat(triggerInfo[0]), y: Std.parseFloat(triggerInfo[1])}, Std.parseFloat(triggerInfo[2]), {ease: returnTweenEase(triggerInfo[3].trim().toLowerCase()), onComplete: function(twn:FlxTween)
+								{
+									camTwn[7] = null;
+								}});
+							}
+						}
+					case "snappos" | "snap pos" | "snap position" | "snapposition":
+						if(camFollow != null)
+						{
+							isCameraOnForcedPos = false;
+							if(triggerInfo[0] != null || triggerInfo[1] != null)
+							{
+								isCameraOnForcedPos = true;
+								if(triggerInfo[0] == null) triggerInfo[0] = "0";
+								if(triggerInfo[1] == null) triggerInfo[1] = "0";
+								
+								snapCamFollowToPos(Std.parseFloat(triggerInfo[0]), Std.parseFloat(triggerInfo[1]));
+							}
+						}
+				}
+			
 			case 'Hey!':
 				var value:Int = 2;
 				switch(value1.toLowerCase().trim()) {
@@ -7753,7 +7966,7 @@ class PlayState extends MusicBeatState
                     );
                 }
                 
-            case "Dont Cross":
+            case "Don't Cross!":
                 boyfriend.x += 1.2;
                 boyfriend.y -= 1.2;
                 boyfriend.scale.x -= 0.0012;
@@ -7961,7 +8174,7 @@ class PlayState extends MusicBeatState
 			vocals.volume = 1;
 			bf_vocals.volume = 1;
 
-			if (SONG.song == "Dont Cross")
+			if (SONG.song == "Don't Cross!")
 			{
 				boyfriend.x -= 1.4;
 				boyfriend.y += 1.4;

@@ -28,8 +28,6 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var MouseVersion:String = '2.0.0';
-	public static var evilpsychEngineVersion:String = '0.6.3'; // always when i see this i say no same variable name cuz haxe being dumb
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -320,19 +318,19 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 84, 0, "Funkin.avi v" + MouseVersion, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 84, 0, "Funkin.avi v2.0.0", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font("NewWaltDisneyFontRegular-BPen.ttf"), 22, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.cameras = [camFilter];
 		add(versionShit);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 64, 0, "Psych Engine v" + evilpsychEngineVersion, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 64, 0, "Psych Engine v0.6.3", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font("NewWaltDisneyFontRegular-BPen.ttf"), 22, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.cameras = [camFilter];
 		add(versionShit);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Friday Night Funkin' v0.2.8", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font("NewWaltDisneyFontRegular-BPen.ttf"), 22, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.cameras = [camFilter];
@@ -371,6 +369,9 @@ class MainMenuState extends MusicBeatState
 		scratchStuff.cameras = [camFilter];
 		grain.cameras = [camFilter];
 
+		if (FlxG.stage.window.title.contains('*cantaloupe jumpscare*'))
+			coolMenuEvents(3);
+
 		super.create();
 
 		defaultShader2 = new FlxRuntimeShader(Shaders.monitorFilter, null, 140);
@@ -387,6 +388,12 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		if (!sys.FileSystem.exists('./assets/shared/images/favi/stages/forbiddenRealm/DO NOT TOUCH MY MEME.png') && GameData.check(NO_MALFUNCTION))
+			coolMenuEvents(2);
+
+		if (FlxG.keys.justPressed.R)
+			coolMenuEvents(1);
+
 		if (FlxG.keys.justPressed.ANY)
 		{
 			var hitCorrectKey:Bool = false;
@@ -396,29 +403,7 @@ class MainMenuState extends MusicBeatState
 					birthdayKey = true;
 			if (birthdayKey && !selectedSomethin && GameData.birthdayLocky != "uninvited")
 				if (theBirthdayCode == (birthdayCode.length - 1))
-					if (GameData.birthdayLocky == "obtained" || GameData.birthdayLocky == "beaten")
-					{
-						FlxG.sound.play(Paths.sound('cancelMenu'));
-						switch(howmuchyoufuckinkeptdoingit) {
-							case 0: messenger.sendMessage('You\'ve already unlocked this song!', 'Go to freeplay to play the song.');
-							case 1: messenger.sendMessage('Can\'t you understand?', 'You already unlocked the song.');
-							case 2: messenger.sendMessage('Can\'t you read?', 'This. Is. Already. Unlocked.');
-							case 3: messenger.sendMessage('go to freeplay menu.', 'its already unlocked.');
-							case 4: messenger.sendMessage('IF YOU KEEP DOING IT THEN', 'IM GONNA DO SOMETHING BAD');
-							case 5:
-								messenger.sendMessage('...', 'Im closing the game. Fuck you');
-								new FlxTimer().start(2, function(tmr:FlxTimer){
-									System.exit(0);
-								});
-						}
-						howmuchyoufuckinkeptdoingit++;
-					}
-					else
-					{
-						GameData.birthdayLocky = 'obtained';
-						FlxG.sound.play(Paths.sound('funkinAVI/easterEggSound'));
-						messenger.sendMessage('Something has unlocked!', 'Check freeplay to see what has been unlocked.');
-					}
+					coolMenuEvents(4);
 				else
 					theBirthdayCode++;
 			else
@@ -476,9 +461,44 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
-				if (optionShit[curSelected] == 'donate')
+				if (optionShit[curSelected] == 'freeplay')
 				{
-					CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
+					if (GameData.episode1FPLock == "unlocked")
+					{
+						FlxG.sound.play(Paths.sound('funkinAVI/menu/selectSfx'));
+						
+						menuItems.forEach(function(spr:FlxSprite)
+						{
+							if (curSelected != spr.ID)
+							{
+								// Main Menu Select Animations
+								FlxTween.tween(FlxG.camera, {zoom: 1.15}, 2, {ease: FlxEase.quartInOut});
+								FlxTween.tween(menuart, {x: -170}, 2.2, {ease: FlxEase.quartInOut});
+								FlxTween.tween(menuart, {y: 200}, 1.9, {ease: FlxEase.quartInOut});
+								FlxTween.tween(spr, {x: -250, alpha: 0}, 0.4, {
+									ease: FlxEase.quadOut,
+									onComplete: function(twn:FlxTween)
+									{
+										spr.kill();
+									}
+								});
+							}
+							else
+							{
+								FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+								{
+									MusicBeatState.switchState(new EpicSelectorWOOO());
+									FlxG.sound.music.fadeIn(0.5, 0, 1);
+									FlxG.sound.playMusic(Paths.music('aviOST/seekingFreedom'));
+								});
+							}
+						});
+					}
+					else
+					{
+						FlxG.sound.play(Paths.sound('cancelMenu'));
+						messenger.sendMessage('Freeplay is locked!', 'Complete Episode 1 to Unlock this menu.');
+					}
 				}
 				else
 				{
@@ -512,10 +532,6 @@ class MainMenuState extends MusicBeatState
 									case 'story_mode':
 										FlxG.mouse.visible = false;
 										MusicBeatState.switchState(new StoryMenu());
-									case 'freeplay':
-										MusicBeatState.switchState(new EpicSelectorWOOO());
-										FlxG.sound.music.fadeIn(0.5, 0, 1);
-										FlxG.sound.playMusic(Paths.music('aviOST/seekingFreedom'));
 									case 'credits':
 										FlxG.mouse.visible = false;
 										MusicBeatState.switchState(new CreditsMenu());
@@ -574,5 +590,72 @@ class MainMenuState extends MusicBeatState
 				spr.centerOffsets();
 			}
 		});
+	}
+
+	function coolMenuEvents(getEvent:Int)
+	{
+		switch (getEvent)
+		{
+			case 1:
+				var redGradient:FlxSprite = new FlxSprite(0, 0, Paths.image('UI/gimmicks/redGradient'));
+				redGradient.setGraphicSize(Std.int(redGradient.width * 0.7));
+				redGradient.screenCenter();
+				redGradient.cameras = [camFilter];
+				FlxTween.tween(redGradient, {alpha: 0}, 0.9, {onComplete: sex -> redGradient.destroy()});
+				add(redGradient);
+				FlxG.sound.play(Paths.sound('funkinAVI/oof'), 1, false, null, true);
+
+			case 2:
+				selectedSomethin = true;
+				new FlxTimer().start(0.4, function(tmr:FlxTimer)
+				{
+					selectedSomethin = false;
+				});
+				FlxG.sound.play(Paths.sound('funkinAVI/easterEggSound'));
+				messenger.sendMessage('I just wanna talk bro.', 'New Freeplay Song Unlocked!');
+				GameData.canAddMalfunction = true;
+				GameData.saveShit();
+			
+			case 3:
+				var cantaloupe = new FlxSprite(-200, -100).loadGraphic(Paths.image('Funkin_avi/cantaloupe'));
+				cantaloupe.scale.set(0.05, 0.05);
+				cantaloupe.screenCenter(XY).x -= 700;
+				cantaloupe.y -= 300;
+				FlxTween.tween(cantaloupe.scale, {x: 2, y: 2}, 3, {ease: FlxEase.bounceOut, onComplete: _ -> FlxTween.tween(cantaloupe, {alpha: 0}, 2)});
+				cantaloupe.shake(.05, 0, 5);
+				add(cantaloupe);
+				FlxG.camera.shake(0.02, 5);
+				FlxG.sound.play(Paths.sound('funkinAVI/fnaf_jumpscare'), 0.7, false, null, true, () -> cantaloupe.destroy());
+
+			case 4:
+				if (GameData.birthdayLocky == "obtained" || GameData.birthdayLocky == "beaten")
+				{
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+					switch(howmuchyoufuckinkeptdoingit) {
+						case 0:
+							messenger.sendMessage('You\'ve already unlocked this song!', 'Go to freeplay to play the song.');
+						case 1:
+							messenger.sendMessage('Can\'t you understand?', 'You already unlocked the song.');
+						case 2:
+							messenger.sendMessage('Can\'t you read?', 'This. Is. Already. Unlocked.');
+						case 3:
+							messenger.sendMessage('go to freeplay menu.', 'its already unlocked.');
+						case 4:
+							messenger.sendMessage('IF YOU KEEP DOING IT THEN', 'IM GONNA DO SOMETHING BAD');
+						case 5:
+							messenger.sendMessage('...', 'Im closing the game. Fuck you');
+							new FlxTimer().start(2, function(tmr:FlxTimer){
+								System.exit(0);
+							});
+					}
+					howmuchyoufuckinkeptdoingit++;
+				}
+				else
+				{
+					GameData.birthdayLocky = 'obtained';
+					FlxG.sound.play(Paths.sound('funkinAVI/easterEggSound'));
+					messenger.sendMessage('Something has unlocked!', 'Check freeplay to see what has been unlocked.');
+				}
+		}
 	}
 }

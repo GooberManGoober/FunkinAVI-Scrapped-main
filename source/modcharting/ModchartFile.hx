@@ -156,16 +156,6 @@ class ModchartFile
                         json = cast Json.parse(ClientPrefs.downScroll ? Modchart.deluLegModD : Modchart.deluLegModU);
                     else
                         json = {modifiers: [], events: [], playfields: 1};
-                case "Rotten Petals":
-                    if (ClientPrefs.mechanics)
-                        json = cast Json.parse(Modchart.petalsManiaMod);
-                    else
-                        json = {modifiers: [], events: [], playfields: 1};
-                case "Ahh the Scary (Somber Night)":
-                    if (ClientPrefs.mechanics)
-                        json = cast Json.parse(Modchart.nightManiaMod);
-                    else
-                        json = {modifiers: [], events: [], playfields: 1};
                 default:
                     json = {modifiers: [], events: [], playfields: 1};
             }

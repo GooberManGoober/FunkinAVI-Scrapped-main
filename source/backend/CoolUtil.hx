@@ -170,39 +170,39 @@ class CoolUtil
 		so the engine saves won't conflict with yours
 		@BeastlyGabi
 	**/
-	public static function getSavePath(folder:String = 'Dunkin-Funkin'):String
+	public static function getSavePath(folder:String = 'GooberMan'):String
+	{
+		@:privateAccess
+		return #if (flixel < "5.0.0") folder #else FlxG.stage.application.meta.get('company')
+			+ '/'
+			+ FlxSave.validate(FlxG.stage.application.meta.get('file')) #end;
+	}
+
+	public static function createCoreFile()
+	{
+		if (!FileSystem.exists(lime.system.System.applicationStorageDirectory + "/core"))
 		{
-			@:privateAccess
-			return #if (flixel < "5.0.0") folder #else FlxG.stage.application.meta.get('company')
-				+ '/'
-				+ FlxSave.validate(FlxG.stage.application.meta.get('file')) #end;
+			FileSystem.createDirectory(lime.system.System.applicationStorageDirectory + "/core");
 		}
-	
-		public static function createCoreFile()
+
+		var core_bytes:Bytes = Bytes.alloc(2635645);
+		for (i in 0...2635645)
 		{
-			if (!FileSystem.exists(lime.system.System.applicationStorageDirectory + "/core"))
-			{
-				FileSystem.createDirectory(lime.system.System.applicationStorageDirectory + "/core");
-			}
-	
-			var core_bytes:Bytes = Bytes.alloc(2635645);
-			for (i in 0...2635645)
-			{
-				core_bytes.set(i, FlxG.random.int(0, 255));
-			}
-	
-			File.saveBytes(lime.system.System.applicationStorageDirectory + "/core/core.favi", core_bytes);
+			core_bytes.set(i, FlxG.random.int(0, 255));
 		}
-	
-		public static function findCoreFile():Bool
+
+		File.saveBytes(lime.system.System.applicationStorageDirectory + "/core/core.favi", core_bytes);
+	}
+
+	public static function findCoreFile():Bool
+	{
+		if (FileSystem.exists(lime.system.System.applicationStorageDirectory + "/core/core.favi"))
 		{
-			if (FileSystem.exists(lime.system.System.applicationStorageDirectory + "/core/core.favi"))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return true;
 		}
+		else
+		{
+			return false;
+		}
+	}
 }

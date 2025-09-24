@@ -270,17 +270,7 @@ class StoryMenu extends MusicBeatState
 			else
 				leftArrow.animation.play('idle');
 
-			if(FlxG.keys.justPressed.CONTROL)
-			{
-				persistentUpdate = false;
-				openSubState(new GameplayChangersSubstate());
-			}
-			else if(controls.RESET)
-			{
-				persistentUpdate = false;
-				openSubState(new ResetScoreSubState('', curDifficulty, '', curWeek));
-			}
-			else if (controls.ACCEPT)
+			if (controls.ACCEPT)
 			{
 				selectWeek();
 			}

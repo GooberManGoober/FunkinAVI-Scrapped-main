@@ -254,22 +254,6 @@ class FreeplayState extends MusicBeatState
 
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
 
-		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
-		textBG.alpha = 0.6;
-		add(textBG);
-
-		#if PRELOAD_ALL
-		var leText:String = "Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
-		var size:Int = 16;
-		#else
-		var leText:String = "Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.";
-		var size:Int = 18;
-		#end
-		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
-		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
-		text.scrollFactor.set();
-		//add(text);
-
 		if(!ClientPrefs.lowQuality)
 		{
 			var scratchStuff:FlxSprite = new FlxSprite();
@@ -454,7 +438,6 @@ class FreeplayState extends MusicBeatState
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			threadActive = false;
-			FlxG.sound.playMusic(Paths.music('aviOST/seekingFreedom'));
 			MusicBeatState.switchState(new EpicSelectorWOOO());
 			FlxG.mouse.visible = true;
 		}
@@ -462,6 +445,9 @@ class FreeplayState extends MusicBeatState
 		if (accepted)
 		{
 			canBopCam = false;
+
+			if(ClientPrefs.shaking)
+				FlxG.camera.shake(0, 0);
 			
 			songInstPlaying = false;
 			persistentUpdate = false;
@@ -509,12 +495,6 @@ class FreeplayState extends MusicBeatState
 		}
 		mutex.release();
 
-		if(controls.RESET)
-		{
-			persistentUpdate = false;
-			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
-			FlxG.sound.play(Paths.sound('funkinAVI/menu/scrollSfx'));
-		}
 		super.update(elapsed);
 
 		cameraBumpingZooms(FlxG.camera, 1, null, elapsed);
@@ -716,7 +696,7 @@ class FreeplayState extends MusicBeatState
 					}
 
 					if(ClientPrefs.shaking)
-					FlxG.camera.shake(0.015, FlxMath.MAX_VALUE_FLOAT);
+						FlxG.camera.shake(0.015, FlxMath.MAX_VALUE_FLOAT);
 
 				case 'scrapped':
 					if(!ClientPrefs.lowQuality) {

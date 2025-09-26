@@ -439,6 +439,7 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			threadActive = false;
 			MusicBeatState.switchState(new EpicSelectorWOOO());
+			FlxG.sound.playMusic(Paths.music('aviOST/rottenPetals'));
 			FlxG.mouse.visible = true;
 		}
 

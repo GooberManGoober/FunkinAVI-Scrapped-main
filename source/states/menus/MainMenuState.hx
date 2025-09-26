@@ -488,8 +488,6 @@ class MainMenuState extends MusicBeatState
 								FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 								{
 									MusicBeatState.switchState(new EpicSelectorWOOO());
-									FlxG.sound.music.fadeIn(0.5, 0, 1);
-									FlxG.sound.playMusic(Paths.music('aviOST/seekingFreedom'));
 								});
 							}
 						});

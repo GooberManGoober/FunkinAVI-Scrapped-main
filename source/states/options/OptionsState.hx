@@ -27,9 +27,9 @@ class OptionsState extends MusicBeatState
 {
 	var options:Array<String> = ['Preferences', 'Accessibility', 'Visuals', 'Keybinds'];
 	var optionsD:Array<String> = [
-		"Define your Game Preferences.", 
+		"Define your Game Preferences, such as Note Skins or Judgements!", 
 		"Make the game more accessible for yourself.", 
-		"Define your Visuals, such as Note Skins or Judgements!", 
+		"Define your Visuals.", 
 		"Define your preferred keys for use during Gameplay."
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -42,11 +42,11 @@ class OptionsState extends MusicBeatState
 		switch(label) {
 			case 'Keybinds':
 				openSubState(new states.options.ControlsSubState());
-			case 'Accessibility':
-				openSubState(new states.options.GraphicsSettingsSubState());
 			case 'Visuals':
-				openSubState(new states.options.VisualsUISubState());
+				openSubState(new states.options.GraphicsSettingsSubState());
 			case 'Preferences':
+				openSubState(new states.options.VisualsUISubState());
+			case 'Accessibility':
 				openSubState(new states.options.GameplaySettingsSubState());
 		}
 	}

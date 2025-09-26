@@ -100,6 +100,15 @@ class StoryMenu extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Choosing Episode", null, null, 'icon');
 		#end
+
+		if (ClientPrefs.shaders) 
+		{
+			FlxG.camera.setFilters(
+			[
+				new openfl.filters.ShaderFilter(new FlxRuntimeShader(Shaders.grayScale, null, 140)),
+				new openfl.filters.ShaderFilter(new FlxRuntimeShader(Shaders.monitorFilter, null, 140))
+			]);
+		}
 			
 		Application.current.window.title = "Funkin.avi: Scrapped - Choosing Episode";
 

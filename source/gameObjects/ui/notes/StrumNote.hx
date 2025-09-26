@@ -170,11 +170,17 @@ class StrumNote extends FlxSprite
 			colorSwap.saturation = 0;
 			colorSwap.brightness = 0;
 		} else {
-			if (noteData > -1 && noteData < ClientPrefs.arrowHSV.length)
+			switch (PlayState.SONG.song)
 			{
-				colorSwap.hue = ClientPrefs.arrowHSV[noteData][0] / 360;
-				colorSwap.saturation = ClientPrefs.arrowHSV[noteData][1] / 100;
-				colorSwap.brightness = ClientPrefs.arrowHSV[noteData][2] / 100;
+				case "Devilish Deal" | "Isolated" | "Lunacy" | "Delusional" | "Hunted" | "Laugh Track" | "Twisted Grins" | "Rotten Petals" | "Seeking Freedom" | "Am I Real?" | "Your Final Bow" | "The Wretched Tilezones (Simple Life)" | "Ship the Fart Yay Hooray <3 (Distant Stars)" | "Ahh the Scary (Somber Night)" | "Curtain Call": 
+				
+				default: 
+					if (noteData > -1 && noteData < ClientPrefs.arrowHSV.length)
+					{
+						colorSwap.hue = ClientPrefs.arrowHSV[noteData][0] / 360;
+						colorSwap.saturation = ClientPrefs.arrowHSV[noteData][1] / 100;
+						colorSwap.brightness = ClientPrefs.arrowHSV[noteData][2] / 100;
+					}
 			}
 
 			if(animation.curAnim.name == 'confirm' && !PlayState.isPixelStage) {

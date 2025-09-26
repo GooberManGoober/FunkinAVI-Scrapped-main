@@ -10,8 +10,16 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 {
 	public function new()
 	{
-		title = 'Accessibility';
-		rpcTitle = 'Accessibility Settings Menu'; //for Discord Rich Presence
+		title = 'Visuals';
+		rpcTitle = 'Visuals Settings Menu'; //for Discord Rich Presence
+
+		//I'd suggest using "Low Quality" as an example for making your own option since it is the simplest here
+		var option:Option = new Option('Low Quality', //Name
+			'If checked, disables some background details,\ndecreases loading times and improves performance.', //Description
+			'lowQuality', //Save data variable name
+			'bool', //Variable type
+			false); //Default value
+		addOption(option);
 
 		var option:Option = new Option('Anti-Aliasing',
 			'If unchecked, disables anti-aliasing, increases performance\nat the cost of sharper visuals.',
@@ -22,15 +30,8 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeAntiAliasing; //Changing onChange is only needed if you want to make a special interaction after it changes the value
 		addOption(option);
 
-		var option:Option = new Option('Flashing Lights',
-			"Uncheck this if you're sensitive to flashing lights!",
-			'flashing',
-			'bool',
-			true);
-		addOption(option);
-
 		var option:Option = new Option('Shaders', //Name
-			'If unchecked, disables shaders.\nIt\'s used for some visual effects, ^^and also CPU intensive for weaker PCs.^^', //Description
+			'If unchecked, disables shaders.\nIt\'s used for some visual effects, and also CPU intensive for weaker PCs.', //Description
 			'shaders', //Save data variable name
 			'bool', //Variable type
 			true); //Default value
@@ -43,41 +44,26 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			true); //Default value
 		addOption(option);
 
-		//I'd suggest using "Low Quality" as an example for making your own option since it is the simplest here
-		var option:Option = new Option('Low Quality', //Name
-			'If checked, ^^disables^^ some background details,\ndecreases loading times and improves performance.', //Description
-			'lowQuality', //Save data variable name
-			'bool', //Variable type
-			false); //Default value
+		var option:Option = new Option('GPU Caching', //Name
+			"If checked, allows the GPU to be used for caching textures, decreasing RAM usage.\nDon't turn this on if you have a shitty Graphics Card.", //Description
+			'useGPUCaching',
+			'bool',
+			false);
 		addOption(option);
 
-		var option:Option = new Option('Malfunction Effects',
-			"Uncheck this to reduce amount of flashing lights on\nMalfunction!",
-			'epilepsy',
-			'bool',
-			true);
+		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
+		var option:Option = new Option('Framerate',
+			"Pretty self explanatory, isn't it?",
+			'framerate',
+			'int',
+			60);
 		addOption(option);
 
-		var option:Option = new Option('Screen Shaking',
-			"Uncheck this if you're sensitive to screen shakes!",
-			'shaking',
-			'bool',
-			true);
-		addOption(option);
-
-		var option:Option = new Option('Camera Zooms',
-			"If unchecked, the camera won't zoom in on a beat hit.",
-			'camZooms',
-			'bool',
-			true);
-		addOption(option);
-
-		var option:Option = new Option('Score Text Zoom on Hit',
-			"If unchecked, disables the Score text zooming\neverytime you hit a note.",
-			'scoreZoom',
-			'bool',
-			true);
-		addOption(option);
+		option.minValue = 60;
+		option.maxValue = 300;
+		option.displayFormat = '%v FPS';
+		option.onChange = onChangeFramerate;
+		#end
 
 		super();
 	}
@@ -91,6 +77,20 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			if(sprite != null && (sprite is FlxSprite) && !(sprite is FlxText)) {
 				sprite.antialiasing = ClientPrefs.globalAntialiasing;
 			}
+		}
+	}
+
+	function onChangeFramerate()
+	{
+		if(ClientPrefs.framerate > FlxG.drawFramerate)
+		{
+			FlxG.updateFramerate = ClientPrefs.framerate;
+			FlxG.drawFramerate = ClientPrefs.framerate;
+		}
+		else
+		{
+			FlxG.drawFramerate = ClientPrefs.framerate;
+			FlxG.updateFramerate = ClientPrefs.framerate;
 		}
 	}
 }

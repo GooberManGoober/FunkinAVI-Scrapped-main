@@ -9,8 +9,15 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 {
 	public function new()
 	{
-		title = 'Preferences';
-		rpcTitle = 'Preferences Settings Menu'; //for Discord Rich Presence
+		title = 'Accessibility';
+		rpcTitle = 'Accessibility Settings Menu'; //for Discord Rich Presence
+
+		var option:Option = new Option('Controller Mode',
+			'Check this if you want to play with\na controller instead of using your Keyboard.',
+			'controllerMode',
+			'bool',
+			false);
+		addOption(option);
 
 		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
 		var option:Option = new Option('Downscroll', //Name
@@ -20,6 +27,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			false); //Default value
 		addOption(option);
 
+		var option:Option = new Option('Mechanics',
+			'Uncheck this if you can\'t beat certain songs.\n(THIS DOES NOT APPLY TO MALFUNCTION)',
+			'mechanics',
+			'bool',
+			false);
+		addOption(option);
+
 		var option:Option = new Option('Ghost Tapping',
 			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 			'ghostTapping',
@@ -27,12 +41,39 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Mechanics',
-			'Uncheck this if you can\'t beat certain songs.\n^^(THIS DOES NOT APPLY TO MALFUNCTION)^^',
-			'mechanics',
+		var option:Option = new Option('Disable Reset Button',
+			"If checked, pressing Reset won't do anything.",
+			'noReset',
 			'bool',
 			false);
 		addOption(option);
+
+		var option:Option = new Option('Auto Pause',
+			"If checked, the game will pause itself when unfocused.",
+			'autoPause',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Enable Pause Countdown',
+			"If checked, unpausing will trigger a countdown before resuming a song.",
+			'pauseCountdown',
+			'bool',
+			false);
+		addOption(option);
+
+		var option:Option = new Option('Hitsound Volume',
+			'Funny notes does \"Tick!\" when you hit them."',
+			'hitsoundVolume',
+			'percent',
+			0);
+		addOption(option);
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		option.onChange = onChangeHitsoundVolume;
 
 		var option:Option = new Option('Rating Offset',
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
@@ -89,78 +130,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
-		var option:Option = new Option('Auto Pause',
-			"If checked, the game will pause itself when unfocused.",
-			'autoPause',
-			'bool',
-			true);
-		addOption(option);
-
-		var option:Option = new Option('Enable Pause Countdown',
-			"If checked, unpausing will trigger a countdown before resuming a song.",
-			'pauseCountdown',
-			'bool',
-			false);
-		addOption(option);
-
-		var option:Option = new Option('Disable Reset Button',
-			"If checked, pressing Reset won't do anything.",
-			'noReset',
-			'bool',
-			false);
-		addOption(option);
-
-		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
-		var option:Option = new Option('Framerate',
-			"Pretty self explanatory, isn't it?",
-			'framerate',
-			'int',
-			60);
-		addOption(option);
-
-		option.minValue = 60;
-		option.maxValue = 300;
-		option.displayFormat = '%v FPS';
-		option.onChange = onChangeFramerate;
-
-		var option:Option = new Option('FPS Counter',
-			'If unchecked, hides FPS Counter.',
-			'showFPS',
-			'bool',
-			true);
-		addOption(option);
-		option.onChange = onChangeFPSCounter;
-
-		var option:Option = new Option('Show Debug Info',
-			'If checked, adds additional information to the framerate counter (memory and mod version).',
-			'debugInfo',
-			'bool',
-			false);
-		addOption(option);
-		option.onChange = onChangeDebugCounter;
-		#end
-
-		var option:Option = new Option('Use System Cursor',
-			'If checked, disables the custom cursors and replace them with the system cursor instead.',
-			'systemCursor',
-			'bool',
-			false);
-		addOption(option);
-		option.onChange = onChangeSystemCursor;
-
-		var option:Option = new Option('Hitsound Volume',
-			'Funny notes does \"Tick!\" when you hit them."',
-			'hitsoundVolume',
-			'percent',
-			0);
-		addOption(option);
-		option.scrollSpeed = 1.6;
-		option.minValue = 0.0;
-		option.maxValue = 1;
-		option.changeValue = 0.1;
-		option.decimals = 1;
-		option.onChange = onChangeHitsoundVolume;
-
 		super();
 	}
 
@@ -168,37 +137,4 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	{
 		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
 	}
-
-	function onChangeSystemCursor()
-	{
-		if (ClientPrefs.systemCursor)
-			FlxG.mouse.useSystemCursor = true;
-		else
-			FlxG.mouse.load(Paths.image('UI/funkinAVI/mouses/Hand').bitmap);
-	}
-
-	#if !mobile
-	function onChangeFPSCounter()
-	{
-		Overlay.updateDisplayInfo(ClientPrefs.showFPS, ClientPrefs.debugInfo);
-	}
-	function onChangeDebugCounter()
-	{
-		Overlay.updateDisplayInfo(ClientPrefs.showFPS, ClientPrefs.debugInfo);
-	}
-	
-	function onChangeFramerate()
-	{
-		if(ClientPrefs.framerate > FlxG.drawFramerate)
-		{
-			FlxG.updateFramerate = ClientPrefs.framerate;
-			FlxG.drawFramerate = ClientPrefs.framerate;
-		}
-		else
-		{
-			FlxG.drawFramerate = ClientPrefs.framerate;
-			FlxG.updateFramerate = ClientPrefs.framerate;
-		}
-	}
-	#end
 }

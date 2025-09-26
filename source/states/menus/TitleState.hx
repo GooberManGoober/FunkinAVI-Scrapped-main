@@ -650,7 +650,7 @@ class TitleState extends MusicBeatState
 				}	
 				else if(Application.current.window.title.contains("Funkin.avi: Scrapped - .edud ssarg emos hcuot og ot deen uoy ,das yrev tsuj ,yltsenoh ,das si thaT ?sdrawkcab txet siht fo lla gnidaer otni troffe hcum os gnittup enigamI - iva.niknuF"))
 					{
-						Application.current.window.title = ".edud ssarg emos hcuot og ot deen uoy ,das yrev tsuj ,yltsenoh ,das si thaT ?sdrawkcab txet siht fo lla gnidaer otni troffe hcum os gnittup enigamI - iva.niknuF";
+						Application.current.window.title = ".edud ssarg emos hcuot og ot deen uoy ,das yrev tsuj ,yltsenoh ,das si thaT ?sdrawkcab txet siht fo lla gnidaer otni troffe hcum os gnittup enigamI - depparcS :iva.niknuF";
 					}
 				else if(Application.current.window.title.contains("Funkin.avi: Scrapped - fuckin.mp3 - jsjsjsdjdsjdsjadsjjads"))
 					{

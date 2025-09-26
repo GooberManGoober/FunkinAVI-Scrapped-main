@@ -118,7 +118,7 @@ class MainMenuState extends MusicBeatState
 		"You should [R] Reset Character NOW", // boblox reference
 		"awesome mouse experience.",
 		"This mod was stressful to make.",
-		"Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi - Funkin.avi",
+		"Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped - Funkin.avi: Scrapped",
 		"Just like Domingo is constantly remaking Mickey's sprites, Dreupy is the Domingo of Delusional Recharts.",
 		"When did Funkin.avi start development?",
 		"I think one of the codes is a certain date",
@@ -131,7 +131,6 @@ class MainMenuState extends MusicBeatState
 		"Development was so long Mickey died of waiting",
 		"um um um um um um um",
 		"uhuhuhuh",
-		"This is actually the patch's exclusive message, hi to however found this message - malyplus",
 		"women.",
 		"men."
 	];
@@ -145,7 +144,7 @@ class MainMenuState extends MusicBeatState
 		#end
 		FlxG.mouse.load(Paths.image('UI/funkinAVI/mouses/Hand').bitmap);
 		if (!FlxG.mouse.visible) FlxG.mouse.visible = true;
-		openfl.Lib.application.window.title = "Funkin.avi - " + windowShit[FlxG.random.int(0, windowShit.length - 1)];
+		openfl.Lib.application.window.title = "Funkin.avi: Scrapped - " + windowShit[FlxG.random.int(0, windowShit.length - 1)];
 		if (openfl.Lib.application.window.title.contains('10 Seconds before I shut your fucking game again >:('))
 		{
 			new flixel.util.FlxTimer().start(10, function(e)

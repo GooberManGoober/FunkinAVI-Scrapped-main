@@ -157,7 +157,7 @@ class CreditsMenu extends MusicBeatState
 
 		if (ClientPrefs.shaders)
 			fuckingCameraSoTheMenuDoesntFuckUpOrWhateverCauseFlixelIsEVIL.setFilters([
-				new ShaderFilter(cool_1980_shader),
+				//new ShaderFilter(cool_1980_shader),
 				new ShaderFilter(monitor)
 			]);
 

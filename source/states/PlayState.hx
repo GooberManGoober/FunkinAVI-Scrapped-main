@@ -5195,6 +5195,12 @@ class PlayState extends MusicBeatState
 			openChartEditor();
 		}
 
+		if (FlxG.keys.justPressed.SIX)
+		{
+			PlayState.SONG.validScore = false;
+			cpuControlled = !cpuControlled;
+		}
+
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 

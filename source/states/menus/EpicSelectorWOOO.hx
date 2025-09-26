@@ -53,7 +53,7 @@ class EpicSelectorWOOO extends MusicBeatState {
 			]);
 		}
 
-		Application.current.window.title = "Funkin.avi:Scrapped - Freeplay: Category Menu";
+		Application.current.window.title = "Funkin.avi: Scrapped - Freeplay: Category Menu";
 
         grpCats = new FlxTypedGroup<Alphabet>();
 		add(grpCats);
